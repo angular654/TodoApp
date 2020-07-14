@@ -1,4 +1,3 @@
-const { Router } = require('express')
 const Todo = require('../models/Todo')
 const User = require('../models/User')
 const sender = require('../modules/mailer')
@@ -7,6 +6,8 @@ const passValidator = require('password-validator')
 const schema = new passValidator()
 let creator = ''
 var isSignUp = false
+const multer  = require("multer");
+
 module.exports.home = async (req, res) => {
     const todos = (await Todo.find({ author: creator }).lean()).reverse()
     res.render('index', {
