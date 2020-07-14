@@ -40,7 +40,8 @@ router.get('/signin', (req, res) => {
 router.get('/files', (req, res) => {
     res.render('files', {
         title: 'Files',
-        isUpload: true
+        isUpload: true,
+        isSignUp: isSignUp
     })
 })
 router.post('/create', async (req, res) => {
