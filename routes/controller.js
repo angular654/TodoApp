@@ -6,7 +6,8 @@ const passValidator = require('password-validator')
 const schema = new passValidator()
 let creator = ''
 var isSignUp = false
-const multer  = require("multer");
+const multer = require('multer')
+const GridFsStorage = require('multer-gridfs-storage') 
 
 module.exports.home = async (req, res) => {
     const todos = (await Todo.find({ author: creator }).lean()).reverse()
