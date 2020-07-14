@@ -1,0 +1,19 @@
+{{#if isSignUp}}
+<form action="/create" method="POST">
+    <h2>Создать заметку</h2>
+    <div class="input-field">
+        <input type="text" name="title" placeholder="Заголовок">
+    </div>
+    <div>
+        <textarea name="content" placeholder="Содержание" class="materialize-textarea"></textarea>
+    </div>
+    <button type="submit" class="btn blue darken-4">Создать</button>
+</form>
+<br><br>
+<form action="/upload" method="POST">
+    <input class=" btn blue darken-4" type="file">
+    <button type="submit" class="btn blue darken-4">Загрузить</button>
+</form>
+{{else}}
+<h3>Страница доступна только авторизированным пользователям</h3>
+{{/if}}

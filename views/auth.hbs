@@ -1,0 +1,31 @@
+{{#if isSignUp}}
+<h2>Вы уже вошли в ToDoApp</h2>
+<form class="col s12" action="/signout" method="GET">
+    <button class="btn blue darken-4" type="submit" name="action">Выйти</button>
+</form>
+{{else}}
+<h2>Регистрация</h2>
+<div class="row">
+    <form class="col s12" action="/auth" method="POST">
+        <div class="row">
+            <div class="input-field col s6">
+                <input placeholder="Логин" id="username" type="text" class="validate" name="username">
+            </div>
+        </div>
+</div>
+<div class="row">
+    <div class="input-field col s12">
+        <input placeholder="Пароль" id="password" type="password" class="validate" name="password">
+    </div>
+</div>
+<div class="row">
+    <div class="input-field col s12">
+        <input placeholder="Email" id="email" type="email" class="validate" name="email">
+        <input type="hidden" value="{{_id}}" name="id">
+    </div>
+</div>
+<button class="btn blue darken-4" type="submit" name="action">Зарегистрироваться</button>
+</div>
+</form>
+</div>
+{{/if}}

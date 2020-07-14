@@ -1,0 +1,27 @@
+<nav class="blue darken-4">
+  <div class="nav-wrapper">
+    <a href="/" class="brand-logo" id="tilte1">ToDoApp</a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+      {{#if isSignin}}
+      <li class="active"><a href="/signin">Sign In</a></li>
+      {{else}}
+      <li><a href="/signin">Sign In</a></li>
+      {{/if}}
+      {{#if isAuth}}
+      <li class="active"><a href="/auth">Sign Up</a></li>
+      {{else}}
+      <li><a href="/auth">Sign Up</a></li>
+      {{/if}}
+      {{#if isCreate}}
+      <li class="active"><a href="/create"><i class="large material-icons">+</i></a></li>
+      {{else}}
+      <li><a href="/create"><i class="large material-icons">+</i></a></li>
+      {{/if}}
+      {{#if isUpload}}
+      <li class="active"><a href="/files"><i class="large material-icons">Files</i></a></li>
+      {{else}}
+      <li><a href="/files"><i class="large material-icons">Files</i></a></li>
+      {{/if}}
+    </ul>
+  </div>
+</nav>
