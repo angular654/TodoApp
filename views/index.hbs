@@ -11,7 +11,8 @@
                     {{#if completed}}
                     <input type="checkbox" checked>
                     <h4 class="completed" id="note-title">{{title}}</h4>
-                    <span>{{process}}%</span>
+                    <span>{{completeTime}} мин</span>
+                    <span id="process">{{process}}%</span>
                     <meter min="0" low="50" high="100" max="100" optimum="80" value="100">100</meter>
                     <h6>Автор: {{author}}</h6>
                     <hr>
@@ -20,7 +21,8 @@
                     {{else}}
                     <input type="checkbox" name="completed">
                     <h4 id="note-title">{{title}}</h4>
-                    <span>{{process}}%</span>
+                    <span>{{completeTime}} мин</span>
+                    <span id="process">{{process}}%</span>
                     <meter min="0" low="50" high="100" max="100" optimum="80" value="{{process}}">{{process}}</meter>
                     <h6>Автор: {{author}}</h6>
                     <hr>

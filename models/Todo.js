@@ -6,7 +6,8 @@ const ToDoschema = new Schema({
     },
     content: {
         type: String,
-        required: true
+        required: true,
+        maxlength: 500
     },
     author: {
         type: String,
@@ -19,6 +20,11 @@ const ToDoschema = new Schema({
     completed: {
         type: Boolean,
         default: false
+    },
+    completeTime: {
+        type: Number,
+        required: true,
+        max:50
     },
     createdAt: {
         type: Date,

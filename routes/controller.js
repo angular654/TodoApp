@@ -48,10 +48,17 @@ module.exports.createTodo = async (req, res) => {
         title: req.body.title,
         content: req.body.content,
         author: creator,
+        completeTime: req.body.time,
         createdAt: Date.now()
     })
+    try {
     await todo.save()
     res.redirect('/')
+    }
+    catch(e){
+     console.log(`Ошибка при отправке Todo: ${e}`)
+     res.redirect('/create')
+    }
 }
 module.exports.completeTodo = async (req, res) => {
     const todo = await Todo.findById(req.body.id)
@@ -107,7 +114,7 @@ module.exports.signinUser = (req, res) => {
             if (err) {
                 console.warn(err);
             } else if (!user) {
-                console.warn('User not found');
+                console.log('Пользователь не найден');
                 return res.redirect('/signin');
             }
             creator = req.body.username
