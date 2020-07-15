@@ -54,3 +54,7 @@ textarea{
     font-size: larger;
     color: black
 }
+meter{
+    height: 2rem;
+    width: 10rem;
+}

@@ -4,10 +4,8 @@ const sender = require('../modules/mailer')
 const emailValidator = require('email-validator')
 const passValidator = require('password-validator')
 const schema = new passValidator()
-let creator = ''
+var creator = ''
 var isSignUp = false
-const multer = require('multer')
-const GridFsStorage = require('multer-gridfs-storage') 
 
 module.exports.home = async (req, res) => {
     const todos = (await Todo.find({ author: creator }).lean()).reverse()
@@ -31,14 +29,14 @@ module.exports.authPage = (req, res) => {
         isSignUp: isSignUp
     })
 }
-module.exports.signinPage =  (req, res) => {
+module.exports.signinPage = (req, res) => {
     res.render('signin', {
         title: 'Sign In',
         isSignin: true,
         isSignUp: isSignUp
     })
 }
-module.exports.filesPage =  (req, res) => {
+module.exports.filesPage = (req, res) => {
     res.render('files', {
         title: 'Files',
         isUpload: true,
@@ -73,7 +71,7 @@ module.exports.deleteTodo = async (req, res) => {
     await todo.remove()
     res.redirect('/')
 }
-module.exports.authUser =  async (req, res) => {
+module.exports.authUser = async (req, res) => {
     const user = new User({
         username: req.body.username,
         password: req.body.password,
@@ -96,14 +94,14 @@ module.exports.authUser =  async (req, res) => {
         res.redirect('/auth')
     }
 }
-module.exports.signoutUser =  async (req, res) => {
+module.exports.signoutUser = async (req, res) => {
     await User.findByIdAndRemove(req.body.email, function (err) {
         if (err) res.send(err);
     })
     isSignUp = false
     res.redirect('/auth');
 }
-module.exports.signinUser =  (req, res) => {
+module.exports.signinUser = (req, res) => {
     User.findOne({ username: req.body.username, password: req.body.password })
         .exec((err, user) => {
             if (err) {
@@ -118,6 +116,6 @@ module.exports.signinUser =  (req, res) => {
         })
 
 }
-module.exports.fileUpload =  async (req, res) => {
-    await res.send('<h3>In process :)</h3>')
+module.exports.fileUpload = async (req, res) => {
+    await res.send('In process');
 }
