@@ -1,5 +1,5 @@
-<h2>Планы</h2>
 {{#if isSignUp}}
+<h2 id="file-text">Ваши планы</h2>
 <a href="/create" class="btn blue darken-4">Создать</a>
 {{#if todos.length}}
 <ul>
@@ -50,6 +50,7 @@
 </div>
 {{/if}}
 {{else}}
+<h2 id="file-text">Планы</h2>
 <h4>Авторизуйтесь и тут что-то появится</h4>
 <a href="/auth" class="btn blue darken-4">Зарегистрироваться</a>
 {{/if}}

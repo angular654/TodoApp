@@ -62,7 +62,17 @@ meter{
     font-size: larger;
     padding-left: 0.5rem;
 }
-#title1{
-    padding-left: 2rem;
-
+#file-text{
+    padding-top: 0rem;
 }
+.mobile{
+    display: none;
+}
+@media screen and (max-width: 993px) {
+    .mobile{
+        display: inline-block;
+    }
+    #file-text{
+        padding-top: 1rem;
+    }
+   }
