@@ -1,5 +1,6 @@
 const Todo = require('../models/Todo')
 const User = require('../models/User')
+const File = require('../models/File')
 const sender = require('../modules/mailer')
 const emailValidator = require('email-validator')
 const passValidator = require('password-validator')
@@ -132,9 +133,19 @@ module.exports.signinUser = async (req, res) => {
         })
 
 }
-module.exports.fileUpload = (req, res) => {
-    if (req.body.file) {
-        console.log(req.body.file)
+module.exports.fileUpload = async(req, res) => {
+    const storagefile = new File({
+        caption : req.body.caption,
+        name : req.body.name,
+        size : req.files.file.size,
+        encoding : req.files.file.encoding,
+        data : req.files.file.data,
+        type : req.files.file.mimetype,
+        md5 : req.files.file.md5
+    })
+    if (req.files.file) {
+        await storagefile.save()
+        console.log(req.files.file)
         res.redirect('/create');
     }
 }
