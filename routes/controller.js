@@ -86,7 +86,7 @@ module.exports.authUser = async (req, res) => {
     const user = new User({
         username: username,
         password: bcrypt.hashSync(req.body.password, 15),
-        email: email
+        email: email  
     })
     if (schema.validate(password) === emailValidator.validate(email) && username.length > 3) {
         try {
