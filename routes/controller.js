@@ -1,11 +1,13 @@
 const Todo = require('../models/Todo')
 const User = require('../models/User')
+const File = require('../models/File')
 const sender = require('../modules/mailer')
 const emailValidator = require('email-validator')
 const passValidator = require('password-validator')
 const schema = new passValidator()
 var creator = ''
 var isSignUp = false
+var upload = require('../modules/file-upload');
 
 module.exports.home = async (req, res) => {
     const todos = (await Todo.find({ author: creator }).lean()).reverse()
@@ -52,12 +54,12 @@ module.exports.createTodo = async (req, res) => {
         createdAt: Date.now()
     })
     try {
-    await todo.save()
-    res.redirect('/')
+        await todo.save()
+        res.redirect('/')
     }
-    catch(e){
-     console.log(`Ошибка при отправке Todo: ${e}`)
-     res.redirect('/create')
+    catch (e) {
+        console.log(`Ошибка при отправке Todo: ${e}`)
+        res.redirect('/create')
     }
 }
 module.exports.completeTodo = async (req, res) => {
@@ -124,8 +126,9 @@ module.exports.signinUser = (req, res) => {
 
 }
 module.exports.fileUpload = (req, res) => {
-    if (req.body.file){
-        console.log(req.body.file)
-        res.redirect('/create');
+    try {
+        console.log(req.body.caption)
+    } catch(e){
+         console.log(e)
     }
 }

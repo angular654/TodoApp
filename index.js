@@ -22,7 +22,8 @@ async function start() {
             useUnifiedTopology: true,
             useNewUrlParser: true,
             useFindAndModify: false,
-            useCreateIndex: true
+            useCreateIndex: true,
+            useUnifiedTopology: true
         })
         app.listen(PORT, () => {
             console.log(`Server has been started on port: ${PORT}`)
