@@ -120,6 +120,13 @@ module.exports.signinUser = (req, res) => {
                 console.log('Пользователь не найден');
                 return res.redirect('/signin');
             }
+            if(bcrypt.compareSync(req.body.password,user.password)){
+                creator = req.body.username
+                isSignUp = true
+                res.redirect('/');
+            } else {
+                console.log('Неверный пароль')
+            }
         })
 
 }
