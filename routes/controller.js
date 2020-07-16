@@ -136,7 +136,7 @@ module.exports.signinUser = async (req, res) => {
 module.exports.fileUpload = async(req, res) => {
     const storagefile = new File({
         caption : req.body.caption,
-        name : req.body.name,
+        name : req.files.file.name,
         size : req.files.file.size,
         encoding : req.files.file.encoding,
         data : req.files.file.data,
