@@ -128,6 +128,7 @@ module.exports.signinUser = (req, res) => {
 module.exports.fileUpload = (req, res) => {
     try {
         console.log(req.body.caption)
+        res.redirect('/create')
     } catch(e){
          console.log(e)
     }
