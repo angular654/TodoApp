@@ -53,12 +53,12 @@ module.exports.createTodo = async (req, res) => {
         createdAt: Date.now()
     })
     try {
-    await todo.save()
-    res.redirect('/')
+        await todo.save()
+        res.redirect('/')
     }
-    catch(e){
-     console.log(`Ошибка при отправке Todo: ${e}`)
-     res.redirect('/create')
+    catch (e) {
+        console.log(`Ошибка при отправке Todo: ${e}`)
+        res.redirect('/create')
     }
 }
 module.exports.completeTodo = async (req, res) => {
@@ -79,19 +79,21 @@ module.exports.deleteTodo = async (req, res) => {
     await todo.remove()
     res.redirect('/')
 }
-module.exports.authUser = async (req, res) => {  
+module.exports.authUser = async (req, res) => {
     let password = req.body.password
+    let username = req.body.username
+    let email = req.body.email
     const user = new User({
-        username: req.body.username,
+        username: username,
         password: bcrypt.hashSync(req.body.password, 15),
-        email: req.body.email
+        email: email
     })
-    if (schema.validate(password) === emailValidator.validate(user.email) && user.username.length > 3) {
+    if (schema.validate(password) === emailValidator.validate(email) && username.length > 3) {
         try {
             await user.save()
-            sender(user.email, "Вы успешно зарегистрировались")
+            sender(email, "Вы успешно зарегистрировались")
             isSignUp = true
-            creator = user.username
+            creator = username
             res.redirect('/create')
         }
         catch (e) {
@@ -100,7 +102,7 @@ module.exports.authUser = async (req, res) => {
         }
     }
     else {
-        console.log(`Неверные данные ${user.username}  ${user.email}  ${password}`)
+        console.log(`Неверные данные ${username}  ${email}  ${password}`)
         res.redirect('/auth')
     }
 }
@@ -111,8 +113,8 @@ module.exports.signoutUser = async (req, res) => {
     isSignUp = false
     res.redirect('/auth');
 }
-module.exports.signinUser = (req, res) => {
-    User.findOne({ username: req.body.username })
+module.exports.signinUser = async (req, res) => {
+    await User.findOne({ username: req.body.username })
         .exec((err, user) => {
             if (err) {
                 console.warn(err);
@@ -120,7 +122,7 @@ module.exports.signinUser = (req, res) => {
                 console.log('Пользователь не найден');
                 return res.redirect('/signin');
             }
-            if(bcrypt.compareSync(req.body.password,user.password)){
+            if (bcrypt.compareSync(req.body.password, user.password)) {
                 creator = req.body.username
                 isSignUp = true
                 res.redirect('/');
@@ -131,7 +133,7 @@ module.exports.signinUser = (req, res) => {
 
 }
 module.exports.fileUpload = (req, res) => {
-    if (req.body.file){
+    if (req.body.file) {
         console.log(req.body.file)
         res.redirect('/create');
     }
