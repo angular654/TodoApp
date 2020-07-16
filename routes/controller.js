@@ -3,6 +3,7 @@ const User = require('../models/User')
 const sender = require('../modules/mailer')
 const emailValidator = require('email-validator')
 const passValidator = require('password-validator')
+const bcrypt = require('bcrypt')
 const schema = new passValidator()
 var creator = ''
 var isSignUp = false
@@ -78,13 +79,14 @@ module.exports.deleteTodo = async (req, res) => {
     await todo.remove()
     res.redirect('/')
 }
-module.exports.authUser = async (req, res) => {
+module.exports.authUser = async (req, res) => {  
+    let password = req.body.password
     const user = new User({
         username: req.body.username,
-        password: req.body.password,
+        password: bcrypt.hashSync(req.body.password, 15),
         email: req.body.email
     })
-    if (schema.validate(user.password) === emailValidator.validate(user.email) && user.username.length >= 4) {
+    if (schema.validate(password) === emailValidator.validate(user.email) && user.username.length > 3) {
         try {
             await user.save()
             sender(user.email, "Вы успешно зарегистрировались")
@@ -93,11 +95,12 @@ module.exports.authUser = async (req, res) => {
             res.redirect('/create')
         }
         catch (e) {
-            res.status(404).send(`<h1>Страница не найдена :(</h1>`)
+            console.log(`${e}`)
+            res.redirect('/auth')
         }
     }
     else {
-        console.log('Неверные данные')
+        console.log(`Неверные данные ${user.username}  ${user.email}  ${password}`)
         res.redirect('/auth')
     }
 }
@@ -109,7 +112,7 @@ module.exports.signoutUser = async (req, res) => {
     res.redirect('/auth');
 }
 module.exports.signinUser = (req, res) => {
-    User.findOne({ username: req.body.username, password: req.body.password })
+    User.findOne({ username: req.body.username })
         .exec((err, user) => {
             if (err) {
                 console.warn(err);
@@ -117,9 +120,6 @@ module.exports.signinUser = (req, res) => {
                 console.log('Пользователь не найден');
                 return res.redirect('/signin');
             }
-            creator = req.body.username
-            isSignUp = true
-            res.redirect('/');
         })
 
 }
