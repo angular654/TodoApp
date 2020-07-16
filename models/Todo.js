@@ -24,7 +24,7 @@ const ToDoschema = new Schema({
     completeTime: {
         type: Number,
         required: true,
-        max:50
+        max: 59
     },
     createdAt: {
         type: Date,

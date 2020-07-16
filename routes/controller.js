@@ -123,6 +123,9 @@ module.exports.signinUser = (req, res) => {
         })
 
 }
-module.exports.fileUpload = async (req, res) => {
-    await res.send('In process');
+module.exports.fileUpload = (req, res) => {
+    if (req.body.file){
+        console.log(req.body.file)
+        res.redirect('/create');
+    }
 }
