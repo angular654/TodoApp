@@ -42,7 +42,6 @@ module.exports.signinPage = (req, res) => {
     })
 }
 module.exports.createTodo = async (req, res) => {
-    errors = ''
     const todo = new Todo({
         title: req.body.title,
         content: req.body.content,
@@ -53,7 +52,6 @@ module.exports.createTodo = async (req, res) => {
     try {
         await todo.save()
         res.redirect('/')
-        errors = ''
     }
     catch (e) {
         errors = `Ошибка при отправке Todo: ${e}`
@@ -111,11 +109,9 @@ module.exports.signoutUser = async (req, res) => {
         if (err) errors = `${err}`
     })
     isSignUp = false
-    errors = ''
     res.redirect('/auth');
 }
 module.exports.signinUser = async (req, res) => {
-    errors = ''
     await User.findOne({ username: req.body.username })
         .exec((err, user) => {
             if (err) {
@@ -151,14 +147,12 @@ module.exports.uploadFile = async (req, res) => {
     else
         try {
             await file.save()
-            errors = ''
         }
         catch (e) {
             errors = `Не удалось загрузить информацию о файле : ${e}`
             console.log(errors)
             res.redirect("/create")
         }
-    errors = ''
     console.log("Файл загружен");
     res.redirect("/create")
 }
