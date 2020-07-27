@@ -3,12 +3,12 @@ const User = require('../models/User')
 const File = require('../models/File')
 const sender = require('../modules/mailer')
 const emailValidator = require('email-validator')
+const fs = require('fs')
 const passValidator = require('password-validator')
 const bcrypt = require('bcrypt')
 const schema = new passValidator()
 var creator = ''
-var isSignUp = false
-
+var isSignUp = false;
 module.exports.home = async (req, res) => {
     const todos = (await Todo.find({ author: creator }).lean()).reverse()
     res.render('index', {
@@ -24,9 +24,9 @@ module.exports.createPage = (req, res) => {
         isSignUp: isSignUp
     })
 }
-module.exports.authPage = (req, res) => {
+module.exports.authPage = async (req, res) => {
     res.render('auth', {
-        title: 'Sign Up',
+        title: 'Files',
         isAuth: true,
         isSignUp: isSignUp
     })
@@ -35,13 +35,6 @@ module.exports.signinPage = (req, res) => {
     res.render('signin', {
         title: 'Sign In',
         isSignin: true,
-        isSignUp: isSignUp
-    })
-}
-module.exports.filesPage = (req, res) => {
-    res.render('files', {
-        title: 'Files',
-        isUpload: true,
         isSignUp: isSignUp
     })
 }
@@ -87,12 +80,11 @@ module.exports.authUser = async (req, res) => {
     const user = new User({
         username: username,
         password: bcrypt.hashSync(req.body.password, 15),
-        email: email  
+        email: email
     })
     if (schema.validate(password) === emailValidator.validate(email) && username.length > 3) {
         try {
             await user.save()
-            sender(email, "Вы успешно зарегистрировались")
             isSignUp = true
             creator = username
             res.redirect('/create')
@@ -131,21 +123,43 @@ module.exports.signinUser = async (req, res) => {
                 console.log('Неверный пароль')
             }
         })
-
 }
-module.exports.fileUpload = async(req, res) => {
-    const storagefile = new File({
-        caption : req.body.caption,
-        name : req.files.file.name,
-        size : req.files.file.size,
-        encoding : req.files.file.encoding,
-        data : req.files.file.data,
-        type : req.files.file.mimetype,
-        md5 : req.files.file.md5
+module.exports.uploadFile = async (req, res) => {
+    const file = new File({
+        name: req.file.originalname,
+        size: req.file.size,
+        type: req.file.mimetype,
+        createdAt: Date.now()
     })
-    if (req.files.file) {
-        await storagefile.save()
-        console.log(req.files.file)
-        res.redirect('/create');
-    }
+    let filedata = req.file;
+    if (!filedata)
+        console.log("Ошибка при загрузке файла");
+    else
+        try {
+            await file.save()
+        }
+        catch (e) {
+            console.log(`Не удалось загрузить информацию о файле : ${e}`)
+            res.redirect("/create")
+        }
+    console.log("Файл загружен");
+    res.redirect("/create")
+} 
+module.exports.getFiles = async (req, res) => {
+    const files = (await File.find().lean()).reverse()
+    res.render('files', {
+        title: 'Files',
+        files,
+        isUpload: true,
+        isSignUp: isSignUp
+    })
+}
+module.exports.deleteFile = async (req, res) => {
+    const file = await File.findById(req.body.id)
+    fs.unlink(`uploads/${req.body.name}`, (err) => {
+        if (err) throw err;
+        console.log(`Файл ${req.body.name} удален`);
+      });
+    await file.remove()
+    res.redirect('/files')
 }
