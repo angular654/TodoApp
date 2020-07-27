@@ -6,8 +6,7 @@ const ToDoschema = new Schema({
     },
     content: {
         type: String,
-        required: true,
-        maxlength: 500
+        required: true
     },
     author: {
         type: String,
@@ -20,15 +19,6 @@ const ToDoschema = new Schema({
     completed: {
         type: Boolean,
         default: false
-    },
-    completeTime: {
-        type: Number,
-        required: true,
-        max: 59
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now()
     }
 })
 module.exports = model('todo', ToDoschema)

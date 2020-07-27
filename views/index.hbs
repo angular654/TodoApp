@@ -1,5 +1,5 @@
+<h2>Планы</h2>
 {{#if isSignUp}}
-<h2 id="file-text">Ваши планы</h2>
 <a href="/create" class="btn blue darken-4">Создать</a>
 {{#if todos.length}}
 <ul>
@@ -10,25 +10,19 @@
                 <label>
                     {{#if completed}}
                     <input type="checkbox" checked>
-                    <h4 class="completed" id="note-title">{{title}}</h4>
-                    <span>{{completeTime}} мин</span>
-                    <span id="process">{{process}}%</span>
+                    <h2 class="completed" id="note-title">{{title}}</h2>
+                    <span>{{process}}%</span>
                     <meter min="0" low="50" high="100" max="100" optimum="80" value="100">100</meter>
-                    <h6>Автор: {{author}}</h6>
-                    <hr>
-                    <div class="card-content">{{content}}</div>
-                    <b>{{createdAt}}</b>
+                    <h5>Автор: {{author}}</h5>
+                    <div class="todo-content">{{content}}</div>
                     {{else}}
                     <input type="checkbox" name="completed">
-                    <h4 id="note-title">{{title}}</h4>
-                    <span>{{completeTime}} мин</span>
-                    <span id="process">{{process}}%</span>
+                    <h2 id="note-title">{{title}}</h2>
+                    <span>{{process}}%</span>
                     <meter min="0" low="50" high="100" max="100" optimum="80" value="{{process}}">{{process}}</meter>
-                    <h6>Автор: {{author}}</h6>
-                    <hr>
-                    <div class="card-content">{{content}}</div>
+                    <h5>Автор: {{author}}</h5>
+                    <div class="todo-content">{{content}}</div>
                     <input name="process" type="range" min="0" max="100" step="10" value="{{process}}" />
-                    <b>{{createdAt}}</b>
                     {{/if}}
                     <input type="hidden" value="{{_id}}" name="id">
                     <br>
@@ -50,7 +44,6 @@
 </div>
 {{/if}}
 {{else}}
-<h2 id="file-text">Планы</h2>
 <h4>Авторизуйтесь и тут что-то появится</h4>
 <a href="/auth" class="btn blue darken-4">Зарегистрироваться</a>
 {{/if}}
