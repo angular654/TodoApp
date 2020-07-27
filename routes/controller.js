@@ -115,14 +115,12 @@ module.exports.signoutUser = async (req, res) => {
     res.redirect('/auth');
 }
 module.exports.signinUser = async (req, res) => {
+    errors = ''
     await User.findOne({ username: req.body.username })
         .exec((err, user) => {
             if (err) {
                 console.warn(err);
             }
-            else if (user){
-                errors = ''
-            } 
             else if (!user) {
                 errors = 'Пользователь не найден'
                 console.log(errors);
@@ -130,7 +128,6 @@ module.exports.signinUser = async (req, res) => {
             }
             if (bcrypt.compareSync(req.body.password, user.password)) {
                 creator = req.body.username
-                errors = ''
                 isSignUp = true
                 res.redirect('/');
             } else {
