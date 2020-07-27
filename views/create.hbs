@@ -5,15 +5,18 @@
         <input type="text" name="title" placeholder="Заголовок">
     </div>
     <div>
-        <textarea name="content" placeholder="Содержание" class="materialize-textarea"></textarea>
+        <textarea name="content" placeholder="Содержание" ></textarea>
+    </div>
+    <div class="input-field">
+        <input type="text" name="time" placeholder="Время выполнения">
     </div>
     <button type="submit" class="btn blue darken-4">Создать</button>
 </form>
 <br><br>
-<form action="/upload" method="POST">
-    <input class=" btn blue darken-4" type="file">
+<form action="/upload" method="POST" enctype="multipart/form-data">
+    <input class=" btn blue darken-4" type="file" name="file">
     <button type="submit" class="btn blue darken-4">Загрузить</button>
 </form>
 {{else}}
-<h3>Страница доступна толька авторизированным пользователям</h3>
+<h3 id="file-text">Страница доступна только авторизированным пользователям</h3>
 {{/if}}

@@ -44,8 +44,38 @@ textarea{
       }
    }
 #note-title{
-    text-align: center;
+    text-align: left;
+    padding-left: 1rem;
 }
 .todo-content{
     font-size: large;
+}
+.card-content{
+    font-size: x-large;
+    color: black;
+}
+meter{
+    height: 2rem;
+    width: 10rem;
+}
+#process{
+    font-size: larger;
+    padding-left: 0.5rem;
+}
+#file-text{
+    padding-top: 0rem;
+}
+.mobile{
+    display: none;
+}
+@media screen and (max-width: 993px) {
+    .mobile{
+        display: inline-block;
+    }
+    #file-text{
+        padding-top: 1rem;
+    }
+   }
+img{
+    border-radius: 1rem;
 }
