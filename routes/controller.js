@@ -9,7 +9,6 @@ const schema = new passValidator()
 var creator = ''
 var isSignUp = false;
 errors = ''
-
 module.exports.home = async (req, res) => {
     const todos = (await Todo.find({ author: creator }).lean()).reverse()
     res.render('index', {
@@ -43,6 +42,7 @@ module.exports.signinPage = (req, res) => {
     })
 }
 module.exports.createTodo = async (req, res) => {
+    errors = ''
     const todo = new Todo({
         title: req.body.title,
         content: req.body.content,
@@ -119,7 +119,11 @@ module.exports.signinUser = async (req, res) => {
         .exec((err, user) => {
             if (err) {
                 console.warn(err);
-            } else if (!user) {
+            }
+            else if (user){
+                errors = ''
+            } 
+            else if (!user) {
                 errors = 'Пользователь не найден'
                 console.log(errors);
                 return res.redirect('/signin');
@@ -150,6 +154,7 @@ module.exports.uploadFile = async (req, res) => {
     else
         try {
             await file.save()
+            errors = ''
         }
         catch (e) {
             errors = `Не удалось загрузить информацию о файле : ${e}`
