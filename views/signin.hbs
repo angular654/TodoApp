@@ -5,13 +5,14 @@
 </form>
 {{else}}
 <h2 id="file-text">Войти</h2>
+<div class="error" id='err' hidden>{{errors}}</div>
 <div class="row">
   <form class="col s10" action="/signin" method="POST">
     <input placeholder="Логин" id="Name" type="text" class="validate" name="username">
     <br>
     <input placeholder="Пароль" id="password" type="password" class="validate" name="password">
-    <input type="hidden" value="{{_id}}" name="id"> 
-    <button class="btn blue darken-4" type="submit" name="action">Войти</button>
+    <input type="hidden" value="{{_id}}" name="id">
+    <button class="btn blue darken-4" type="submit" name="action" onclick="errorView()">Войти</button>
   </form>
 </div>
 {{/if}}

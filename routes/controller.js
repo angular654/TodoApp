@@ -1,7 +1,6 @@
 const Todo = require('../models/Todo')
 const User = require('../models/User')
 const File = require('../models/File')
-const sender = require('../modules/mailer')
 const emailValidator = require('email-validator')
 const fs = require('fs')
 const passValidator = require('password-validator')
@@ -9,6 +8,8 @@ const bcrypt = require('bcrypt')
 const schema = new passValidator()
 var creator = ''
 var isSignUp = false;
+errors = ''
+
 module.exports.home = async (req, res) => {
     const todos = (await Todo.find({ author: creator }).lean()).reverse()
     res.render('index', {
@@ -21,21 +22,24 @@ module.exports.createPage = (req, res) => {
     res.render('create', {
         title: 'Create todo',
         isCreate: true,
-        isSignUp: isSignUp
+        isSignUp: isSignUp,
+        errors: errors
     })
 }
 module.exports.authPage = async (req, res) => {
     res.render('auth', {
-        title: 'Files',
+        title: 'Auth',
         isAuth: true,
-        isSignUp: isSignUp
+        isSignUp: isSignUp,
+        errors: errors
     })
 }
 module.exports.signinPage = (req, res) => {
     res.render('signin', {
         title: 'Sign In',
         isSignin: true,
-        isSignUp: isSignUp
+        isSignUp: isSignUp,
+        errors: errors
     })
 }
 module.exports.createTodo = async (req, res) => {
@@ -49,9 +53,11 @@ module.exports.createTodo = async (req, res) => {
     try {
         await todo.save()
         res.redirect('/')
+        errors = ''
     }
     catch (e) {
-        console.log(`Ошибка при отправке Todo: ${e}`)
+        errors = `Ошибка при отправке Todo: ${e}`
+        console.log(errors)
         res.redirect('/create')
     }
 }
@@ -90,20 +96,22 @@ module.exports.authUser = async (req, res) => {
             res.redirect('/create')
         }
         catch (e) {
-            console.log(`${e}`)
+            errors = `${e}`
+            console.log(errors)
             res.redirect('/auth')
         }
     }
     else {
-        console.log(`Неверные данные ${username}  ${email}  ${password}`)
+        errors = 'Неверные данные'
         res.redirect('/auth')
     }
 }
 module.exports.signoutUser = async (req, res) => {
     await User.findByIdAndRemove(req.body.email, function (err) {
-        if (err) res.send(err);
+        if (err) errors = `${err}`
     })
     isSignUp = false
+    errors = ''
     res.redirect('/auth');
 }
 module.exports.signinUser = async (req, res) => {
@@ -112,15 +120,18 @@ module.exports.signinUser = async (req, res) => {
             if (err) {
                 console.warn(err);
             } else if (!user) {
-                console.log('Пользователь не найден');
+                errors = 'Пользователь не найден'
+                console.log(errors);
                 return res.redirect('/signin');
             }
             if (bcrypt.compareSync(req.body.password, user.password)) {
                 creator = req.body.username
+                errors = ''
                 isSignUp = true
                 res.redirect('/');
             } else {
-                console.log('Неверный пароль')
+                errors = 'Неверный пароль'
+                console.log(errors);
             }
         })
 }
@@ -132,19 +143,23 @@ module.exports.uploadFile = async (req, res) => {
         createdAt: Date.now()
     })
     let filedata = req.file;
-    if (!filedata)
-        console.log("Ошибка при загрузке файла");
+    if (!filedata) {
+        errors = "Ошибка при загрузке файла"
+        console.log(errors);
+    }
     else
         try {
             await file.save()
         }
         catch (e) {
-            console.log(`Не удалось загрузить информацию о файле : ${e}`)
+            errors = `Не удалось загрузить информацию о файле : ${e}`
+            console.log(errors)
             res.redirect("/create")
         }
+    errors = ''
     console.log("Файл загружен");
     res.redirect("/create")
-} 
+}
 module.exports.getFiles = async (req, res) => {
     const files = (await File.find().lean()).reverse()
     res.render('files', {
@@ -159,7 +174,7 @@ module.exports.deleteFile = async (req, res) => {
     fs.unlink(`uploads/${req.body.name}`, (err) => {
         if (err) throw err;
         console.log(`Файл ${req.body.name} удален`);
-      });
+    });
     await file.remove()
     res.redirect('/files')
 }
