@@ -5,7 +5,7 @@
         <input type="text" name="title" placeholder="Заголовок">
     </div>
     <div>
-        <textarea name="content" placeholder="Содержание" class="materialize-textarea"></textarea>
+        <textarea name="content" placeholder="Содержание" ></textarea>
     </div>
     <div class="input-field">
         <input type="text" name="time" placeholder="Время выполнения">
@@ -13,8 +13,7 @@
     <button type="submit" class="btn blue darken-4">Создать</button>
 </form>
 <br><br>
-<form action="/upload" method="POST">
-    <input  type="text" name="filename" placeholder="Имя файла">
+<form action="/upload" method="POST" enctype="multipart/form-data">
     <input class=" btn blue darken-4" type="file" name="file">
     <button type="submit" class="btn blue darken-4">Загрузить</button>
 </form>

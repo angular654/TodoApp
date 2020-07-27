@@ -26,7 +26,7 @@
                     <meter min="0" low="50" high="100" max="100" optimum="80" value="{{process}}">{{process}}</meter>
                     <h6>Автор: {{author}}</h6>
                     <hr>
-                    <div class="card-content">{{content}}</div>
+                    <div class="card-content" id="note">{{content}}</div>
                     <input name="process" type="range" min="0" max="100" step="10" value="{{process}}" />
                     <b>{{createdAt}}</b>
                     {{/if}}
@@ -52,5 +52,5 @@
 {{else}}
 <h2 id="file-text">Планы</h2>
 <h4>Авторизуйтесь и тут что-то появится</h4>
-<a href="/auth" class="btn blue darken-4">Зарегистрироваться</a>
+<a href="/auth" class="btn blue darken-4" id="reg">Зарегистрироваться</a>
 {{/if}}

@@ -51,8 +51,8 @@ textarea{
     font-size: large;
 }
 .card-content{
-    font-size: larger;
-    color: black
+    font-size: x-large;
+    color: black;
 }
 meter{
     height: 2rem;
@@ -76,3 +76,6 @@ meter{
         padding-top: 1rem;
     }
    }
+img{
+    border-radius: 1rem;
+}

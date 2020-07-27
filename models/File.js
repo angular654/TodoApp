@@ -1,16 +1,17 @@
-const { Schema, model }  = require('mongoose')
+const { Schema, model } = require('mongoose')
 const Fileschema = new Schema({
-    filename: {
-        type: String,
-        required: true
+    name: {
+        type: String
+    },
+    size: {
+        type: Number
     },
     type: {
-        type: String,
-        required: true
+        type: String
     },
-    buffer: {
-        type: Buffer,
-        required: true
+    createdAt: {
+        type: Date,
+        default: Date.now()
     }
 })
 module.exports = model('files', Fileschema)
