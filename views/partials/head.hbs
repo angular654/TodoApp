@@ -8,3 +8,11 @@
     <link rel="shortcut icon" href="favicon.png" type="image/png">
     <title>{{ title }}</title>
 </head>
+<script>
+  function errorView(){
+    if  (document.getElementById('err').innerText === ''){
+        document.getElementById('err').hidden = true
+    } else 
+       document.getElementById('err').hidden = false
+  }
+</script>
