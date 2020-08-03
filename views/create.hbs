@@ -1,0 +1,23 @@
+{{#if isSignUp}}
+<form action="/create" method="POST">
+    <h2>Создать заметку</h2>
+    <div class="error" id='err' hidden>{{errors}}</div>
+    <div class="input-field">
+        <input type="text" name="title" placeholder="Заголовок">
+    </div>
+    <div>
+        <textarea name="content" placeholder="Содержание" ></textarea>
+    </div>
+    <div class="input-field">
+        <input type="text" name="time" placeholder="Время выполнения">
+    </div>
+    <button type="submit" class="btn blue darken-4" onclick="errorView()">Создать</button>
+</form>
+<br><br>
+<form action="/upload" method="POST" enctype="multipart/form-data">
+    <input class=" btn blue darken-4" type="file" name="file">
+    <button type="submit" class="btn blue darken-4" onclick="errorView()">Загрузить</button>
+</form>
+{{else}}
+<h3 id="file-text">Страница доступна только авторизированным пользователям</h3>
+{{/if}}

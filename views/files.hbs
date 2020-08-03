@@ -1,0 +1,31 @@
+{{#if isSignUp}}
+<h4 id="file-text">Файлы</h4>
+{{#if files.length}}
+<ul>
+    {{#each files}}
+    <li>
+        <div class="card">
+            <span class="card-title">{{name}}</span>
+            <div class="card-image">
+                <img src="{{name}}">
+            </div>
+            <p><a href="{{name}}" download>Скачать</a></p>
+            <input type="hidden" value="{{_id}}" name="id">
+        </div>
+        <form action="/deletefile" method="POST">
+            <input type="hidden" value="{{name}}" name="name">
+            <input type="hidden" value="{{_id}}" name="id">
+            <button id="btn" class="btn blue darken-4" type="submit">X</button>
+        </form>
+    </li>
+    {{/each}}
+</ul>
+{{else}}
+<p>Тут пусто...</p>
+<div class="progress">
+    <div class="determinate"></div>
+</div>
+{{/if}}
+{{else}}
+<h3 id="file-text">Страница доступна только авторизированным пользователям</h3>
+{{/if}}
