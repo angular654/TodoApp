@@ -127,13 +127,11 @@ export default {
       const selectedFile = e.target.files[0]; // accessing file
       this.selectedFile = selectedFile;
     },
-    onUploadFile() {
+   async onUploadFile() {
       const formData = new FormData();
       formData.append("file", this.selectedFile);  // appending file
-
-     // sending file to the backend
-      axios
-        .post(Config.getBaseUrl()+"upload", formData)
+     await axios
+        .post(Config.getBaseUrl()+"upload", formData, this.creator)
         .then(res => {
           console.log(res);
         })

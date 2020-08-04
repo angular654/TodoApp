@@ -88,7 +88,7 @@ module.exports.signinUser = async (req, res) => {
 }
 module.exports.uploadFile = async (req, res) => {
     const myFile = req.files.file;
-    const file = new File({
+    const file = new File({ 
         name: myFile.name,
         size: myFile.size,
         createdAt: Date.now()

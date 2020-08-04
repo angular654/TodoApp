@@ -8,8 +8,8 @@
         </div>
       </div>
       <p class="error" v-if="errors.length">{{errors}}</p>
-      <div v-for="(todo,idx) in todos" :key="idx">
-        <div class="note">
+      <div v-for="(todo,idx) in todos" :key="idx" >
+        <div class="note"  v-if="todo.author == user">
           <div class="card">
             <h4>{{todo.title}}</h4>
             <h6 id="author">Автор: {{todo.author}}</h6>
@@ -31,12 +31,13 @@
             <b>{{todo.createdAt | formatDate}}</b>
           </div>
           <form id="delete_btn" @submit.prevent="submit">
-            <input  hidden v-bind:value="todo._id" ref="idField" type="text"  name="id"/>
+            <input  hidden type="text"  v-bind:value="todo._id"  name="id" />
             <button id="btn" class="btn blue darken-4" type="submit" name="action">X</button>
           </form>
           <br />
         </div>
       </div>
+
     </div>
     <div v-else>
       <h1>Страница недоступна</h1>
@@ -57,7 +58,8 @@ export default {
       errors: "",
       submitStatus: null,
       id: "",
-      reg: Config.register
+      reg: Config.register,
+      user: Config.author
     };
   },
   async mounted() {

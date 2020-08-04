@@ -9,6 +9,9 @@ const Fileschema = new Schema({
     type: {
         type: String
     },
+    author: {
+        type: String
+    },
     createdAt: {
         type: Date,
         default: Date.now()

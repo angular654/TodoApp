@@ -1,10 +1,12 @@
 <template>
   <div id="block">
     <h1>Место для хранения файлов</h1>
-     <div v-for="(file,idx) in files" :key="idx">
+     <div v-for="(file,idx) in files" :key="idx" >
+     <div class="card" v-if="file.author == user">
        <img v-bind:src="'uploads/' + file.name">
        {{file.name}}
        <p><a v-bind:href="'uploads/' + file.name" download>Скачать</a></p>
+      </div>
      </div>
   </div>
 </template>
@@ -18,7 +20,8 @@ export default {
     return {
       files: {},
       file: {},
-      errors: ""
+      errors: "",
+      user: Config.author
     };
   },
   async mounted() {
