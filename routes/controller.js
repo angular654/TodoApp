@@ -39,7 +39,7 @@ module.exports.completeTodo = async (req, res) => {
     res.json({ state: 'saved' })
 }
 module.exports.deleteTodo = async (req, res) => {
-    await Todo.deleteOne({ id: req.body.id })
+    await Todo.deleteOne({ _id: req.body.id })
     res.json({ state: 'deleted' })
 }
 module.exports.authUser = async (req, res) => {

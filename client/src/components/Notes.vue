@@ -8,40 +8,51 @@
         </div>
       </div>
       <p class="error" v-if="errors.length">{{errors}}</p>
-      <div v-for="(todo,idx) in todos" :key="idx" >
-        <div class="note"  v-if="todo.author == user">
-          <div class="card">
-            <h4>{{todo.title}}</h4>
-            <h6 id="author">Автор: {{todo.author}}</h6>
-            <div class="card-content">{{todo.content}}</div>
-            <span id="time">{{todo.completeTime}} мин</span>
-            <br />
-            <span id="process">{{todo.process}}%</span>
-            <br />
-            <meter
-              id="bar"
-              min="0"
-              low="50"
-              high="100"
-              max="100"
-              optimum="80"
-              v-bind:value="todo.process"
-            >{{todo.process}}</meter>
-            <br />
-            <b>{{todo.createdAt | formatDate}}</b>
-          </div>
-          <form id="delete_btn" @submit.prevent="submit">
-            <input  hidden type="text"  v-bind:value="todo._id"  name="id" />
+      <div v-for="(todo,idx) in todos" :key="idx">
+        <div class="note" v-if="todo.author == user">
+          <form @submit.prevent="complete_note">
+            <div class="card">
+              <h4>{{todo.title}}</h4>
+              <h6 id="author">Автор: {{todo.author}}</h6>
+              <div class="card-content">{{todo.content}}</div>
+              <span id="time">{{todo.completeTime}} мин</span>
+              <br />
+              <span id="process">{{todo.process}}%</span>
+              <br />
+              <meter
+                id="bar"
+                min="0"
+                low="50"
+                high="100"
+                max="100"
+                optimum="80"
+                v-bind:value="todo.process"
+              >{{todo.process}}</meter>
+              <br />
+              <input
+                name="process"
+                type="range"
+                min="0"
+                max="100"
+                step="10"
+                v-bind:value="todo.process"
+              />
+              <button class="btn blue darken-4" type="submit">Сохранить</button>
+              <br />
+              <b>{{todo.createdAt | formatDate}}</b>
+              </div>
+          </form>
+          <form id="delete_btn" @submit.prevent="delete_note">
+            <input hidden type="text" :value="id = todo._id" name="id" />
             <button id="btn" class="btn blue darken-4" type="submit" name="action">X</button>
           </form>
           <br />
         </div>
       </div>
-
     </div>
     <div v-else>
       <h1>Страница недоступна</h1>
-      <img src="@/assets/wl4MD.png">
+      <img src="@/assets/wl4MD.png" />
     </div>
   </div>
 </template>
@@ -59,31 +70,32 @@ export default {
       submitStatus: null,
       id: "",
       reg: Config.register,
-      user: Config.author
+      user: Config.author,
     };
   },
   async mounted() {
     this.submitStatus = "PENDING";
-    await axios
-      .get(Config.getBaseUrl())
-      .then(response => (this.todos = response.data))
-      .catch(error => (this.errors = error));
+    await this.get_note();
     this.submitStatus = "OK";
   },
-  methods : {
-    async submit() {
-    console.log(this.id)
-     console.log(
-        await axios({
-          url: Config.getBaseUrl()+'delete',
-          method: "post",
-          data: {
-            id: this.id
-          }
-        })
-      );
-  }
-  }
+  methods: {
+    async delete_note() {
+      await axios({
+        url: Config.getBaseUrl() + "delete",
+        method: "post",
+        data: {
+          id: this.id,
+        },
+      });
+      await this.get_note();
+    },
+    async get_note() {
+      await axios
+        .get(Config.getBaseUrl())
+        .then((response) => (this.todos = response.data))
+        .catch((error) => (this.errors = error));
+    },
+  },
 };
 </script>
 
