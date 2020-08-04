@@ -130,8 +130,9 @@ export default {
    async onUploadFile() {
       const formData = new FormData();
       formData.append("file", this.selectedFile);  // appending file
+      formData.append("author", this.creator)
      await axios
-        .post(Config.getBaseUrl()+"upload", formData, this.creator)
+        .post(Config.getBaseUrl()+"upload", formData)
         .then(res => {
           console.log(res);
         })

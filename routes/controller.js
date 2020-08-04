@@ -91,6 +91,7 @@ module.exports.uploadFile = async (req, res) => {
     const file = new File({ 
         name: myFile.name,
         size: myFile.size,
+        author: req.body.author,
         createdAt: Date.now()
     })
     
