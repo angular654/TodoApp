@@ -128,6 +128,7 @@ export default {
         );
         this.submitStatus = "OK";
         this.note = {};
+        this.$router.push('/')
       }
     },
     onFileChange(e) {
@@ -142,6 +143,7 @@ export default {
         .post(Config.getBaseUrl() + "upload", formData)
         .then((res) => {
           console.log(res);
+          this.$router.push('/files')
         })
         .catch((err) => {
           console.log(err);

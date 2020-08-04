@@ -7,7 +7,6 @@
           <div class="indeterminate"></div>
         </div>
       </div>
-      <p class="error" v-if="errors.length">{{errors}}</p>
       <div v-for="(todo,idx) in todos" :key="idx">
         <div class="note" v-if="todo.author == user">
           <form @submit.prevent="complete_note">
@@ -27,23 +26,22 @@
                 max="100"
                 optimum="80"
                 v-bind:value="todo.process"
-              >{{todo.process}}</meter>
+              ></meter>
               <br />
               <input
-                name="process"
                 type="range"
                 min="0"
                 max="100"
                 step="10"
-                v-bind:value="todo.process"
+                v-model="progress"
               />
+              <input hidden type="text" :value="id = todo._id" name="id" />
               <button class="btn blue darken-4" type="submit">Сохранить</button>
               <br />
               <b>{{todo.createdAt | formatDate}}</b>
             </div>
           </form>
           <form id="delete_btn" @submit.prevent="delete_note">
-            <input hidden type="text" :value="id = todo._id" name="id" />
             <button id="btn" class="btn blue darken-4" type="submit" name="action">X</button>
           </form>
           <br />
@@ -97,7 +95,15 @@ export default {
         .catch((error) => (this.errors = error));
     },
     async complete_note() {
-      console.log(this.id);
+      await axios({
+        url: Config.getBaseUrl() + "complete",
+        method: "post",
+        data: {
+          id: this.id,
+          process: this.progress
+        },
+      });
+      await this.get_note();
     },
   },
 };
