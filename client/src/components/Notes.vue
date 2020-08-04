@@ -40,7 +40,7 @@
               <button class="btn blue darken-4" type="submit">Сохранить</button>
               <br />
               <b>{{todo.createdAt | formatDate}}</b>
-              </div>
+            </div>
           </form>
           <form id="delete_btn" @submit.prevent="delete_note">
             <input hidden type="text" :value="id = todo._id" name="id" />
@@ -69,6 +69,7 @@ export default {
       errors: "",
       submitStatus: null,
       id: "",
+      progress: 0,
       reg: Config.register,
       user: Config.author,
     };
@@ -94,6 +95,9 @@ export default {
         .get(Config.getBaseUrl())
         .then((response) => (this.todos = response.data))
         .catch((error) => (this.errors = error));
+    },
+    async complete_note() {
+      console.log(this.id);
     },
   },
 };

@@ -2,68 +2,75 @@
   <div id="block">
     <div v-if="reg === false">
       <h2>Страница создания заметок недоступна</h2>
-      <img src="@/assets/wl4MD.png">
+      <img src="@/assets/wl4MD.png" />
     </div>
     <div v-else>
-    <form @submit.prevent="submit">
-      <h2>Создать заметку</h2>
-      <div class="input-field">
+      <form @submit.prevent="submit">
+        <h2>Создать заметку</h2>
+        <div class="input-field">
+          <input
+            type="text"
+            v-model.trim="$v.note.title.$model"
+            name="title"
+            placeholder="Заголовок"
+            required
+          />
+        </div>
+        <div
+          class="error"
+          v-if="!$v.note.title.minLength"
+        >Длина заголовока должна быть не меньше {{$v.note.title.$params.minLength.min}}</div>
+        <div>
+          <textarea
+            name="content"
+            v-model.trim="$v.note.content.$model"
+            placeholder="Содержание"
+            class="materialize-textarea"
+            required
+          ></textarea>
+        </div>
+        <div
+          class="error"
+          v-if="!$v.note.content.minLength"
+        >Длина контента должна быть не меньше {{$v.note.content.$params.minLength.min}}</div>
+        <div
+          class="error"
+          v-if="!$v.note.content.maxLength"
+        >Длина контента должна быть не больше {{$v.note.content.$params.maxLength.max}}</div>
+        <div class="input-field">
+          <input
+            type="number"
+            v-model.trim="$v.note.time.$model"
+            name="time"
+            placeholder="Время выполнения"
+            required
+          />
+        </div>
+        <div
+          class="error"
+          v-if="!$v.note.time.between"
+        >Неверное время{{$v.note.time.$params.beetwen}}</div>
+        <button
+          class="btn blue darken-4"
+          type="submit"
+          :disabled="submitStatus === 'PENDING'"
+        >Создать</button>
+        <p class="ok" v-if="submitStatus === 'OK'">Готово!</p>
+        <p class="error" v-if="submitStatus === 'ERROR'">Форма заполнена неверно</p>
+        <p class="loading" v-if="submitStatus === 'PENDING'">Загрузка...</p>
+      </form>
+      <br />
+      <form @submit.prevent="onUploadFile">
         <input
-          type="text"
-          v-model.trim="$v.note.title.$model"
-          name="title"
-          placeholder="Заголовок"
+          class="btn blue darken-4"
+          type="file"
+          name="file"
+          ref="file"
+          @change="onFileChange"
           required
         />
-      </div>
-      <div
-        class="error"
-        v-if="!$v.note.title.minLength"
-      >Длина заголовока должна быть не меньше {{$v.note.title.$params.minLength.min}}</div>
-      <div>
-        <textarea
-          name="content"
-          v-model.trim="$v.note.content.$model"
-          placeholder="Содержание"
-          class="materialize-textarea"
-          required
-        ></textarea>
-      </div>
-      <div
-        class="error"
-        v-if="!$v.note.content.minLength"
-      >Длина контента должна быть не меньше {{$v.note.content.$params.minLength.min}}</div>
-      <div
-        class="error"
-        v-if="!$v.note.content.maxLength"
-      >Длина контента должна быть не больше {{$v.note.content.$params.maxLength.max}}</div>
-      <div class="input-field">
-        <input
-          type="number"
-          v-model.trim="$v.note.time.$model"
-          name="time"
-          placeholder="Время выполнения"
-          required
-        />
-      </div>
-      <div class="error" v-if="!$v.note.time.between">Неверное время{{$v.note.time.$params.beetwen}}</div>
-      <button class="btn blue darken-4" type="submit" :disabled="submitStatus === 'PENDING'">Создать</button>
-      <p class="ok" v-if="submitStatus === 'OK'">Готово!</p>
-      <p class="error" v-if="submitStatus === 'ERROR'">Форма заполнена неверно</p>
-      <p class="loading" v-if="submitStatus === 'PENDING'">Загрузка...</p>
-    </form>
-    <br />
-    <form @submit.prevent="onUploadFile">
-      <input
-        class="btn blue darken-4"
-        type="file"
-        name="file"
-        ref="file"
-        @change="onFileChange"
-        required
-      />
-      <button type="submit" class="btn blue darken-4">Загрузить</button>
-    </form>
+        <button type="submit" class="btn blue darken-4">Загрузить</button>
+      </form>
     </div>
   </div>
 </template>
@@ -73,10 +80,10 @@ import {
   required,
   minLength,
   between,
-  maxLength
+  maxLength,
 } from "vuelidate/lib/validators";
 import axios from "axios";
-import Config from "../Api-config"
+import Config from "../Api-config";
 export default {
   name: "Create",
   data() {
@@ -89,15 +96,15 @@ export default {
       },
       creator: Config.author,
       reg: Config.register,
-      submitStatus: null
+      submitStatus: null,
     };
   },
   validations: {
     note: {
       title: { minLength: minLength(4) },
       content: { maxLength: maxLength(600), minLength: minLength(5) },
-      time: { between: between(1, 59) }
-    }
+      time: { between: between(1, 59) },
+    },
   },
   methods: {
     async submit() {
@@ -108,39 +115,39 @@ export default {
         this.submitStatus = "PENDING";
         console.log(
           await axios({
-            url: Config.getBaseUrl()+"create",
+            url: Config.getBaseUrl() + "create",
             method: "post",
             data: {
               title: this.note.title,
               content: this.note.content,
               author: this.creator,
               time: this.note.time,
-              createdAt: Date.now()
-            }
+              createdAt: Date.now(),
+            },
           })
         );
         this.submitStatus = "OK";
         this.note = {};
       }
     },
-   onFileChange(e) {
+    onFileChange(e) {
       const selectedFile = e.target.files[0]; // accessing file
       this.selectedFile = selectedFile;
     },
-   async onUploadFile() {
+    async onUploadFile() {
       const formData = new FormData();
-      formData.append("file", this.selectedFile);  // appending file
-      formData.append("author", this.creator)
-     await axios
-        .post(Config.getBaseUrl()+"upload", formData)
-        .then(res => {
+      formData.append("file", this.selectedFile); // appending file
+      formData.append("author", this.creator);
+      await axios
+        .post(Config.getBaseUrl() + "upload", formData)
+        .then((res) => {
           console.log(res);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

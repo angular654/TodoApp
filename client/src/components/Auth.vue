@@ -1,29 +1,29 @@
 <template>
   <div class="row" id="block">
     <div v-if="reg === false">
-    <form @submit.prevent="submit">
-      <h2 id="file-text">Регистрация</h2>
-      <label for="name">Name</label>
-      <input type="text" v-model="name" required />
-      <span v-if="msg.name">{{msg.name}}</span>
-      <br />
-      <label for="email">Email</label>
-      <input type="text" v-model="email" required />
-      <br />
-      <span v-if="msg.email">{{msg.email}}</span>
-      <br />
-      <label for="password">Password:</label>
-      <input type="password" v-model="password" required />
-      <br />
-      <span v-if="msg.password">{{msg.password}}</span>
-      <br />
-      <button class="btn blue darken-4" type="submit" name="action">Зарегистрироваться</button>
-      <p class="ok" v-if="submitStatus === 'OK'">Готово!</p>
-      <p class="loading" v-if="submitStatus === 'PENDING'">Регистрация...</p>
-    </form>
-  </div>
+      <form @submit.prevent="submit">
+        <h2 id="file-text">Регистрация</h2>
+        <label for="name">Name</label>
+        <input type="text" v-model="name" required />
+        <span v-if="msg.name">{{msg.name}}</span>
+        <br />
+        <label for="email">Email</label>
+        <input type="text" v-model="email" required />
+        <br />
+        <span v-if="msg.email">{{msg.email}}</span>
+        <br />
+        <label for="password">Password:</label>
+        <input type="password" v-model="password" required />
+        <br />
+        <span v-if="msg.password">{{msg.password}}</span>
+        <br />
+        <button class="btn blue darken-4" type="submit" name="action">Зарегистрироваться</button>
+        <p class="ok" v-if="submitStatus === 'OK'">Готово!</p>
+        <p class="loading" v-if="submitStatus === 'PENDING'">Регистрация...</p>
+      </form>
+    </div>
 
-  <div v-else>
+    <div v-else>
       <h1>Вы уже вошли в ToDoApp</h1>
       <p class="ok" v-if="submitStatus === 'OK'">Регистрация прошла успешно!</p>
     </div>
@@ -33,7 +33,7 @@
 <script>
 import { stringify } from "querystring";
 import axios from "axios";
-import Config from "../Api-config"
+import Config from "../Api-config";
 export default {
   name: "Auth",
   data() {
@@ -43,7 +43,7 @@ export default {
       email: "",
       msg: [],
       submitStatus: null,
-      reg: Config.register 
+      reg: Config.register,
     };
   },
   watch: {
@@ -59,7 +59,7 @@ export default {
     name(value) {
       this.name = value;
       this.validateName(value);
-    }
+    },
   },
   methods: {
     validateEmail(value) {
@@ -95,29 +95,30 @@ export default {
     },
     async submit() {
       this.submitStatus = "PENDING";
-      Config.author = this.name
+      Config.author = this.name;
       console.log(
         await axios({
-          url: Config.getBaseUrl()+'auth',
+          url: Config.getBaseUrl() + "auth",
           method: "post",
           data: {
             username: this.name,
             password: this.password,
-            email: this.email
-          }
+            email: this.email,
+          },
         })
       );
       this.submitStatus = "OK";
       this.name = Config.author;
-      Config.register = this.reg = true
-    }
-  }
+      Config.register = this.reg = true;
+    },
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h2,h1 {
+h2,
+h1 {
   font-size: 2rem;
 }
 #block {
