@@ -1,21 +1,27 @@
 <template>
-  <div id="block">
+  <div class="files">
     <div v-if="reg === true">
+      <div class="loading" v-if="submitStatus === 'PENDING'">
+        <div class="progress">
+          <div class="indeterminate"></div>
+        </div>
+      </div>
       <h1>Место для хранения файлов</h1>
       <div v-for="(file,idx) in files" :key="idx">
-        <div class="card" v-if="file.author == user">
-          <img v-bind:src="'uploads/' + file.name" />
-          {{file.name}}
+        <div class="card"> 
+         <div class="card-image"><img class="card-image" :src="getImgUrl(file.name)" /></div>
+          <br>
+          <div class="card-title">{{file.name}}</div>
           <p>
-            <a v-bind:href="file.name" download>Скачать</a>
+            <a :href="getImgUrl(file.name)" download>Скачать</a>
           </p>
         </div>
       </div>
+      </div>
+      <div v-else>
+        <h1>Страница недоступна</h1>
+      </div>
     </div>
-    <div v-else>
-      <img src="@/assets/wl4MD.png" />
-    </div>
-  </div>
 </template>
 
 <script>
@@ -30,13 +36,28 @@ export default {
       errors: "",
       user: Config.author,
       reg: Config.register,
+      submitStatus: null
     };
   },
   async mounted() {
+    this.submitStatus = "PENDING";
     await axios
       .get(Config.getBaseUrl() + "files")
       .then((response) => (this.files = response.data))
       .catch((error) => (this.errors = error));
+      this.submitStatus = "OK";
+  },
+  methods: {
+    getImgUrl(pic) {
+      return require("../files/" + pic);
+    },
+    validateFile(filename) {
+      if (filename.split(".").pop() == "png"||"jpg"||"JPEG"||"PNG") {
+        return true
+      } else {
+        return false
+      }
+    },
   },
 };
 </script>
@@ -46,8 +67,13 @@ export default {
 h1 {
   font-size: 2rem;
 }
-#block {
+.files {
   padding-left: 40px;
   padding-right: 40px;
+  align-items: center;
+}
+.card {
+  height: 60%;
+  width: 60%;
 }
 </style> 

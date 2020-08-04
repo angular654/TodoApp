@@ -98,7 +98,7 @@ module.exports.uploadFile = async (req, res) => {
     if (!req.files) {
         return res.status(500).send({ msg: "file is not found" })
     }
-    myFile.mv(`./uploads/${myFile.name}`, async function (err) {
+    myFile.mv(`./client/src/files/${myFile.name}`, async function (err) {
         if (err) {
             console.log(err)
             return res.status(500).send({ msg: "Error occured" });
@@ -109,7 +109,7 @@ module.exports.uploadFile = async (req, res) => {
     });
 }
 module.exports.getFiles = async (req, res) => {
-    res.json((await File.find({}).lean()).reverse())
+    res.json((await File.find({}).lean()))
 }
 module.exports.deleteFile = async (req, res) => {
     const file = await File.findById(req.body.id)
