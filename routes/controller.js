@@ -87,25 +87,25 @@ module.exports.signinUser = async (req, res) => {
         })
 }
 module.exports.uploadFile = async (req, res) => {
+    const myFile = req.files.file;
     const file = new File({
-        name: req.body.name,
-        size: req.body.size,
-        type: req.body.type,
+        name: myFile.name,
+        size: myFile.size,
         createdAt: Date.now()
     })
-    let filedata = req.body.file;
-    if (!filedata) {
-        console.log("Ошибка при загрузке файла");
+    
+    if (!req.files) {
+        return res.status(500).send({ msg: "file is not found" })
     }
-    else
-        try {
-            await file.save()
-            res.json({ state: 'success' })
+    myFile.mv(`./uploads/${myFile.name}`,async function (err) {
+        if (err) {
+            console.log(err)
+            return res.status(500).send({ msg: "Error occured" });
         }
-        catch (e) {
-            console.log(`Не удалось загрузить информацию о файле : ${e}`)
-        }
-    console.log("Файл загружен")
+        console.log("Файл загружен")
+        await file.save()
+        return res.send({name: myFile.name, path: `/${myFile.name}`});
+    });
 }
 module.exports.getFiles = async (req, res) => {
     res.json((await File.find({}).lean()).reverse())

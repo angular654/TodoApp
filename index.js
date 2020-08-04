@@ -5,19 +5,12 @@ const bodyParser = require('body-parser');
 const db = 'mongodb+srv://VlAdmin:22w99i@cluster0-pcusn.mongodb.net/ToDoApp'
 const PORT = process.env.PORT || 4000
 const app = express()
-const multer = require("multer");
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads')
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname)
-    }
-})
+const fileUpload = require('express-fileupload');
+app.use(express.static('uploads'));
+app.use(fileUpload());
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(multer({ storage: storage }).single("file"))
 app.use('/api/todos',require('./routes/router')) 
 async function start() {
     try {

@@ -2,6 +2,7 @@
   <div id="block">
     <div v-if="reg === false">
       <h2>Страница создания заметок недоступна</h2>
+      <img src="@/assets/wl4MD.png">
     </div>
     <div v-else>
     <form @submit.prevent="submit">
@@ -52,16 +53,16 @@
       <p class="loading" v-if="submitStatus === 'PENDING'">Загрузка...</p>
     </form>
     <br />
-    <form>
+    <form @submit.prevent="onUploadFile">
       <input
         class="btn blue darken-4"
         type="file"
         name="file"
         ref="file"
-        v-on:change="handleFileUpload()"
+        @change="onFileChange"
         required
       />
-      <button type="submit" class="btn blue darken-4" v-on:click="submitFile()">Загрузить</button>
+      <button type="submit" class="btn blue darken-4">Загрузить</button>
     </form>
     </div>
   </div>
@@ -80,7 +81,7 @@ export default {
   name: "Create",
   data() {
     return {
-      file: "",
+      selectedFile: "",
       note: {
         title: "",
         content: "",
@@ -122,23 +123,23 @@ export default {
         this.note = {};
       }
     },
-    handleFileUpload() {
-      this.file = this.$refs.file.files[0];
+   onFileChange(e) {
+      const selectedFile = e.target.files[0]; // accessing file
+      this.selectedFile = selectedFile;
     },
-    async submitFile() {
-      let formData = new FormData();
-      formData.append("file", this.file);
-      console.log(await axios({
-            url: Config.getBaseUrl()+'upload',
-            method: "post",
-            data: {
-              name: this.file.name,
-              size: this.file.size,
-              type: this.file.type,
-              file: this.file,
-              createdAt: Date.now()
-            }
-          }))
+    onUploadFile() {
+      const formData = new FormData();
+      formData.append("file", this.selectedFile);  // appending file
+
+     // sending file to the backend
+      axios
+        .post(Config.getBaseUrl()+"upload", formData)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };

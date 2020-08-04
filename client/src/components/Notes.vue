@@ -40,6 +40,7 @@
     </div>
     <div v-else>
       <h1>Страница недоступна</h1>
+      <img src="@/assets/wl4MD.png">
     </div>
   </div>
 </template>
