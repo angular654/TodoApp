@@ -1,7 +1,6 @@
 <template>
   <div class="files">
     <div v-if="reg === true">
-      <div v-if="files.length">
       <div class="loading" v-if="submitStatus === 'PENDING'">
         <div class="progress">
           <div class="indeterminate"></div>
@@ -9,6 +8,7 @@
       </div>
       <h1>Место для хранения файлов</h1>
       <div v-for="(file,idx) in files" :key="idx">
+        <div v-if="files.length">
         <div class="card"> 
          <div class="card-image"><img class="card-image" :src="getImgUrl(file.name)" /></div>
           <br>
@@ -17,12 +17,17 @@
             <a :href="getImgUrl(file.name)" download>Скачать</a>
           </p>
         </div>
-      </div>
+        <form @submit.prevent="delete_file">
+        <input hidden type="text" :value="id = file._id" name="id"/>
+        <input hidden type="text" :value="filename = file.name" name="name"/>
+         <button type="submit">X</button>
+        </form>
       </div>
       <div v-else>
         <h1>Тут пусто</h1>
       </div>
-    </div>
+      </div>
+      </div>
     <div v-else>
         <h1>Страница недоступна</h1>
       </div>
@@ -41,7 +46,9 @@ export default {
       errors: "",
       user: Config.author,
       reg: Config.register,
-      submitStatus: null
+      submitStatus: null,
+      id: "",
+      filename: ""
     };
   },
   async mounted() {
@@ -63,7 +70,17 @@ export default {
         return false
       }
     },
-  },
+    async delete_file() {
+      await axios({
+        url: Config.getBaseUrl() + "deletefile",
+        method: "post",
+        data: {
+          id: this.id,
+          name: this.filename
+        },
+      });
+    }
+  }
 };
 </script>
 

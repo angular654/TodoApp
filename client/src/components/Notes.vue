@@ -10,7 +10,6 @@
       </div>
       <div v-for="(todo,idx) in todos" :key="idx">
         <div class="note" v-if="todo.author == user">
-          <form @submit.prevent="complete_note">
             <div class="card">
               <h4>{{todo.title}}</h4>
               <h6 id="author">Автор: {{todo.author}}</h6>
@@ -29,23 +28,10 @@
                 v-bind:value="todo.process"
               ></meter>
               <br />
-              <input
-                type="range"
-                min="0"
-                max="100"
-                step="10"
-                v-model.number="progress"
-               
-              />
               <input hidden type="text" :value="id = todo._id" name="id" />
-              <button class="btn blue darken-4" type="submit">Сохранить</button>
               <br />
               <b>{{todo.createdAt | formatDate}}</b>
             </div>
-          </form>
-          <form id="delete_btn" @submit.prevent="delete_note">
-            <button id="btn" class="btn blue darken-4" type="submit" name="action">X</button>
-          </form>
           <br />
         </div>
       </div>
@@ -109,7 +95,7 @@ export default {
           process: this.progress
         },
       });
-      await this.get_note();
+      await this.get_note()
     },
   },
 };

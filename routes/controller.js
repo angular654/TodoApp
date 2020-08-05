@@ -113,7 +113,7 @@ module.exports.getFiles = async (req, res) => {
 }
 module.exports.deleteFile = async (req, res) => {
     const file = await File.findById(req.body.id)
-    fs.unlink(`uploads/${req.body.name}`, (err) => {
+    fs.unlink(`./client/src/files/${req.body.name}`, (err) => {
         if (err) throw err;
         console.log(`Файл ${req.body.name} удален`);
     });

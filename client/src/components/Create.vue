@@ -65,6 +65,7 @@
           class="btn blue darken-4"
           type="file"
           name="file"
+          accept=".jpg, .jpeg, .png"
           ref="file"
           @change="onFileChange"
           required
