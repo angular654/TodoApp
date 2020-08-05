@@ -1,6 +1,7 @@
 <template>
   <div id="block" class="notes">
     <div v-if="reg === true">
+      <div v-if="todos.length">
       <h1>Планы</h1>
       <div class="loading" v-if="submitStatus === 'PENDING'">
         <div class="progress">
@@ -33,7 +34,8 @@
                 min="0"
                 max="100"
                 step="10"
-                v-model="progress"
+                v-model.number="progress"
+               
               />
               <input hidden type="text" :value="id = todo._id" name="id" />
               <button class="btn blue darken-4" type="submit">Сохранить</button>
@@ -47,6 +49,10 @@
           <br />
         </div>
       </div>
+      </div>
+      <div v-else>
+      <h1>Тут пусто</h1>
+    </div>
     </div>
     <div v-else>
       <h1>Страница недоступна</h1>

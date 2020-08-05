@@ -1,6 +1,7 @@
 <template>
   <div class="files">
     <div v-if="reg === true">
+      <div v-if="files.length">
       <div class="loading" v-if="submitStatus === 'PENDING'">
         <div class="progress">
           <div class="indeterminate"></div>
@@ -19,6 +20,10 @@
       </div>
       </div>
       <div v-else>
+        <h1>Тут пусто</h1>
+      </div>
+    </div>
+    <div v-else>
         <h1>Страница недоступна</h1>
       </div>
     </div>
