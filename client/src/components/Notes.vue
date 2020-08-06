@@ -2,6 +2,7 @@
   <div id="block" class="notes">
     <div v-if="reg === true">
       <h1>Планы</h1>
+      <h1 id='Count'>{{notesCount}}</h1>
       <div class="loading" v-if="submitStatus === 'PENDING'">
         <div class="progress">
           <div class="indeterminate"></div>
@@ -27,8 +28,12 @@
                 v-bind:value="note.process"
               ></meter>
               <br />
-              <input hidden  type="text"  v-bind:value=" id =note._id" name="id" />
-              <button class="btn blue darken-4">Редактировать</button>
+              <input type="range"  v-model="note.process" name="id" />
+              <button class="btn blue darken-4" @click="comlete_note(note._id,note.process)">Сохранить</button>
+              <br>
+              <br>
+              <input hidden  type="text"  v-bind:value="note._id" name="id" />
+              <button class="btn blue darken-4" @click="delete_note(note._id)">X</button>
               <br />
               <b>{{note.createdAt | formatDate}}</b>
             </div>
@@ -44,7 +49,8 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex"
+import axios from 'axios'
+import { mapGetters } from "vuex"
 import Config from "../Api-config";
 export default {
   name: "Notes",
@@ -52,14 +58,37 @@ export default {
     return {
       reg: Config.register,
       user: Config.author,
-      submitStatus: null
+      submitStatus: null,
+      progress: 0
     };
   },
-  computed: mapGetters(['allNotes']),
+  computed: mapGetters(['allNotes','notesCount']),
   async mounted(){
     this.submitStatus = "PENDING";
     this.$store.dispatch('fetchNotes');
     this.submitStatus = "OK";
+  },
+  methods : {
+    async delete_note(id){
+     await axios({
+                url: "http://localhost:4000/api/todos/delete",
+                method: "post",
+                data: {
+                  id: id,
+                },
+              });
+    this.$store.dispatch('fetchNotes');
+    },
+    async comlete_note(id,progress) {
+     await axios({
+        url: Config.getBaseUrl() + "complete",
+        method: "post",
+        data: {
+          id: id,
+          process: progress,
+        },
+      });
+    }
   }
 };
 </script>
@@ -107,5 +136,9 @@ h1 {
 }
 #delete_btn {
   padding-top: 0rem;
+}
+#Count{
+  padding-right: 50%;
+  padding-left: 50%;
 }
 </style>

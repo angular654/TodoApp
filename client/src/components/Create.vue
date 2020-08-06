@@ -143,10 +143,8 @@ export default {
       await axios
         .post(Config.getBaseUrl() + "upload", formData)
         .then((res) => {
-          console.log(res);
         })
         .catch((err) => {
-          console.log(err);
         });
     },
   },
