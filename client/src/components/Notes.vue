@@ -1,22 +1,21 @@
 <template>
   <div id="block" class="notes">
     <div v-if="reg === true">
-      <div v-if="todos.length">
       <h1>Планы</h1>
       <div class="loading" v-if="submitStatus === 'PENDING'">
         <div class="progress">
           <div class="indeterminate"></div>
         </div>
       </div>
-      <div v-for="(todo,idx) in todos" :key="idx">
-        <div class="note" v-if="todo.author == user">
+      <div v-for="(note,idx) in allNotes" :key="idx">
+        <div class="note" v-if="note.author == user">
             <div class="card">
-              <h4>{{todo.title}}</h4>
-              <h6 id="author">Автор: {{todo.author}}</h6>
-              <div class="card-content">{{todo.content}}</div>
-              <span id="time">{{todo.completeTime}} мин</span>
+              <h4>{{note.title}}</h4>
+              <h6 id="author">Автор: {{note.author}}</h6>
+              <div class="card-content">{{note.content}}</div>
+              <span id="time">{{note.completeTime}} мин</span>
               <br />
-              <span id="process">{{todo.process}}%</span>
+              <span id="process">{{note.process}}%</span>
               <br />
               <meter
                 id="bar"
@@ -25,21 +24,17 @@
                 high="100"
                 max="100"
                 optimum="80"
-                v-bind:value="todo.process"
+                v-bind:value="note.process"
               ></meter>
               <br />
-              <input hidden  type="text"  v-bind:value=" id =todo._id" name="id" />
-              <button  @click="edit_note(todo._id)" class="btn blue darken-4">Редактировать</button>
+              <input hidden  type="text"  v-bind:value=" id =note._id" name="id" />
+              <button class="btn blue darken-4">Редактировать</button>
               <br />
-              <b>{{todo.createdAt | formatDate}}</b>
+              <b>{{note.createdAt | formatDate}}</b>
             </div>
           <br />
         </div>
       </div>
-      </div>
-      <div v-else>
-      <h1>Тут пусто</h1>
-    </div>
     </div>
     <div v-else>
       <h1>Страница недоступна</h1>
@@ -49,39 +44,23 @@
 </template>
 
 <script>
-import axios from "axios";
+import {mapGetters} from "vuex"
 import Config from "../Api-config";
 export default {
   name: "Notes",
   data() {
     return {
-      todos: {},
-      note: {},
-      errors: "",
-      submitStatus: null,
-      id: "",
-      progress: 0,
       reg: Config.register,
       user: Config.author,
+      submitStatus: null
     };
   },
-  async mounted() {
+  computed: mapGetters(['allNotes']),
+  async mounted(){
     this.submitStatus = "PENDING";
-    await this.get_note();
+    this.$store.dispatch('fetchNotes');
     this.submitStatus = "OK";
-  },
-  methods: {
-    async get_note() {
-      await axios
-        .get(Config.getBaseUrl())
-        .then((response) => (this.todos = response.data))
-        .catch((error) => (this.errors = error));
-    },
-    edit_note(id){
-      id = this.id
-     this.$router.push(`/notes/${this.id}`)
-    }
-  },
+  }
 };
 </script>
 

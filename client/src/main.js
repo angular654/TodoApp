@@ -4,15 +4,15 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Vuelidate from 'vuelidate'
+import store from './store'
 import moment from 'moment';
 Vue.use(Vuelidate)
 
 Vue.config.productionTip = false
-
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>',
 })
