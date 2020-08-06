@@ -9,6 +9,9 @@ const schema = new passValidator()
 module.exports.home = async (req, res) => {
     res.json((await Todo.find({}).lean()).reverse())
 }
+module.exports.note = async (req, res) => {
+    res.json(await Todo.findfindById(req.body.id))
+}
 module.exports.createTodo = async (req, res) => {
     const todo = new Todo({
         title: req.body.title,

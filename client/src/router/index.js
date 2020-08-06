@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Notes from '@/components/Notes'
+import Note from '@/components/Note'
 import Auth from '@/components/Auth'
 import Create from '@/components/Create'
 import Signin from '@/components/Signin'
@@ -13,6 +14,11 @@ export default new Router({
       path: '/',
       name: 'Notes',
       component: Notes
+    },
+    {
+      path: '/notes/:id',
+      name: 'Notes',
+      component: Note
     },
     {
       path: '/auth',

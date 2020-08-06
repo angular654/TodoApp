@@ -61,7 +61,7 @@ export default {
   },
   methods: {
     getImgUrl(pic) {
-      return require("../files/" + pic);
+       return require("../files/" + pic);
     },
     validateFile(filename) {
       if (filename.split(".").pop() == "png"||"jpg"||"JPEG"||"PNG") {

@@ -3,6 +3,7 @@ const router = Router()
 const controller = require('./controller')
 // GET
 router.get('/', controller.home)
+router.get('/note', controller.note)
 router.get('/files', controller.getFiles)
 // POST
 router.post('/create', controller.createTodo)

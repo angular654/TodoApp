@@ -28,7 +28,8 @@
                 v-bind:value="todo.process"
               ></meter>
               <br />
-              <input hidden type="text" :value="id = todo._id" name="id" />
+              <input hidden  type="text"  v-bind:value=" id =todo._id" name="id" />
+              <button  @click="edit_note(todo._id)" class="btn blue darken-4">Редактировать</button>
               <br />
               <b>{{todo.createdAt | formatDate}}</b>
             </div>
@@ -70,33 +71,16 @@ export default {
     this.submitStatus = "OK";
   },
   methods: {
-    async delete_note() {
-      await axios({
-        url: Config.getBaseUrl() + "delete",
-        method: "post",
-        data: {
-          id: this.id,
-        },
-      });
-      await this.get_note();
-    },
     async get_note() {
       await axios
         .get(Config.getBaseUrl())
         .then((response) => (this.todos = response.data))
         .catch((error) => (this.errors = error));
     },
-    async complete_note() {
-      await axios({
-        url: Config.getBaseUrl() + "complete",
-        method: "post",
-        data: {
-          id: this.id,
-          process: this.progress
-        },
-      });
-      await this.get_note()
-    },
+    edit_note(id){
+      id = this.id
+     this.$router.push(`/notes/${this.id}`)
+    }
   },
 };
 </script>
