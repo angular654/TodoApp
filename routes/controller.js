@@ -6,57 +6,26 @@ const fs = require('fs')
 const passValidator = require('password-validator')
 const bcrypt = require('bcrypt')
 const schema = new passValidator()
-var creator = ''
-var isSignUp = false;
-errors = ''
 module.exports.home = async (req, res) => {
-    const todos = (await Todo.find({ author: creator }).lean()).reverse()
-    res.render('index', {
-        title: 'List',
-        todos,
-        isSignUp: isSignUp
-    })
+    res.json((await Todo.find({}).lean()).reverse())
 }
-module.exports.createPage = (req, res) => {
-    res.render('create', {
-        title: 'Create todo',
-        isCreate: true,
-        isSignUp: isSignUp,
-        errors: errors
-    })
-}
-module.exports.authPage = async (req, res) => {
-    res.render('auth', {
-        title: 'Auth',
-        isAuth: true,
-        isSignUp: isSignUp,
-        errors: errors
-    })
-}
-module.exports.signinPage = (req, res) => {
-    res.render('signin', {
-        title: 'Sign In',
-        isSignin: true,
-        isSignUp: isSignUp,
-        errors: errors
-    })
+module.exports.note = async (req, res) => {
+    res.json(await Todo.findfindById(req.body.id))
 }
 module.exports.createTodo = async (req, res) => {
     const todo = new Todo({
         title: req.body.title,
         content: req.body.content,
-        author: creator,
+        author: req.body.author,
         completeTime: req.body.time,
         createdAt: Date.now()
     })
     try {
         await todo.save()
-        res.redirect('/')
+        res.json({ state: 'success' })
     }
     catch (e) {
-        errors = `Ошибка при отправке Todo: ${e}`
-        console.log(errors)
-        res.redirect('/create')
+        console.log(`Ошибка при отправке Todo: ${e}`)
     }
 }
 module.exports.completeTodo = async (req, res) => {
@@ -70,12 +39,11 @@ module.exports.completeTodo = async (req, res) => {
         todo.completed = true
     }
     await todo.save()
-    res.redirect('/')
+    res.json({ state: 'saved' })
 }
 module.exports.deleteTodo = async (req, res) => {
-    const todo = await Todo.findById(req.body.id)
-    await todo.remove()
-    res.redirect('/')
+    await Todo.deleteOne({ _id: req.body.id })
+    res.json({ state: 'deleted' })
 }
 module.exports.authUser = async (req, res) => {
     let password = req.body.password
@@ -89,27 +57,21 @@ module.exports.authUser = async (req, res) => {
     if (schema.validate(password) === emailValidator.validate(email) && username.length > 3) {
         try {
             await user.save()
-            isSignUp = true
-            creator = username
-            res.redirect('/create')
+            res.json({ state: 'success' })
         }
         catch (e) {
-            errors = `${e}`
-            console.log(errors)
-            res.redirect('/auth')
+            console.log(e)
         }
-    }
-    else {
-        errors = 'Неверные данные'
-        res.redirect('/auth')
     }
 }
 module.exports.signoutUser = async (req, res) => {
-    await User.findByIdAndRemove(req.body.email, function (err) {
-        if (err) errors = `${err}`
-    })
-    isSignUp = false
-    res.redirect('/auth');
+    await User.findOne({ username: req.body.username })
+        .exec((err) => {
+            if (err) {
+                console.warn(err);
+            }
+        })
+    res.json({ state: 'signout' })
 }
 module.exports.signinUser = async (req, res) => {
     await User.findOne({ username: req.body.username })
@@ -118,59 +80,46 @@ module.exports.signinUser = async (req, res) => {
                 console.warn(err);
             }
             else if (!user) {
-                errors = 'Пользователь не найден'
-                console.log(errors);
-                return res.redirect('/signin');
+                console.log('Пользователь не найден');
             }
             if (bcrypt.compareSync(req.body.password, user.password)) {
-                creator = req.body.username
-                isSignUp = true
-                res.redirect('/');
+                res.json({ state: 'signin' })
             } else {
-                errors = 'Неверный пароль'
-                console.log(errors);
+                console.log('Неверный пароль');
             }
         })
 }
 module.exports.uploadFile = async (req, res) => {
+    const myFile = req.files.file;
     const file = new File({
-        name: req.file.originalname,
-        size: req.file.size,
-        type: req.file.mimetype,
+        name: myFile.name,
+        size: myFile.size,
+        author: req.body.author,
         createdAt: Date.now()
     })
-    let filedata = req.file;
-    if (!filedata) {
-        errors = "Ошибка при загрузке файла"
-        console.log(errors);
+
+    if (!req.files) {
+        return res.status(500).send({ msg: "file is not found" })
     }
-    else
-        try {
-            await file.save()
+    myFile.mv(`./client/src/files/${myFile.name}`, async function (err) {
+        if (err) {
+            console.log(err)
+            return res.status(500).send({ msg: "Error occured" });
         }
-        catch (e) {
-            errors = `Не удалось загрузить информацию о файле : ${e}`
-            console.log(errors)
-            res.redirect("/create")
-        }
-    console.log("Файл загружен");
-    res.redirect("/create")
+        console.log("Файл загружен")
+        await file.save()
+        return res.send({ name: myFile.name, path: `/${myFile.name}` });
+    });
 }
 module.exports.getFiles = async (req, res) => {
-    const files = (await File.find().lean()).reverse()
-    res.render('files', {
-        title: 'Files',
-        files,
-        isUpload: true,
-        isSignUp: isSignUp
-    })
+    res.json((await File.find({}).lean()))
 }
 module.exports.deleteFile = async (req, res) => {
     const file = await File.findById(req.body.id)
-    fs.unlink(`uploads/${req.body.name}`, (err) => {
+    fs.unlink(`./client/src/files/${req.body.name}`, (err) => {
         if (err) throw err;
         console.log(`Файл ${req.body.name} удален`);
     });
     await file.remove()
-    res.redirect('/files')
+    res.json({ state: 'success deleted' })
 }

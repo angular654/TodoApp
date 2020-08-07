@@ -11,7 +11,7 @@ const ToDoschema = new Schema({
     },
     author: {
         type: String,
-        required: false
+        required: true
     },
     process: {
         type: Number,
