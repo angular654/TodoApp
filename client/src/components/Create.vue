@@ -29,7 +29,6 @@
             required
           ></textarea>
           <button v-on:click="speechWriter($event)">Сказать</button>
-          <button v-on:click="stop()">Стоп</button>
         </div>
         <div
           class="error"
@@ -99,7 +98,6 @@ export default {
       creator: Config.author,
       reg: Config.register,
       submitStatus: null,
-      recognition: new webkitSpeechRecognition()
     };
   },
   validations: {
@@ -116,20 +114,20 @@ export default {
         this.submitStatus = "ERROR";
       } else {
         this.submitStatus = "PENDING";
-          await axios({
-            url: Config.getBaseUrl() + "create",
-            method: "post",
-            data: {
-              title: this.note.title,
-              content: this.note.content,
-              author: this.creator,
-              time: this.note.time,
-              createdAt: Date.now(),
-            },
-          })
+        await axios({
+          url: Config.getBaseUrl() + "create",
+          method: "post",
+          data: {
+            title: this.note.title,
+            content: this.note.content,
+            author: this.creator,
+            time: this.note.time,
+            createdAt: Date.now(),
+          },
+        });
         this.submitStatus = "OK";
         this.note = {};
-        this.$router.push('/')
+        this.$router.push("/");
       }
     },
     onFileChange(e) {
@@ -149,17 +147,17 @@ export default {
           console.log(err);
         });
     },
-    speechWriter(event) {
-      this.recognition.lang = 'ru-RU';
-      this.recognition.interimResults = false;
-      this.recognition.start();
-      this.recognition.onresult = (event) => {
-      event.results[0].transcript = this.note.content
-    };
+    speechWriter() {
+      var speechRecognition = new webkitSpeechRecognition();
+      speechRecognition.lang = "ru-RU";
+      speechRecognition.interimResults = false;
+      speechRecognition.maxAlternatives = 1;
+      speechRecognition.onresult = (event) => {
+        const last = event.results.length - 1;
+        this.note.content += event.results[last][0].transcript;
+      };
+      speechRecognition.start();
     },
-    stop() {
-      this.recognition.stop();
-    }
   },
 };
 </script>
