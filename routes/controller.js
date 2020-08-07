@@ -106,13 +106,13 @@ module.exports.uploadFile = async (req, res) => {
             console.log(err)
             return res.status(500).send({ msg: "Error occured" });
         }
-        console.log("Файл загружен")
+        console.log(`Файл ${myFile.name} загружен`)
         await file.save()
         return res.send({ name: myFile.name, path: `/${myFile.name}` });
     });
 }
 module.exports.getFiles = async (req, res) => {
-    res.json((await File.find({}).lean()))
+    res.json(await File.find({}).lean())
 }
 module.exports.deleteFile = async (req, res) => {
     const file = await File.findById(req.body.id)

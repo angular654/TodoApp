@@ -8,7 +8,6 @@
       </div>
       <h1>Место для хранения файлов({{filesCount}})</h1>
       <div v-for="(file,idx) in allFiles" :key="idx">
-        <div v-if="allFiles.length">
           <div class="card">
             <div class="card-image">
           <img class="card-image" :src="getImgUrl(file.name)" />
@@ -22,10 +21,6 @@
           <input hidden type="text" :value="id = file._id" name="id" />
           <button @click="delete_file(file._id,file.name)">X</button>
         </div>
-        <div v-else>
-          <h1>Тут пусто</h1>
-        </div>
-      </div>
     </div>
     <div v-else>
       <h1>Страница недоступна</h1>
@@ -56,7 +51,7 @@ export default {
   },
   methods: {
     getImgUrl(pic) {
-      let file = require("../files/" + pic);
+     let file = require("../files/" + pic);
       return file
     },
     async delete_file(id, filename) {
