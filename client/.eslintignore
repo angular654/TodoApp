@@ -1,6 +1,0 @@
-/* eslint-disable */
-/build/
-/config/
-/dist/
-/*.js
-/test/unit/coverage/
