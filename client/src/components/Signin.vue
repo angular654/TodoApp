@@ -81,7 +81,7 @@ export default {
           username: this.name,
           password: this.password,
         },
-      });
+      })
       this.submitStatus = "OK";
       this.reg = Config.register = true;
       console.log("Вы вошли в TodoApp!");
