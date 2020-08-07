@@ -6,81 +6,71 @@
           <div class="indeterminate"></div>
         </div>
       </div>
-      <h1>Место для хранения файлов</h1>
-      <div v-for="(file,idx) in files" :key="idx">
-        <div v-if="files.length">
-        <div class="card"> 
-         <div class="card-image"><img class="card-image" :src="getImgUrl(file.name)" /></div>
-          <br>
-          <div class="card-title">{{file.name}}</div>
-          <p>
-            <a :href="getImgUrl(file.name)" download>Скачать</a>
-          </p>
+      <h1>Место для хранения файлов({{filesCount}})</h1>
+      <div v-for="(file,idx) in allFiles" :key="idx">
+        <div v-if="allFiles.length">
+          <div class="card">
+            <div class="card-image">
+          <img class="card-image" :src="getImgUrl(file.name)" />
+            </div>
+            <br />
+            <div class="card-title">{{file.name}}</div>
+            <p>
+              <a :href="getImgUrl(file.name)" download>Скачать</a>
+            </p>
+          </div>
+          <input hidden type="text" :value="id = file._id" name="id" />
+          <button @click="delete_file(file._id,file.name)">X</button>
         </div>
-        <form @submit.prevent="delete_file">
-        <input hidden type="text" :value="id = file._id" name="id"/>
-        <input hidden type="text" :value="filename = file.name" name="name"/>
-         <button type="submit">X</button>
-        </form>
-      </div>
-      <div v-else>
-        <h1>Тут пусто</h1>
-      </div>
-      </div>
-      </div>
-    <div v-else>
-        <h1>Страница недоступна</h1>
+        <div v-else>
+          <h1>Тут пусто</h1>
+        </div>
       </div>
     </div>
+    <div v-else>
+      <h1>Страница недоступна</h1>
+    </div>
+  </div>
 </template>
 
 <script>
 import axios from "axios";
+import { mapGetters } from "vuex";
 import Config from "../Api-config";
 export default {
   name: "FileStorage",
   data() {
     return {
-      files: {},
-      file: {},
-      errors: "",
       user: Config.author,
       reg: Config.register,
       submitStatus: null,
       id: "",
-      filename: ""
+      filename: "",
     };
   },
+  computed: mapGetters(["allFiles", "filesCount"]),
   async mounted() {
     this.submitStatus = "PENDING";
-    await axios
-      .get(Config.getBaseUrl() + "files")
-      .then((response) => (this.files = response.data))
-      .catch((error) => (this.errors = error));
-      this.submitStatus = "OK";
+    await this.$store.dispatch("fetchFiles");
+    this.submitStatus = "OK";
   },
   methods: {
     getImgUrl(pic) {
-       return require("../files/" + pic);
+      let file = require("../files/" + pic);
+      return file
     },
-    validateFile(filename) {
-      if (filename.split(".").pop() == "png"||"jpg"||"JPEG"||"PNG") {
-        return true
-      } else {
-        return false
-      }
-    },
-    async delete_file() {
+    async delete_file(id, filename) {
       await axios({
         url: Config.getBaseUrl() + "deletefile",
         method: "post",
         data: {
-          id: this.id,
-          name: this.filename
+          name: filename,
+          id: id,
         },
       });
-    }
-  }
+      this.$store.dispatch("fetchFiles");
+    },
+  },
 };
 </script>
 

@@ -65,7 +65,6 @@
           class="btn blue darken-4"
           type="file"
           name="file"
-          accept=".jpg, .jpeg, .png"
           ref="file"
           @change="onFileChange"
           required
@@ -114,7 +113,6 @@ export default {
         this.submitStatus = "ERROR";
       } else {
         this.submitStatus = "PENDING";
-        console.log(
           await axios({
             url: Config.getBaseUrl() + "create",
             method: "post",
@@ -126,7 +124,6 @@ export default {
               createdAt: Date.now(),
             },
           })
-        );
         this.submitStatus = "OK";
         this.note = {};
         this.$router.push('/')
@@ -143,8 +140,10 @@ export default {
       await axios
         .post(Config.getBaseUrl() + "upload", formData)
         .then((res) => {
+          console.log(res);
         })
         .catch((err) => {
+          console.log(err);
         });
     },
   },

@@ -86,7 +86,7 @@ export default {
       this.reg = Config.register = true;
       console.log("Вы вошли в TodoApp!");
       Config.author = this.name;
-      this.$router.push('/')
+      this.$router.push("/");
     },
     async logout() {
       await axios({

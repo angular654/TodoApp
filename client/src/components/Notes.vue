@@ -1,8 +1,7 @@
 <template>
   <div id="block" class="notes">
     <div v-if="reg === true">
-      <h1>Планы</h1>
-      <h1 id='Count'>{{notesCount}}</h1>
+      <h1 id="title">Планы({{notesCount}})</h1>
       <div class="loading" v-if="submitStatus === 'PENDING'">
         <div class="progress">
           <div class="indeterminate"></div>
@@ -10,33 +9,25 @@
       </div>
       <div v-for="(note,idx) in allNotes" :key="idx">
         <div class="note" v-if="note.author == user">
-            <div class="card">
-              <h4>{{note.title}}</h4>
-              <h6 id="author">Автор: {{note.author}}</h6>
-              <div class="card-content">{{note.content}}</div>
-              <span id="time">{{note.completeTime}} мин</span>
-              <br />
-              <span id="process">{{note.process}}%</span>
-              <br />
-              <meter
-                id="bar"
-                min="0"
-                low="50"
-                high="100"
-                max="100"
-                optimum="80"
-                v-bind:value="note.process"
-              ></meter>
-              <br />
-              <input type="range"  v-model="note.process" name="id" />
-              <button class="btn blue darken-4" @click="comlete_note(note._id,note.process)">Сохранить</button>
-              <br>
-              <br>
-              <input hidden  type="text"  v-bind:value="note._id" name="id" />
-              <button class="btn blue darken-4" @click="delete_note(note._id)">X</button>
-              <br />
-              <b>{{note.createdAt | formatDate}}</b>
-            </div>
+          <div class="card">
+            <h4>{{note.title}}</h4>
+            <h6 id="author">Автор: {{note.author}}</h6>
+            <div class="card-content">{{note.content}}</div>
+            <span id="time">{{note.completeTime}} мин</span>
+            <br />
+            <span id="process">{{note.process}}%</span>
+            <br />
+            <meter id="bar" min="0" low="50" max="100" optimum="80" v-bind:value="note.process"></meter>
+            <br />
+            <input type="range" v-model="note.process" name="id" />
+            <button class="btn blue darken-4" @click="comlete_note(note._id,note.process)">Сохранить</button>
+            <br />
+            <br />
+            <input hidden type="text" v-bind:value="note._id" name="id" />
+            <br />
+            <b>{{note.createdAt | formatDate}}</b>
+          </div>
+          <button class="btn blue darken-4" @click="delete_note(note._id)">X</button>
           <br />
         </div>
       </div>
@@ -49,8 +40,8 @@
 </template>
 
 <script>
-import axios from 'axios'
-import { mapGetters } from "vuex"
+import axios from "axios";
+import { mapGetters } from "vuex";
 import Config from "../Api-config";
 export default {
   name: "Notes",
@@ -59,28 +50,28 @@ export default {
       reg: Config.register,
       user: Config.author,
       submitStatus: null,
-      progress: 0
+      progress: 0,
     };
   },
-  computed: mapGetters(['allNotes','notesCount']),
-  async mounted(){
+  computed: mapGetters(["allNotes", "notesCount"]),
+  async mounted() {
     this.submitStatus = "PENDING";
-    this.$store.dispatch('fetchNotes');
+    await this.$store.dispatch("fetchNotes");
     this.submitStatus = "OK";
   },
-  methods : {
-    async delete_note(id){
-     await axios({
-                url: "http://localhost:4000/api/todos/delete",
-                method: "post",
-                data: {
-                  id: id,
-                },
-              });
-    this.$store.dispatch('fetchNotes');
+  methods: {
+    async delete_note(id) {
+      await axios({
+        url: "http://localhost:4000/api/todos/delete",
+        method: "post",
+        data: {
+          id: id,
+        },
+      });
+      this.$store.dispatch("fetchNotes");
     },
-    async comlete_note(id,progress) {
-     await axios({
+    async comlete_note(id, progress) {
+      await axios({
         url: Config.getBaseUrl() + "complete",
         method: "post",
         data: {
@@ -88,8 +79,8 @@ export default {
           process: progress,
         },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -137,8 +128,11 @@ h1 {
 #delete_btn {
   padding-top: 0rem;
 }
-#Count{
+#Count {
   padding-right: 50%;
   padding-left: 50%;
+}
+#title {
+  padding-left: 25rem;
 }
 </style>

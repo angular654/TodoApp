@@ -3,29 +3,29 @@ export default {
     actions: {
         async fetchNotes(ctx) {
             await axios
-            .get("http://localhost:4000/api/todos/")
-            .then((response) => (this.notes = response.data))
-            .catch((error) => (this.errors = error));
-            ctx.commit('ubdateNotes',this.notes)
+                .get("http://localhost:4000/api/todos/")
+                .then((response) => (this.notes = response.data))
+                .catch((error) => (this.errors = error));
+            ctx.commit('ubdateNotes', this.notes)
         },
-        async deleteNote({commit},id) {
+        async deleteNote({ commit }, id) {
             await axios({
                 url: "http://localhost:4000/api/todos/delete",
                 method: "post",
                 data: {
-                  _id: id,
+                    _id: id,
                 },
-              });
-              commit('DELETE_NOTE',id)
-            }
+            });
+            commit('DELETE_NOTE', id)
+        }
     },
     mutations: {
         ubdateNotes(state, notes) {
             state.notes = notes
         },
-        DELETE_NOTE(state){
+        DELETE_NOTE(state) {
             state.notes.$remove(state.notes.id)
-           }
+        }
     },
     state: {
         notes: []
