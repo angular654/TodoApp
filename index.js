@@ -10,8 +10,8 @@ app.use(express.static('./client/src/files'));
 app.use(fileUpload());
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 app.use('/api/todos',require('./routes/router')) 
+app.use(bodyParser.json());
 async function start() {
     try {
         await mongoose.connect(db, {
