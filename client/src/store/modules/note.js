@@ -35,7 +35,7 @@ export default {
             return state.notes
         },
         notesCount(state) {
-            return state.notes.length
+            return state.notes.length;
         }
     }
 }

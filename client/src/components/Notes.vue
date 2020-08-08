@@ -1,7 +1,7 @@
 <template>
   <div id="block" class="notes">
     <div v-if="reg === true">
-      <h1 id="title">Планы({{notesCount}})</h1>
+      <h1 id="title">Планы</h1>
       <div class="loading" v-if="submitStatus === 'PENDING'">
         <div class="progress">
           <div class="indeterminate"></div>
@@ -10,7 +10,7 @@
       <div v-for="(note,idx) in allNotes" :key="idx">
         <div class="note" v-if="note.author == user">
           <div class="card">
-            <h4>{{note.title}}</h4>
+            <h4 id="author">{{note.title}}</h4>
             <h6 id="author">Автор: {{note.author}}</h6>
             <div class="card-content">{{note.content}}</div>
             <span id="time">{{note.completeTime}} мин</span>
@@ -21,8 +21,6 @@
             <br />
             <input type="range" v-model="note.process" name="id" />
             <button class="btn blue darken-4" @click="comlete_note(note._id,note.process)">Сохранить</button>
-            <br />
-            <br />
             <input hidden type="text" v-bind:value="note._id" name="id" />
             <br />
             <b>{{note.createdAt | formatDate}}</b>
@@ -53,7 +51,7 @@ export default {
       progress: 0,
     };
   },
-  computed: mapGetters(["allNotes", "notesCount"]),
+  computed: mapGetters(["allNotes"]),
   async mounted() {
     this.submitStatus = "PENDING";
     await this.$store.dispatch("fetchNotes");

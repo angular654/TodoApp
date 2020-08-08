@@ -28,7 +28,7 @@
             class="materialize-textarea"
             required
           ></textarea>
-          <button v-on:click="speechWriter($event)">Сказать</button>
+          <button @click="speechWriter()">Сказать</button>
         </div>
         <div
           class="error"
@@ -147,7 +147,7 @@ export default {
           console.log(err);
         });
     },
-    speechWriter() {
+   speechWriter() {
       var speechRecognition = new webkitSpeechRecognition();
       speechRecognition.lang = "ru-RU";
       speechRecognition.interimResults = false;

@@ -6,7 +6,7 @@ const db = 'mongodb+srv://VlAdmin:22w99i@cluster0-pcusn.mongodb.net/ToDoApp'
 const PORT = process.env.PORT || 4000
 const app = express()
 const fileUpload = require('express-fileupload');
-app.use(express.static('./client/src/files'));
+app.use(express.static('./files'));
 app.use(fileUpload());
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));

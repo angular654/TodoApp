@@ -10,13 +10,9 @@
       <div v-for="(file,idx) in allFiles" :key="idx">
           <div class="card">
             <div class="card-image">
-          <img class="card-image" :src="getImgUrl(file.name)" />
             </div>
             <br />
             <div class="card-title">{{file.name}}</div>
-            <p>
-              <a :href="getImgUrl(file.name)" download>Скачать</a>
-            </p>
           </div>
           <input hidden type="text" :value="id = file._id" name="id" />
           <button @click="delete_file(file._id,file.name)">X</button>
@@ -50,10 +46,6 @@ export default {
     this.submitStatus = "OK";
   },
   methods: {
-    getImgUrl(pic) {
-     let file = require("../files/" + pic);
-      return file
-    },
     async delete_file(id, filename) {
       await axios({
         url: Config.getBaseUrl() + "deletefile",
