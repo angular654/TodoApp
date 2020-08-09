@@ -1,5 +1,5 @@
 <template>
-  <div id="block" class="notes">
+  <div id="block">
     <div v-if="reg === true">
       <h1>Планы</h1>
       <div class="loading" v-if="submitStatus === 'PENDING'">
@@ -7,7 +7,7 @@
           <div class="indeterminate"></div>
         </div>
       </div>
-      <div v-for="(note,idx) in allNotes" :key="idx">
+      <div v-for="(note,idx) in allNotes" :key="idx" class="notes">
         <div class="note" v-if="note.author == user">
           <div class="card">
             <h4 id="author">{{note.title}}</h4>
@@ -129,5 +129,9 @@ h1 {
 #Count {
   padding-right: 50%;
   padding-left: 50%;
+}
+.notes {
+ float: left;
+ align-items:center;
 }
 </style>
