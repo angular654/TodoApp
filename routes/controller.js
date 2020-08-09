@@ -95,7 +95,8 @@ module.exports.uploadFile = async (req, res) => {
         name: myFile.name,
         size: myFile.size,
         author: req.body.author,
-        createdAt: Date.now()
+        createdAt: Date.now(),
+        url: "http://localhost:4000/"+ myFile.name
     })
 
     if (!req.files) {

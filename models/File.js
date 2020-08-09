@@ -15,6 +15,9 @@ const Fileschema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now()
+    },
+    url: {
+        type: String
     }
 })
 module.exports = model('files', Fileschema)

@@ -6,16 +6,17 @@
           <div class="indeterminate"></div>
         </div>
       </div>
-      <h1>Место для хранения файлов({{filesCount}})</h1>
+      <h1>Место для хранения файлов</h1>
       <div v-for="(file,idx) in allFiles" :key="idx">
+        <div class="note" v-if="file.author == user">
           <div class="card">
-            <div class="card-image">
-            </div>
-            <br />
+              <img src="@/assets/file.png" width="50" height="50">
             <div class="card-title">{{file.name}}</div>
+            <a :href="file.url" download>Скачать</a> 
           </div>
           <input hidden type="text" :value="id = file._id" name="id" />
           <button @click="delete_file(file._id,file.name)">X</button>
+        </div>
         </div>
     </div>
     <div v-else>
@@ -39,7 +40,7 @@ export default {
       filename: "",
     };
   },
-  computed: mapGetters(["allFiles", "filesCount"]),
+  computed: mapGetters(["allFiles"]),
   async mounted() {
     this.submitStatus = "PENDING";
     await this.$store.dispatch("fetchFiles");
