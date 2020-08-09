@@ -1,7 +1,7 @@
 <template>
   <div id="block" class="notes">
     <div v-if="reg === true">
-      <h1 id="title">Планы</h1>
+      <h1>Планы</h1>
       <div class="loading" v-if="submitStatus === 'PENDING'">
         <div class="progress">
           <div class="indeterminate"></div>
@@ -129,8 +129,5 @@ h1 {
 #Count {
   padding-right: 50%;
   padding-left: 50%;
-}
-#title {
-  padding-left: 25rem;
 }
 </style>

@@ -6,6 +6,8 @@ import router from './router'
 import Vuelidate from 'vuelidate'
 import store from './store'
 import moment from 'moment';
+import 'materialize-css/dist/css/materialize.min.css'
+import 'material-design-icons/iconfont/material-icons.css'
 Vue.use(Vuelidate)
 
 Vue.config.productionTip = false
@@ -13,7 +15,7 @@ new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
+  components: { App},
   template: '<App/>',
 })
 Vue.filter('formatDate', function(value) {

@@ -62,14 +62,21 @@
       </form>
       <br />
       <form @submit.prevent="onUploadFile">
-        <input
-          class="btn blue darken-4"
-          type="file"
-          name="file"
-          ref="file"
-          @change="onFileChange"
-          required
-        />
+        <div class="file-field input-field">
+          <div class="btn blue darken-4">
+            <span>File</span>
+            <input
+              type="file"
+              name="file"
+              ref="file"
+              @change="onFileChange"
+              required
+            />
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text" />
+          </div>
+        </div>
         <button type="submit" class="btn blue darken-4">Загрузить</button>
       </form>
     </div>
@@ -147,7 +154,7 @@ export default {
           console.log(err);
         });
     },
-   speechWriter() {
+    speechWriter() {
       var speechRecognition = new webkitSpeechRecognition();
       speechRecognition.lang = "ru-RU";
       speechRecognition.interimResults = false;
