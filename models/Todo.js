@@ -7,7 +7,7 @@ const ToDoschema = new Schema({
     content: {
         type: String,
         required: true,
-        maxlength: 500
+        maxlength: 600
     },
     author: {
         type: String,
