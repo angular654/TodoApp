@@ -40,7 +40,18 @@
         </ul>
       </div>
     </nav>
-    <router-view></router-view>
+    <main>
+      <router-view></router-view>
+    </main>
+     <footer class="blue darken-4">
+          <hr>
+          <a href="https://github.com/angular654"><img src="@/assets/githublogo.png" ></a>
+          <div class="footer-copyright">
+            <div class="white-text">
+              © 2020 Copyright Text
+            </div>
+          </div>
+        </footer>
   </div>
 </template>
 
@@ -48,9 +59,9 @@
 import M from "materialize-css";
 export default {
   name: "App",
-  async mounted() {
-    await M.AutoInit();
-  },
+ mounted() {
+     M.AutoInit();
+  }
 };
 </script>
 
@@ -60,5 +71,14 @@ export default {
 }
 input {
   width: auto;
+} 
+footer {
+  position: fixed; /* Фиксированное положение */
+    left: 0; bottom: 0; 
+  width: 100%;
+}
+img {
+  width: 25;
+  height: 25;
 }
 </style>

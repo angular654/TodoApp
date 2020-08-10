@@ -12,7 +12,7 @@
           <div class="card">
               <img src="@/assets/file.png" width="50" height="50">
             <div class="card-title">{{file.name}}</div>
-            <a :href="file.url" download>Скачать</a> 
+            <a :href="file.url" target="_blank" download>Открыть</a> 
           </div>
           <input hidden type="text" :value="id = file._id" name="id" />
           <button @click="delete_file(file._id,file.name)">X</button>
