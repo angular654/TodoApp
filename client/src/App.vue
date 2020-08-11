@@ -78,7 +78,6 @@ footer {
   width: 100%;
 }
 img {
-  margin-left: 1rem;
-  position: fixed;
+  margin-left: 0.3rem;
 }
 </style>

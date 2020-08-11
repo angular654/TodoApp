@@ -7,17 +7,22 @@
         </div>
       </div>
       <h1>Место для хранения файлов</h1>
-      <div v-for="(file,idx) in allFiles" :key="idx">
+      <div class="input-field col s6">
+        <i class="medium material-icons prefix">search</i>
+        <input v-model="search" id="icon_prefix" type="text" class="validate" />
+        <label for="icon_prefix">Найти</label>
+      </div>
+      <div v-for="(file,idx) in filteredFiles(allFiles)" :key="idx">
         <div class="note" v-if="file.author == user">
           <div class="card">
-              <img src="@/assets/file.png" width="50" height="50">
+            <img src="@/assets/file.png" width="50" height="50" />
             <div class="card-title">{{file.name}}</div>
-            <a :href="file.url" target="_blank" download>Открыть</a> 
+            <a :href="file.url" target="_blank" download>Открыть</a>
           </div>
           <input hidden type="text" :value="id = file._id" name="id" />
           <button @click="delete_file(file._id,file.name)">X</button>
         </div>
-        </div>
+      </div>
     </div>
     <div v-else>
       <h1>Страница недоступна</h1>
@@ -38,6 +43,7 @@ export default {
       submitStatus: null,
       id: "",
       filename: "",
+      search: ""
     };
   },
   computed: mapGetters(["allFiles"]),
@@ -53,12 +59,23 @@ export default {
         method: "post",
         data: {
           name: filename,
-          id: id,
-        },
+          id: id
+        }
       });
       this.$store.dispatch("fetchFiles");
     },
-  },
+    filteredFiles(files) {
+      const s = this.search.toLowerCase();
+      return files.filter(n => {
+        return Object.values(n).some(m =>
+          m
+            .toString()
+            .toLowerCase()
+            .includes(s)
+        );
+      });
+    }
+  }
 };
 </script>
 
@@ -75,5 +92,11 @@ h1 {
 .card {
   height: 60%;
   width: 60%;
+}
+a {
+  padding-left: 0.4rem;
+}
+.card-title {
+  padding-left: 1.3rem;
 }
 </style> 

@@ -3,10 +3,10 @@
     <div v-if="reg === true">
       <h1>Планы</h1>
       <div class="input-field col s6">
-          <i class="material-icons prefix " id="icon">search</i>
-          <input v-model="search" id="icon_prefix" type="text" class="validate">
-          <label for="icon_prefix">Найти</label>
-        </div>
+        <i class="material-icons prefix" id="icon">search</i>
+        <input v-model="search" id="icon_prefix" type="text" class="validate" />
+        <label for="icon_prefix">Найти</label>
+      </div>
       <div class="loading" v-if="submitStatus === 'PENDING'">
         <div class="progress">
           <div class="indeterminate"></div>
@@ -86,11 +86,16 @@ export default {
     filteredNotes(todos) {
       const s = this.search.toLowerCase();
       return todos.filter(n => {
-        return Object.values(n).some(m => m.toString().toLowerCase().includes(s));
+        return Object.values(n).some(m =>
+          m
+            .toString()
+            .toLowerCase()
+            .includes(s)
+        );
       });
-    },
+    }
   }
-  };
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
