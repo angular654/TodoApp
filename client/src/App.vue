@@ -45,10 +45,9 @@
     </main>
      <footer class="blue darken-4">
           <hr>
-          <a href="https://github.com/angular654"><img src="@/assets/githublogo.png" ></a>
           <div class="footer-copyright">
             <div class="white-text">
-              © 2020 Copyright Text
+              © 2020 Copyright Text <a href="https://github.com/angular654"><img src="@/assets/githublogo.png" width="23" height="23"></a>
             </div>
           </div>
         </footer>
@@ -73,12 +72,13 @@ input {
   width: auto;
 } 
 footer {
+  color: blue;
   position: fixed; /* Фиксированное положение */
     left: 0; bottom: 0; 
   width: 100%;
 }
 img {
-  width: 25;
-  height: 25;
+  margin-left: 1rem;
+  position: fixed;
 }
 </style>

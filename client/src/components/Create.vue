@@ -2,7 +2,6 @@
   <div id="block">
     <div v-if="reg === false">
       <h2>Страница создания заметок недоступна</h2>
-      <img src="@/assets/wl4MD.png" />
     </div>
     <div v-else>
       <form @submit.prevent="submit">

@@ -2,14 +2,20 @@
   <div id="block">
     <div v-if="reg === true">
       <h1>Планы</h1>
+      <div class="input-field col s6">
+          <i class="material-icons prefix " id="icon">search</i>
+          <input v-model="search" id="icon_prefix" type="text" class="validate">
+          <label for="icon_prefix">Найти</label>
+        </div>
       <div class="loading" v-if="submitStatus === 'PENDING'">
         <div class="progress">
           <div class="indeterminate"></div>
         </div>
       </div>
-      <div v-for="(note,idx) in allNotes" :key="idx" class="notes">
+      <div v-for="(note,idx) in filteredNotes(allNotes)" :key="idx" class="notes">
         <div class="note" v-if="note.author == user">
           <div class="card">
+            <button id="delete_btn" @click="delete_note(note._id)">X</button>
             <h4 id="author">{{note.title}}</h4>
             <h6 id="author">Автор: {{note.author}}</h6>
             <div class="card-content">{{note.content}}</div>
@@ -25,14 +31,12 @@
             <br />
             <b>{{note.createdAt | formatDate}}</b>
           </div>
-          <button class="btn blue darken-4" @click="delete_note(note._id)">X</button>
           <br />
         </div>
       </div>
     </div>
     <div v-else>
       <h1>Страница недоступна</h1>
-      <img src="@/assets/wl4MD.png" />
     </div>
   </div>
 </template>
@@ -49,6 +53,7 @@ export default {
       user: Config.author,
       submitStatus: null,
       progress: 0,
+      search: ""
     };
   },
   computed: mapGetters(["allNotes"]),
@@ -63,8 +68,8 @@ export default {
         url: "http://localhost:4000/api/todos/delete",
         method: "post",
         data: {
-          id: id,
-        },
+          id: id
+        }
       });
       this.$store.dispatch("fetchNotes");
     },
@@ -74,12 +79,18 @@ export default {
         method: "post",
         data: {
           id: id,
-          process: progress,
-        },
+          process: progress
+        }
       });
     },
-  },
-};
+    filteredNotes(todos) {
+      const s = this.search.toLowerCase();
+      return todos.filter(n => {
+        return Object.values(n).some(m => m.toString().toLowerCase().includes(s));
+      });
+    },
+  }
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -124,14 +135,15 @@ h1 {
   padding-left: 0.5rem;
 }
 #delete_btn {
-  padding-top: 0rem;
+  color: white;
+  background-color: blue;
 }
 #Count {
   padding-right: 50%;
   padding-left: 50%;
 }
 .notes {
- float: left;
- align-items:center;
+  float: left;
+  align-items: center;
 }
 </style>
