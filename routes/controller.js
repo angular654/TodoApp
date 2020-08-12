@@ -57,7 +57,9 @@ module.exports.authUser = async (req, res) => {
     })
     if (schema.validate(password) === emailValidator.validate(email) && username.length > 3) {
         try {
-            res.json({ state: `${jwt.sign({id: user._id}, "secret")}` })
+            var token = jwt.sign({
+                exp: Math.floor(Date.now() / 1000) + (60 * 60),data: user._id}, 'secret');
+            res.json({token: `${token}`});
             await user.save()
         }
         catch (e) {
@@ -66,7 +68,6 @@ module.exports.authUser = async (req, res) => {
     }
 }
 module.exports.signoutUser = async (req, res) => {
-    //jwt.verify(token, 'wrong-secret');
     await User.findOne({ username: req.body.username })
         .exec((err) => {
             if (err) {
@@ -98,7 +99,7 @@ module.exports.uploadFile = async (req, res) => {
         size: myFile.size,
         author: req.body.author,
         createdAt: Date.now(),
-        url: "http://localhost:4000/"+ myFile.name
+        url: "http://localhost:4000/" + myFile.name
     })
 
     if (!req.files) {
