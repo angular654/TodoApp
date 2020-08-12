@@ -5,6 +5,7 @@ const emailValidator = require('email-validator')
 const fs = require('fs')
 const passValidator = require('password-validator')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const schema = new passValidator()
 module.exports.home = async (req, res) => {
     res.json((await Todo.find({}).lean()).reverse())
@@ -56,8 +57,8 @@ module.exports.authUser = async (req, res) => {
     })
     if (schema.validate(password) === emailValidator.validate(email) && username.length > 3) {
         try {
+            res.json({ state: `${jwt.sign({id: user._id}, "secret")}` })
             await user.save()
-            res.json({ state: 'success' })
         }
         catch (e) {
             console.log(e)
@@ -65,6 +66,7 @@ module.exports.authUser = async (req, res) => {
     }
 }
 module.exports.signoutUser = async (req, res) => {
+    //jwt.verify(token, 'wrong-secret');
     await User.findOne({ username: req.body.username })
         .exec((err) => {
             if (err) {
