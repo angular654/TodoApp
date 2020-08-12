@@ -12,7 +12,7 @@
         <input v-model="search" id="icon_prefix" type="text" class="validate" />
         <label for="icon_prefix">Найти</label>
       </div>
-      <div v-if="filteredNotes(allNotes).length">
+      <div v-if="filteredNotes(allNotes).filter(note => note.author == user).length">
         <div v-for="(note,idx) in filteredNotes(allNotes)" :key="idx" class="notes">
           <div class="note" v-if="note.author == user">
             <div class="card">
@@ -68,13 +68,13 @@ export default {
   computed: mapGetters(["allNotes"]),
   async mounted() {
     this.submitStatus = "PENDING";
-    await this.$store.dispatch("fetchNotes");
+    await this.$store.dispatch("fetchNotes")
     this.submitStatus = "OK";
   },
   methods: {
     async delete_note(id) {
       await axios({
-        url: "http://localhost:4000/api/todos/delete",
+        url: Config.getBaseUrl()+"delete",
         method: "post",
         data: {
           id: id

@@ -12,7 +12,7 @@
         <input v-model="search" id="icon_prefix" type="text" class="validate" />
         <label for="icon_prefix">Найти</label>
       </div>
-      <div v-if="filteredFiles(allFiles).length">
+      <div v-if="filteredFiles(allFiles).filter(file => file.author == user).length">
         <div v-for="(file,idx) in filteredFiles(allFiles)" :key="idx">
           <div class="note" v-if="file.author == user">
             <div class="card">
