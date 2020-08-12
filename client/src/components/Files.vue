@@ -12,16 +12,22 @@
         <input v-model="search" id="icon_prefix" type="text" class="validate" />
         <label for="icon_prefix">Найти</label>
       </div>
-      <div v-for="(file,idx) in filteredFiles(allFiles)" :key="idx">
-        <div class="note" v-if="file.author == user">
-          <div class="card">
-            <img src="@/assets/file.png" width="50" height="50" />
-            <div class="card-title">{{file.name}}</div>
-            <a :href="file.url" target="_blank" download>Открыть</a>
+      <div v-if="filteredFiles(allFiles).length && file.author != user">
+        <div v-for="(file,idx) in filteredFiles(allFiles)" :key="idx">
+          <div class="note" v-if="file.author == user">
+            <div class="card">
+              <img src="@/assets/file.png" width="50" height="50" />
+              <div class="card-title">{{file.name}}</div>
+              <a :href="file.url" target="_blank" download>Открыть</a>
+            </div>
+            <input hidden type="text" :value="id = file._id" name="id" />
+            <button @click="delete_file(file._id,file.name)">X</button>
           </div>
-          <input hidden type="text" :value="id = file._id" name="id" />
-          <button @click="delete_file(file._id,file.name)">X</button>
         </div>
+      </div>
+      <div v-else>
+        <img src="@/assets/notFound.jpg" width="50" height="50" />
+        <h6>Ничего не найдено</h6>
       </div>
     </div>
     <div v-else>
@@ -98,5 +104,8 @@ a {
 }
 .card-title {
   padding-left: 1.3rem;
+}
+#icon_prefix {
+  width: auto;
 }
 </style> 

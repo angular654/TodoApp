@@ -1,38 +1,47 @@
 <template>
   <div id="block">
     <div v-if="reg === true">
+      <div class="loading" v-if="submitStatus === 'PENDING'">
+        <div class="progress">
+          <div class="indeterminate"></div>
+        </div>
+      </div>
       <h1>Планы</h1>
       <div class="input-field col s6">
         <i class="material-icons prefix" id="icon">search</i>
         <input v-model="search" id="icon_prefix" type="text" class="validate" />
         <label for="icon_prefix">Найти</label>
       </div>
-      <div class="loading" v-if="submitStatus === 'PENDING'">
-        <div class="progress">
-          <div class="indeterminate"></div>
+      <div v-if="filteredNotes(allNotes).length">
+        <div v-for="(note,idx) in filteredNotes(allNotes)" :key="idx" class="notes">
+          <div class="note" v-if="note.author == user">
+            <div class="card">
+              <button id="delete_btn" @click="delete_note(note._id)">X</button>
+              <h4 id="author">{{note.title}}</h4>
+              <h6 id="author">Автор: {{note.author}}</h6>
+              <div class="card-content">{{note.content}}</div>
+              <span id="time">{{note.completeTime}} мин</span>
+              <br />
+              <span id="process">{{note.process}}%</span>
+              <br />
+              <meter id="bar" min="0" low="50" max="100" optimum="80" v-bind:value="note.process"></meter>
+              <br />
+              <input type="range" v-model="note.process" name="id" />
+              <button
+                class="btn blue darken-4"
+                @click="comlete_note(note._id,note.process)"
+              >Сохранить</button>
+              <input hidden type="text" v-bind:value="note._id" name="id" />
+              <br />
+              <b>{{note.createdAt | formatDate}}</b>
+            </div>
+            <br />
+          </div>
         </div>
       </div>
-      <div v-for="(note,idx) in filteredNotes(allNotes)" :key="idx" class="notes">
-        <div class="note" v-if="note.author == user">
-          <div class="card">
-            <button id="delete_btn" @click="delete_note(note._id)">X</button>
-            <h4 id="author">{{note.title}}</h4>
-            <h6 id="author">Автор: {{note.author}}</h6>
-            <div class="card-content">{{note.content}}</div>
-            <span id="time">{{note.completeTime}} мин</span>
-            <br />
-            <span id="process">{{note.process}}%</span>
-            <br />
-            <meter id="bar" min="0" low="50" max="100" optimum="80" v-bind:value="note.process"></meter>
-            <br />
-            <input type="range" v-model="note.process" name="id" />
-            <button class="btn blue darken-4" @click="comlete_note(note._id,note.process)">Сохранить</button>
-            <input hidden type="text" v-bind:value="note._id" name="id" />
-            <br />
-            <b>{{note.createdAt | formatDate}}</b>
-          </div>
-          <br />
-        </div>
+      <div v-else>
+        <img src="@/assets/notFound.jpg" width="50" height="50" />
+        <h6>Ничего не найдено</h6>
       </div>
     </div>
     <div v-else>
@@ -150,5 +159,8 @@ h1 {
 .notes {
   float: left;
   align-items: center;
+}
+#icon_prefix {
+  width: auto;
 }
 </style>
