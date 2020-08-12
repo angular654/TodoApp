@@ -8,11 +8,16 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const schema = new passValidator()
 module.exports.home = async (req, res) => {
-    res.json((await Todo.find({}).lean()).reverse())
+    jwt.verify(req.body.jwt, 'secret', async (err, decoded) => {
+        if (err) {
+           console.log(err)
+        } else {
+          console.log(decoded.id)
+          await res.json((Todo.find({}).lean()).reverse())
+        }
+    });
 }
-module.exports.note = async (req, res) => {
-    res.json(await Todo.findfindById(req.body.id))
-}
+
 module.exports.createTodo = async (req, res) => {
     const todo = new Todo({
         title: req.body.title,
@@ -57,9 +62,6 @@ module.exports.authUser = async (req, res) => {
     })
     if (schema.validate(password) === emailValidator.validate(email) && username.length > 3) {
         try {
-            var token = jwt.sign({
-                exp: Math.floor(Date.now() / 1000) + (60 * 60),data: user._id}, 'secret');
-            res.json({token: `${token}`});
             await user.save()
         }
         catch (e) {
@@ -86,7 +88,8 @@ module.exports.signinUser = async (req, res) => {
                 console.log('Пользователь не найден');
             }
             if (bcrypt.compareSync(req.body.password, user.password)) {
-                res.json({ state: 'signin' })
+                var token = jwt.sign({ exp: Math.floor(Date.now() / 1000) + (60 * 60), data: user._id }, 'secret');
+                res.json({ token: `${token}` });
             } else {
                 console.log('Неверный пароль');
             }
@@ -116,7 +119,14 @@ module.exports.uploadFile = async (req, res) => {
     });
 }
 module.exports.getFiles = async (req, res) => {
-    res.json(await File.find({}).lean())
+    jwt.verify(req.body.jwt, 'secret', async (err, decoded) => {
+        if (err) {
+           console.log(err) 
+        } else {
+          console.log(decoded.id)
+          await res.json(File.find({}).lean())
+        }
+    });
 }
 module.exports.deleteFile = async (req, res) => {
     const file = await File.findById(req.body.id)
