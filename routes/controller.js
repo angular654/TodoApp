@@ -62,7 +62,19 @@ module.exports.authUser = async (req, res) => {
     })
     if (schema.validate(password) === emailValidator.validate(email) && username.length > 3) {
         try {
+            let token = jwt.sign(
+                { 
+                  id: user.id 
+                }, 
+                config.secret, 
+                {
+                  expiresIn: 86400 // expires in 24 hours
+                });
             await user.save()
+            res.json({
+                token: `${token}`,
+                auth: true, 
+                user: user})
         }
         catch (e) {
             console.log(e)
@@ -88,8 +100,11 @@ module.exports.signinUser = async (req, res) => {
                 console.log('Пользователь не найден');
             }
             if (bcrypt.compareSync(req.body.password, user.password)) {
-                var token = jwt.sign({ exp: Math.floor(Date.now() / 1000) + (60 * 60), data: user._id }, 'secret');
-                res.json({ token: `${token}` });
+                var token = jwt.sign({ exp: 86400, data: user._id }, 'secret');
+                res.json({
+                    token: `${token}`,
+                    auth: true, 
+                    user: user})
             } else {
                 console.log('Неверный пароль');
             }

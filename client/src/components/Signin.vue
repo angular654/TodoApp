@@ -74,14 +74,14 @@ export default {
     async submit() {
       this.submitStatus = "PENDING";
       Config.author = this.name;
-      await axios({
+      console.log(await axios({
         url: Config.getBaseUrl() + "signin",
         method: "post",
         data: {
           username: this.name,
           password: this.password,
         },
-      })
+      }))
       this.submitStatus = "OK";
       this.reg = Config.register = true;
       console.log("Вы вошли в TodoApp!");
