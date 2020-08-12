@@ -93,7 +93,7 @@ export default {
       });
     },
     filteredNotes(todos) {
-      const s = this.search.toLowerCase();
+      const s = this.search.toLowerCase()
       return todos.filter(n => {
         return Object.values(n).some(m =>
           m
