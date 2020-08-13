@@ -13,7 +13,7 @@ module.exports.home = async (req, res) => {
            console.log(err)
         } else {
           console.log(decoded.id)
-          await res.json((Todo.find({}).lean()).reverse())
+          await res.json((Todo.find({name: req.body.name}).lean()).reverse())
         }
     });
 }
@@ -139,7 +139,7 @@ module.exports.getFiles = async (req, res) => {
            console.log(err) 
         } else {
           console.log(decoded.id)
-          await res.json(File.find({}).lean())
+          await res.json(File.find({name: req.body.name}).lean())
         }
     });
 }
