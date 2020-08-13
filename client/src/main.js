@@ -8,6 +8,8 @@ import store from './store'
 import moment from 'moment';
 import 'materialize-css/dist/css/materialize.min.css'
 import 'material-design-icons/iconfont/material-icons.css'
+import Axios from 'axios'
+Vue.prototype.$http = Axios;
 Vue.use(Vuelidate)
 
 Vue.config.productionTip = false

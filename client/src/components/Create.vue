@@ -120,7 +120,7 @@ export default {
         this.submitStatus = "ERROR";
       } else {
         this.submitStatus = "PENDING";
-        await axios({
+        await this.$http({
           url: Config.getBaseUrl() + "create",
           method: "post",
           data: {
@@ -144,7 +144,7 @@ export default {
       const formData = new FormData();
       formData.append("file", this.selectedFile); // appending file
       formData.append("author", this.creator);
-      await axios
+      await this.$http
         .post(Config.getBaseUrl() + "upload", formData)
         .then((res) => {
           console.log(res);

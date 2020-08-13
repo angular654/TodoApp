@@ -1,8 +1,7 @@
-import axios from "axios"
 export default {
     actions: {
         async fetchFiles(ctx) {
-            await axios
+            await this.$http
                 .get("http://localhost:4000/api/todos/files")
                 .then((response) => (this.files = response.data))
                 .catch((error) => (this.errors = error));

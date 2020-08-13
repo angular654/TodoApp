@@ -1,6 +1,5 @@
 <template>
   <div class="row" id="block">
-    <div v-if="reg === false">
       <form @submit.prevent="submit">
         <h2 id="file-text">Регистрация</h2>
         <label for="name">Name</label>
@@ -22,17 +21,10 @@
         <p class="loading" v-if="submitStatus === 'PENDING'">Регистрация...</p>
       </form>
     </div>
-
-    <div v-else>
-      <h1>Вы уже вошли в ToDoApp</h1>
-      <p class="ok" v-if="submitStatus === 'OK'">Регистрация прошла успешно!</p>
-    </div>
-  </div>
 </template>
 
 <script>
 import { stringify } from "querystring";
-import axios from "axios";
 import Config from "../Api-config";
 export default {
   name: "Auth",
@@ -44,6 +36,7 @@ export default {
       msg: [],
       submitStatus: null,
       reg: Config.register,
+      token: ""
     };
   },
   watch: {
@@ -96,16 +89,13 @@ export default {
     async submit() {
       this.submitStatus = "PENDING";
       Config.author = this.name;
-      console.log(
-        await axios({
-          url: Config.getBaseUrl() + "auth",
-          method: "post",
-          data: {
+        await this.$http.post(Config.getBaseUrl() + "auth",{
             username: this.name,
             password: this.password,
             email: this.email,
-          },
-        })
+        }).then((response) => {
+          this.$router.push(`/${response.data.token}`)
+        }
       );
       this.submitStatus = "OK";
       this.name = Config.author;

@@ -1,15 +1,14 @@
-import axios from "axios"
 export default {
     actions: {
         async fetchNotes(ctx) {
-            await axios
+            await this.$http
                 .get("http://localhost:4000/api/todos/")
                 .then((response) => (this.notes = response.data))
                 .catch((error) => (this.errors = error));
             ctx.commit('ubdateNotes', this.notes)
         },
         async deleteNote({ commit }, id) {
-            await axios({
+            await this.$http({
                 url: "http://localhost:4000/api/todos/delete",
                 method: "post",
                 data: {

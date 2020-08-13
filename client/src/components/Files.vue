@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { mapGetters } from "vuex";
 import Config from "../Api-config";
 export default {
@@ -60,7 +59,7 @@ export default {
   },
   methods: {
     async delete_file(id, filename) {
-      await axios({
+      await this.$http({
         url: Config.getBaseUrl() + "deletefile",
         method: "post",
         data: {

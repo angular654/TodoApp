@@ -66,7 +66,7 @@ module.exports.authUser = async (req, res) => {
                 { 
                   id: user.id 
                 }, 
-                config.secret, 
+                'secret', 
                 {
                   expiresIn: 86400 // expires in 24 hours
                 });

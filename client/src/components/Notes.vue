@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { mapGetters } from "vuex";
 import Config from "../Api-config";
 export default {
@@ -73,7 +72,7 @@ export default {
   },
   methods: {
     async delete_note(id) {
-      await axios({
+      await this.$http({
         url: Config.getBaseUrl()+"delete",
         method: "post",
         data: {
@@ -83,7 +82,7 @@ export default {
       this.$store.dispatch("fetchNotes");
     },
     async comlete_note(id, progress) {
-      await axios({
+      await this.$http({
         url: Config.getBaseUrl() + "complete",
         method: "post",
         data: {

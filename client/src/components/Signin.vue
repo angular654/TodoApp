@@ -27,7 +27,6 @@
   </div>
 </template>
 <script>
-import axios from "axios";
 import Config from "../Api-config";
 export default {
   name: "Signin",
@@ -74,22 +73,20 @@ export default {
     async submit() {
       this.submitStatus = "PENDING";
       Config.author = this.name;
-      console.log(await axios({
-        url: Config.getBaseUrl() + "signin",
-        method: "post",
-        data: {
-          username: this.name,
-          password: this.password,
-        },
-      }))
+       await this.$http.post(Config.getBaseUrl() + "signin",{
+            username: this.name,
+            password: this.password,
+        }).then((response) => {
+          this.$router.push(`/notes/${response.data.token}`)
+        }
+      );
       this.submitStatus = "OK";
       this.reg = Config.register = true;
       console.log("Вы вошли в TodoApp!");
       Config.author = this.name;
-      this.$router.push("/");
     },
     async logout() {
-      await axios({
+      await this.$http({
         url: Config.getBaseUrl() + "signout",
         method: "post",
         data: {
