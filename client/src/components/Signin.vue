@@ -77,11 +77,11 @@ export default {
             username: this.name,
             password: this.password,
         }).then((response) => {
-          this.$router.push(`/notes/${response.data.token}`)
+          this.$router.push(`/${this.name}/${response.data.token}`)
         }
       );
+      this.reg = true
       this.submitStatus = "OK";
-      this.reg = Config.register = true;
       console.log("Вы вошли в TodoApp!");
       Config.author = this.name;
     },

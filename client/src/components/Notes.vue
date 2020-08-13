@@ -12,8 +12,8 @@
         <input v-model="search" id="icon_prefix" type="text" class="validate" />
         <label for="icon_prefix">Найти</label>
       </div>
-      <div v-if="filteredNotes(allNotes).filter(note => note.author == user).length">
-        <div v-for="(note,idx) in filteredNotes(allNotes)" :key="idx" class="notes">
+      <div v-if="filteredNotes(notes).filter(note => note.author == user).length">
+        <div v-for="(note,idx) in filteredNotes(notes)" :key="idx" class="notes">
           <div class="note" v-if="note.author == user">
             <div class="card">
               <button id="delete_btn" @click="delete_note(note._id)">X</button>
@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import Config from "../Api-config";
 export default {
   name: "Notes",
@@ -61,25 +60,28 @@ export default {
       user: Config.author,
       submitStatus: null,
       progress: 0,
-      search: ""
+      search: "",
+      notes: []
     };
   },
-  computed: mapGetters(["allNotes"]),
   async mounted() {
     this.submitStatus = "PENDING";
-    await this.$store.dispatch("fetchNotes")
+      this.$http.get(
+        `http://localhost:4000/api/todos/${this.$route.params.name}/${this.$route.params.id}`
+      )
+      .then(response => (this.notes = response.data))
+      .catch(error => (this.errors = error));
     this.submitStatus = "OK";
   },
   methods: {
     async delete_note(id) {
       await this.$http({
-        url: Config.getBaseUrl()+"delete",
+        url: Config.getBaseUrl() + "delete",
         method: "post",
         data: {
           id: id
         }
       });
-      this.$store.dispatch("fetchNotes");
     },
     async comlete_note(id, progress) {
       await this.$http({
@@ -92,7 +94,7 @@ export default {
       });
     },
     filteredNotes(todos) {
-      const s = this.search.toLowerCase()
+      const s = this.search.toLowerCase();
       return todos.filter(n => {
         return Object.values(n).some(m =>
           m

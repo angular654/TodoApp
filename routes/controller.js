@@ -7,13 +7,13 @@ const passValidator = require('password-validator')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const schema = new passValidator()
-module.exports.home = async (req, res) => {
-    jwt.verify(req.body.jwt, 'secret', async (err, decoded) => {
+module.exports.home = async (res) => {
+    jwt.verify(res.params.id, 'secret', async (err, decoded) => {
         if (err) {
            console.log(err)
         } else {
           console.log(decoded.id)
-          await res.json((Todo.find({name: req.body.name}).lean()).reverse())
+          await res.json((Todo.find({author: res.params.name}).lean()).reverse())
         }
     });
 }
@@ -139,7 +139,7 @@ module.exports.getFiles = async (req, res) => {
            console.log(err) 
         } else {
           console.log(decoded.id)
-          await res.json(File.find({name: req.body.name}).lean())
+          await res.json(File.find({author: req.body.name}).lean())
         }
     });
 }

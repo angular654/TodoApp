@@ -11,7 +11,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-     path: '/notes/:id', component: Notes 
+     path: '/:name/:id', component: Notes 
     },
     {
       path: '/auth',
@@ -29,7 +29,7 @@ export default new Router({
       component: Create
     },
     {
-      path: '/files/:id',
+      path: '/files/:name/:id',
       name: 'FileStorage',
       component: Files
     },

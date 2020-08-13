@@ -1,10 +1,13 @@
 export default {
     actions: {
         async fetchFiles(ctx) {
-            await this.$http
-                .get("http://localhost:4000/api/todos/files")
-                .then((response) => (this.files = response.data))
-                .catch((error) => (this.errors = error));
+            await this.$http.get("http://localhost:4000/api/files/", {
+                jwt: this.$route.params.id,
+                name: this.$route.params.name
+            }).then((response) => {
+                this.notes = response.data
+            }
+            );
             ctx.commit('ubdateFiles', this.files)
         }
     },
