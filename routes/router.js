@@ -2,8 +2,8 @@ const { Router } = require('express')
 const router = Router()
 const controller = require('./controller')
 // GET
-router.get('/:name/:id', controller.home)
-router.get('/files', controller.getFiles)
+router.get('/:name/:id', controller.getNotes)
+router.get('/files/:name/:id', controller.getFiles)
 // POST
 router.post('/create', controller.createTodo)
 router.post('/complete', controller.completeTodo)

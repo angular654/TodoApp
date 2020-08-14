@@ -7,15 +7,16 @@ const passValidator = require('password-validator')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const schema = new passValidator()
-module.exports.home = async (res) => {
-    jwt.verify(res.params.id, 'secret', async (err, decoded) => {
-        if (err) {
-           console.log(err)
-        } else {
-          console.log(decoded.id)
-          await res.json((Todo.find({author: res.params.name}).lean()).reverse())
-        }
-    });
+module.exports.getNotes = async (res,req) => {
+      jwt.verify(res.params.id, 'secret', async (err, decoded) => {
+           if (err) {
+               console.log(err)
+     } else {
+           console.log(decoded.id)
+           await req.send(await Todo.find({ author: res.params.name }).lean())
+      }
+     }).catch(error => { console.log(error) })
+
 }
 
 module.exports.createTodo = async (req, res) => {
@@ -63,18 +64,19 @@ module.exports.authUser = async (req, res) => {
     if (schema.validate(password) === emailValidator.validate(email) && username.length > 3) {
         try {
             let token = jwt.sign(
-                { 
-                  id: user.id 
-                }, 
-                'secret', 
                 {
-                  expiresIn: 86400 // expires in 24 hours
+                    id: user.id
+                },
+                'secret',
+                {
+                    expiresIn: "2d" // expires in 24 hours
                 });
             await user.save()
             res.json({
                 token: `${token}`,
-                auth: true, 
-                user: user})
+                auth: true,
+                user: user
+            })
         }
         catch (e) {
             console.log(e)
@@ -100,11 +102,19 @@ module.exports.signinUser = async (req, res) => {
                 console.log('Пользователь не найден');
             }
             if (bcrypt.compareSync(req.body.password, user.password)) {
-                var token = jwt.sign({ exp: 86400, data: user._id }, 'secret');
+                let token = jwt.sign(
+                    {
+                        id: user.id
+                    },
+                    'secret',
+                    {
+                        expiresIn: "2d" // expires in 24 hours
+                    });
                 res.json({
                     token: `${token}`,
-                    auth: true, 
-                    user: user})
+                    auth: true,
+                    user: user
+                })
             } else {
                 console.log('Неверный пароль');
             }
@@ -134,14 +144,14 @@ module.exports.uploadFile = async (req, res) => {
     });
 }
 module.exports.getFiles = async (req, res) => {
-    jwt.verify(req.body.jwt, 'secret', async (err, decoded) => {
+    jwt.verify(res.params.id, 'secret', async (err, decoded) => {
         if (err) {
-           console.log(err) 
-        } else {
-          console.log(decoded.id)
-          await res.json(File.find({author: req.body.name}).lean())
-        }
-    });
+            console.log(err)
+  } else {
+        console.log(decoded.id)
+        await req.send(await File.find({ author: res.params.name }).lean())
+   }
+  }).catch(error => { console.log(error) })
 }
 module.exports.deleteFile = async (req, res) => {
     const file = await File.findById(req.body.id)

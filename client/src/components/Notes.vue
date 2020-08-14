@@ -1,6 +1,6 @@
 <template>
   <div id="block">
-    <div v-if="reg === true">
+    <div v-if="reg === false">
       <div class="loading" v-if="submitStatus === 'PENDING'">
         <div class="progress">
           <div class="indeterminate"></div>
@@ -12,7 +12,7 @@
         <input v-model="search" id="icon_prefix" type="text" class="validate" />
         <label for="icon_prefix">Найти</label>
       </div>
-      <div v-if="filteredNotes(notes).filter(note => note.author == user).length">
+      <div v-if="filteredNotes(notes).length">
         <div v-for="(note,idx) in filteredNotes(notes)" :key="idx" class="notes">
           <div class="note" v-if="note.author == user">
             <div class="card">
@@ -61,13 +61,13 @@ export default {
       submitStatus: null,
       progress: 0,
       search: "",
-      notes: []
+      notes: {}
     };
   },
   async mounted() {
     this.submitStatus = "PENDING";
       this.$http.get(
-        `http://localhost:4000/api/todos/${this.$route.params.name}/${this.$route.params.id}`
+        `http://localhost:4000/api/todos/${this.$route.params.name}/${this.$route.params.id}`,
       )
       .then(response => (this.notes = response.data))
       .catch(error => (this.errors = error));
