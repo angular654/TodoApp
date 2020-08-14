@@ -77,7 +77,8 @@ export default {
             username: this.name,
             password: this.password,
         }).then((response) => {
-          this.$router.push(`/${this.name}/${response.data.token}`)
+          Config.route = `/${this.name}/${response.data.token}`
+          this.$router.push(Config.route)
         }
       );
       this.reg = true

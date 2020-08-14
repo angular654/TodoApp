@@ -133,7 +133,7 @@ export default {
         });
         this.submitStatus = "OK";
         this.note = {};
-        this.$router.push("/");
+        this.$router.push(Config.route);
       }
     },
     onFileChange(e) {

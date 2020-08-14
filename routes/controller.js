@@ -8,11 +8,10 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const schema = new passValidator()
 module.exports.getNotes = async (res,req) => {
-      jwt.verify(res.params.id, 'secret', async (err, decoded) => {
+      jwt.verify(res.params.id, 'secret', async (err) => {
            if (err) {
                console.log(err)
      } else {
-           console.log(decoded.id)
            await req.send(await Todo.find({ author: res.params.name }).lean())
       }
      }).catch(error => { console.log(error) })
@@ -50,7 +49,6 @@ module.exports.completeTodo = async (req, res) => {
 }
 module.exports.deleteTodo = async (req, res) => {
     await Todo.deleteOne({ _id: req.body.id })
-    res.json({ state: 'deleted' })
 }
 module.exports.authUser = async (req, res) => {
     let password = req.body.password
@@ -148,7 +146,6 @@ module.exports.getFiles = async (req, res) => {
         if (err) {
             console.log(err)
   } else {
-        console.log(decoded.id)
         await req.send(await File.find({ author: res.params.name }).lean())
    }
   }).catch(error => { console.log(error) })

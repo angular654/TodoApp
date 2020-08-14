@@ -61,17 +61,12 @@ export default {
       submitStatus: null,
       progress: 0,
       search: "",
-      notes: {}
+      notes: []
     };
   },
   async mounted() {
     this.submitStatus = "PENDING";
-      this.$http.get(
-        `http://localhost:4000/api/todos/${this.$route.params.name}/${this.$route.params.id}`,
-      )
-      .then(response => (this.notes = response.data))
-      .catch(error => (this.errors = error));
-    this.submitStatus = "OK";
+    await this.getNotes()
   },
   methods: {
     async delete_note(id) {
@@ -103,6 +98,15 @@ export default {
             .includes(s)
         );
       });
+    },
+    async getNotes(){
+       this.submitStatus = "PENDING";
+      this.$http.get(
+        `http://localhost:4000/api/todos/${this.$route.params.name}/${this.$route.params.id}`,
+      )
+      .then(response => (this.notes = response.data))
+      .catch(error => (this.errors = error));
+    this.submitStatus = "OK";
     }
   }
 };
