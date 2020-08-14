@@ -70,16 +70,17 @@ export default {
   },
   methods: {
     async delete_note(id) {
-      await this.$http({
+      this.$http({
         url: Config.getBaseUrl() + "delete",
         method: "post",
         data: {
           id: id
         }
       });
+      await this.getNotes()
     },
     async comlete_note(id, progress) {
-      await this.$http({
+      this.$http({
         url: Config.getBaseUrl() + "complete",
         method: "post",
         data: {

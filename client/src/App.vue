@@ -80,4 +80,7 @@ footer {
 img {
   margin-left: 0.3rem;
 }
+main {
+  overflow: auto;
+}
 </style>
