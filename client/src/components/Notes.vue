@@ -21,9 +21,9 @@
               <h6 id="author">Автор: {{note.author}}</h6>
               <div class="card-content">{{note.content}}</div>
               <span id="time">{{note.completeTime}} мин</span>
-              <br />
+              <br/>
               <span id="process">{{note.process}}%</span>
-              <br />
+              <br/>
               <meter id="bar" min="0" low="50" max="100" optimum="80" v-bind:value="note.process"></meter>
               <br />
               <input type="range" v-model="note.process" name="id" />

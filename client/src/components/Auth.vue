@@ -100,7 +100,7 @@ export default {
       this.submitStatus = "OK";
       this.name = Config.author;
       Config.register = this.reg = true;
-      this.$router.push("/");
+      this.$router.push(Config.route)
     },
   },
 };

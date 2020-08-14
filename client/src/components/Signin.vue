@@ -78,13 +78,13 @@ export default {
             password: this.password,
         }).then((response) => {
           Config.route = `/${this.name}/${response.data.token}`
-          this.$router.push(Config.route)
+          this.reg = true
         }
       );
-      this.reg = true
       this.submitStatus = "OK";
       console.log("Вы вошли в TodoApp!");
       Config.author = this.name;
+      this.$router.push(Config.route)
     },
     async logout() {
       await this.$http({

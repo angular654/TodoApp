@@ -1,6 +1,6 @@
 <template>
   <div class="files">
-    <div v-if="reg === true">
+    <div v-if="reg === false">
       <div class="loading" v-if="submitStatus === 'PENDING'">
         <div class="progress">
           <div class="indeterminate"></div>
@@ -12,8 +12,8 @@
         <input v-model="search" id="icon_prefix" type="text" class="validate" />
         <label for="icon_prefix">Найти</label>
       </div>
-      <div v-if="filteredFiles(allFiles).filter(file => file.author == user).length">
-        <div v-for="(file,idx) in filteredFiles(allFiles)" :key="idx">
+      <div v-if="filteredFiles(files).length">
+        <div v-for="(file,idx) in filteredFiles(files)" :key="idx">
           <div class="note" v-if="file.author == user">
             <div class="card">
               <img src="@/assets/file.png" width="50" height="50" />
@@ -48,18 +48,18 @@ export default {
       submitStatus: null,
       id: "",
       filename: "",
-      search: ""
+      search: "",
+      files: []
     };
   },
-  computed: mapGetters(["allFiles"]),
   async mounted() {
     this.submitStatus = "PENDING";
-    await this.$store.dispatch("fetchFiles");
+    await this.getFiles()
     this.submitStatus = "OK";
   },
   methods: {
     async delete_file(id, filename) {
-      await this.$http({
+      this.$http({
         url: Config.getBaseUrl() + "deletefile",
         method: "post",
         data: {
@@ -67,7 +67,7 @@ export default {
           id: id
         }
       });
-      this.$store.dispatch("fetchFiles");
+      await this.getFiles()
     },
     filteredFiles(files) {
       const s = this.search.toLowerCase();
@@ -79,6 +79,15 @@ export default {
             .includes(s)
         );
       });
+    },
+    async getFiles(){
+       this.submitStatus = "PENDING";
+      this.$http.get(
+        `http://localhost:4000/api/todos/${this.$route.params.name}/${this.$route.params.id}`,
+      )
+      .then(response => (this.files = response.data))
+      .catch(error => (this.errors = error));
+    this.submitStatus = "OK";
     }
   }
 };
