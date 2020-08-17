@@ -12,8 +12,8 @@
         <input v-model="search" id="icon_prefix" type="text" class="validate" />
         <label for="icon_prefix">Найти</label>
       </div>
-      <div v-if="filteredFiles(files).length">
-        <div v-for="(file,idx) in filteredFiles(files)" :key="idx">
+      <div v-if="filteredFiles(allFiles).length">
+        <div v-for="(file,idx) in filteredFiles(allFiles)" :key="idx">
           <div class="note">
             <div class="card">
               <img src="@/assets/file.png" width="50" height="50" />
@@ -47,13 +47,13 @@ export default {
       submitStatus: null,
       id: "",
       filename: "",
-      search: "",
-      files: []
+      search: ""
     };
   },
+  computed: mapGetters(["allFiles"]),
   async mounted() {
     this.submitStatus = "PENDING";
-    await this.getFiles()
+    await this.$store.dispatch("fetchFiles");
     this.submitStatus = "OK";
   },
   methods: {
@@ -66,7 +66,6 @@ export default {
           id: id
         }
       });
-      await this.getFiles()
     },
     filteredFiles(files) {
       const s = this.search.toLowerCase();
@@ -78,15 +77,6 @@ export default {
             .includes(s)
         );
       });
-    },
-    async getFiles(){
-       this.submitStatus = "PENDING";
-      this.$http.get(
-        `http://localhost:4000/api/todos/files/` + sessionStorage.getItem("user") + '/' + sessionStorage.getItem("token")
-      )
-      .then(response => (this.files = response.data))
-      .catch(error => (this.errors = error));
-    this.submitStatus = "OK";
     }
   }
 };

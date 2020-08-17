@@ -6,7 +6,7 @@
           <div class="indeterminate"></div>
         </div>
       </div>
-      <h1>Планы({{allNotes.length}})</h1>
+      <h1>Планы({{filteredNotes(allNotes).length}})</h1>
       <div class="input-field col s6">
         <i class="material-icons prefix" id="icon">search</i>
         <input v-model="search" id="icon_prefix" type="text" class="validate" />
@@ -65,7 +65,9 @@ export default {
   },
    computed: mapGetters(["allNotes"]),
   async mounted() {
-    await this.$store.dispatch("fetchNotes")
+     this.submitStatus = "PENDING";
+     await this.$store.dispatch("fetchNotes");
+     this.submitStatus = "OK";
   },
   methods: {
     delete_note(id) {

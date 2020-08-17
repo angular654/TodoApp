@@ -7,14 +7,14 @@ const passValidator = require('password-validator')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const schema = new passValidator()
-module.exports.getNotes = (res,req) => {
-      jwt.verify(res.params.id, 'secret', async (err) => {
-           if (err) {
-               console.log(err)
-     } else {
-           req.send(await Todo.find({ author: res.params.name }).lean())
-      }
-     }).catch(error => { console.log(error) })
+module.exports.getNotes = (res, req) => {
+    jwt.verify(res.params.id, 'secret', async (err) => {
+        if (err) {
+            console.log(err)
+        } else {
+            req.send(await Todo.find({ author: res.params.name }).lean())
+        }
+    }).catch(error => { console.log(error) })
 
 }
 
@@ -145,13 +145,13 @@ module.exports.uploadFile = async (req, res) => {
     });
 }
 module.exports.getFiles = async (req, res) => {
-    jwt.verify(res.params.id, 'secret', async (err, decoded) => {
+    jwt.verify(res.params.id, 'secret', async (err) => {
         if (err) {
             console.log(err)
-  } else {
-        await req.send(await File.find({ author: res.params.name }).lean())
-   }
-  }).catch(error => { console.log(error) })
+        } else {
+            res.send(await File.find({ author: res.params.name }).lean())
+        }
+    }).catch(error => { console.log(error) })
 }
 module.exports.deleteFile = async (req, res) => {
     const file = await File.findById(req.body.id)
