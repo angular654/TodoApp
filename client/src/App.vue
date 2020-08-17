@@ -83,4 +83,9 @@ img {
 main {
   overflow: auto;
 }
+@media screen and (max-width: 800px) {
+    #title {
+      padding-left: 0rem;
+    }
+   }
 </style>

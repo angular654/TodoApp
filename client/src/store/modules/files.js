@@ -3,7 +3,7 @@ export default {
     actions: {
         async fetchFiles(ctx) {
             await axios
-                .get(`http://localhost:4000/api/files/${sessionStorage.getItem("user")}/${sessionStorage.getItem("token")}`)
+                .get(`http://localhost:4000/api/files/${sessionStorage.getItem("route")}`)
                 .then((response) => (this.files = response.data))
                 .catch((error) => (this.errors = error));
             ctx.commit('ubdateFiles', this.files)
