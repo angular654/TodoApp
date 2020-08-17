@@ -145,11 +145,11 @@ module.exports.uploadFile = async (req, res) => {
     });
 }
 module.exports.getFiles = async (req, res) => {
-    jwt.verify(res.params.id, 'secret', async (err) => {
+    jwt.verify(req.params.id, 'secret', async (err) => {
         if (err) {
             console.log(err)
         } else {
-            res.send(await File.find({ author: res.params.name }).lean())
+            res.send(await File.find({ author: req.params.name }).lean())
         }
     }).catch(error => { console.log(error) })
 }

@@ -6,7 +6,7 @@
           <div class="indeterminate"></div>
         </div>
       </div>
-      <h1>Место для хранения файлов</h1>
+      <h1>Место для хранения файлов({{filteredFiles(allFiles).length}})</h1>
       <div class="input-field col s6">
         <i class="medium material-icons prefix">search</i>
         <input v-model="search" id="icon_prefix" type="text" class="validate" />
@@ -43,17 +43,18 @@ export default {
   name: "FileStorage",
   data() {
     return {
+      user: sessionStorage.getItem('user'),
       reg: JSON.parse(sessionStorage.getItem('auth')),
       submitStatus: null,
       id: "",
       filename: "",
-      search: ""
+      search: "",
     };
   },
   computed: mapGetters(["allFiles"]),
   async mounted() {
     this.submitStatus = "PENDING";
-    await this.$store.dispatch("fetchFiles");
+    await this.$store.dispatch("fetchFiles"); 
     this.submitStatus = "OK";
   },
   methods: {
@@ -66,6 +67,7 @@ export default {
           id: id
         }
       });
+      location.reload()
     },
     filteredFiles(files) {
       const s = this.search.toLowerCase();
