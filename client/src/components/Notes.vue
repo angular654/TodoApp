@@ -6,14 +6,14 @@
           <div class="indeterminate"></div>
         </div>
       </div>
-      <h1>Планы</h1>
+      <h1>Планы({{allNotes.length}})</h1>
       <div class="input-field col s6">
         <i class="material-icons prefix" id="icon">search</i>
         <input v-model="search" id="icon_prefix" type="text" class="validate" />
         <label for="icon_prefix">Найти</label>
       </div>
-      <div v-if="filteredNotes(notes).length">
-        <div v-for="(note,idx) in filteredNotes(notes)" :key="idx" class="notes">
+      <div v-if="filteredNotes(allNotes).length">
+        <div v-for="(note,idx) in filteredNotes(allNotes)" :key="idx" class="notes">
           <div class="note">
             <div class="card">
               <button id="delete_btn" @click="delete_note(note._id)">X</button>
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import Config from "../Api-config";
 export default {
   name: "Notes",
@@ -59,16 +60,15 @@ export default {
       reg: JSON.parse(sessionStorage.getItem('auth')),
       submitStatus: null,
       progress: 0,
-      search: "",
-      notes: []
+      search: ""
     };
   },
+   computed: mapGetters(["allNotes"]),
   async mounted() {
-    this.submitStatus = "PENDING";
-    await this.getNotes()
+    await this.$store.dispatch("fetchNotes")
   },
   methods: {
-    async delete_note(id) {
+    delete_note(id) {
       this.$http({
         url: Config.getBaseUrl() + "delete",
         method: "post",
@@ -76,7 +76,6 @@ export default {
           id: id
         }
       });
-      await this.getNotes()
     },
     async comlete_note(id, progress) {
       this.$http({
@@ -99,15 +98,6 @@ export default {
         );
       });
     },
-    async getNotes(){
-       this.submitStatus = "PENDING";
-      await this.$http.get(
-        `http://localhost:4000/api/todos/${JSON.stringify(sessionStorage.getItem("user"))}/${JSON.stringify(sessionStorage.getItem("token"))}`,
-      )
-      .then(response => (this.notes = response.data))
-      .catch(error => (this.errors = error));
-    this.submitStatus = "OK";
-    }
   }
 };
 </script>

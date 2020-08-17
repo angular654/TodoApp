@@ -82,7 +82,7 @@ export default {
     async getFiles(){
        this.submitStatus = "PENDING";
       this.$http.get(
-        `http://localhost:4000/api/todos/files/${JSON.stringify(sessionStorage.getItem("user"))}/${JSON.stringify(sessionStorage.getItem("token"))}`,
+        `http://localhost:4000/api/todos/files/` + sessionStorage.getItem("user") + '/' + sessionStorage.getItem("token")
       )
       .then(response => (this.files = response.data))
       .catch(error => (this.errors = error));
