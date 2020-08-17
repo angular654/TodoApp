@@ -1,5 +1,6 @@
 <template>
   <div class="row" id="block">
+    <div v-if="reg === false">
       <form @submit.prevent="submit">
         <h2 id="file-text">Регистрация</h2>
         <label for="name">Name</label>
@@ -21,6 +22,10 @@
         <p class="loading" v-if="submitStatus === 'PENDING'">Регистрация...</p>
       </form>
     </div>
+    <div v-else>
+       <h2>Вы уже вошли в ToDoApp</h2>
+    </div>
+    </div>
 </template>
 
 <script>
@@ -35,7 +40,7 @@ export default {
       email: "",
       msg: [],
       submitStatus: null,
-      reg: Config.register,
+      reg: JSON.parse(sessionStorage.getItem('auth')),
       token: ""
     };
   },
@@ -88,19 +93,20 @@ export default {
     },
     async submit() {
       this.submitStatus = "PENDING";
-      Config.author = this.name;
         await this.$http.post(Config.getBaseUrl() + "auth",{
             username: this.name,
             password: this.password,
             email: this.email,
         }).then((response) => {
-          this.$router.push(`/${response.data.token}`)
+          sessionStorage.setItem('token', response.data.token)
+          sessionStorage.setItem('user', this.name)
+          sessionStorage.setItem('route', `/${this.name}/${response.data.token}`)
+          sessionStorage.setItem('auth', response.data.auth)
+          this.$router.push(`/`)
         }
       );
       this.submitStatus = "OK";
-      this.name = Config.author;
-      Config.register = this.reg = true;
-      this.$router.push(Config.route)
+      this.reg = true;
     },
   },
 };

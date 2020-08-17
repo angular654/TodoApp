@@ -1,6 +1,6 @@
 <template>
   <div class="files">
-    <div v-if="reg === false">
+    <div v-if="reg === true">
       <div class="loading" v-if="submitStatus === 'PENDING'">
         <div class="progress">
           <div class="indeterminate"></div>
@@ -14,7 +14,7 @@
       </div>
       <div v-if="filteredFiles(files).length">
         <div v-for="(file,idx) in filteredFiles(files)" :key="idx">
-          <div class="note" v-if="file.author == user">
+          <div class="note">
             <div class="card">
               <img src="@/assets/file.png" width="50" height="50" />
               <div class="card-title">{{file.name}}</div>
@@ -43,8 +43,7 @@ export default {
   name: "FileStorage",
   data() {
     return {
-      user: Config.author,
-      reg: Config.register,
+      reg: JSON.parse(sessionStorage.getItem('auth')),
       submitStatus: null,
       id: "",
       filename: "",
@@ -83,7 +82,7 @@ export default {
     async getFiles(){
        this.submitStatus = "PENDING";
       this.$http.get(
-        `http://localhost:4000/api/todos/${this.$route.params.name}/${this.$route.params.id}`,
+        `http://localhost:4000/api/todos/files/${JSON.stringify(sessionStorage.getItem("user"))}/${JSON.stringify(sessionStorage.getItem("token"))}`,
       )
       .then(response => (this.files = response.data))
       .catch(error => (this.errors = error));

@@ -1,6 +1,13 @@
 <template>
   <div class="row" id="block">
-    <div v-if="reg === false">
+    <div v-if="reg === true">
+      <form @submit.prevent="logout">
+        <h2>Вы уже вошли в ToDoApp</h2>
+        <button class="btn blue darken-4" type="submit" name="action">Выйти</button>
+        <p class="ok" v-if="submitStatus === 'OK'">Готово!</p>
+      </form>
+    </div>
+    <div v-else>
       <h2 id="file-text">Войти</h2>
       <form @submit.prevent="submit">
         <label for="name">Name</label>
@@ -17,13 +24,6 @@
         <p class="loading" v-if="submitStatus === 'PENDING'">Вход...</p>
       </form>
     </div>
-    <div v-else>
-      <form @submit.prevent="logout">
-        <h2>Вы уже вошли в ToDoApp</h2>
-        <button class="btn blue darken-4" type="submit" name="action">Выйти</button>
-        <p class="ok" v-if="submitStatus === 'OK'">Готово!</p>
-      </form>
-    </div>
   </div>
 </template>
 <script>
@@ -36,7 +36,7 @@ export default {
       password: "",
       msg: [],
       submitStatus: null,
-      reg: Config.register,
+      reg: JSON.parse(sessionStorage.getItem("auth")),
     };
   },
   watch: {
@@ -72,19 +72,23 @@ export default {
     },
     async submit() {
       this.submitStatus = "PENDING";
-      Config.author = this.name;
-       await this.$http.post(Config.getBaseUrl() + "signin",{
-            username: this.name,
-            password: this.password,
-        }).then((response) => {
-          Config.route = `/${this.name}/${response.data.token}`
-          this.reg = true
-        }
-      );
+      await this.$http
+        .post(Config.getBaseUrl() + "signin", {
+          username: this.name,
+          password: this.password,
+        })
+        .then((response) => {
+          sessionStorage.setItem("token", response.data.token);
+          sessionStorage.setItem("user", response.data.user);
+          sessionStorage.setItem(
+            "route",
+            `${this.name}/${response.data.token}`
+          );
+          sessionStorage.setItem("auth", response.data.auth);
+        });
+        this.$router.push('/')
       this.submitStatus = "OK";
       console.log("Вы вошли в TodoApp!");
-      Config.author = this.name;
-      this.$router.push(Config.route)
     },
     async logout() {
       await this.$http({
@@ -94,8 +98,9 @@ export default {
           username: this.name,
         },
       });
-      this.reg = Config.register = false;
-      Config.author = this.username = this.password = "";
+      this.reg = false;
+      sessionStorage.clear();
+      sessionStorage.setItem("auth", false);
       console.log("Вы вышли из TodoApp!");
     },
   },

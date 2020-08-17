@@ -7,12 +7,12 @@ const passValidator = require('password-validator')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const schema = new passValidator()
-module.exports.getNotes = async (res,req) => {
+module.exports.getNotes = (res,req) => {
       jwt.verify(res.params.id, 'secret', async (err) => {
            if (err) {
                console.log(err)
      } else {
-           await req.send(await Todo.find({ author: res.params.name }).lean())
+           req.send(await Todo.find({ author: res.params.name }).lean())
       }
      }).catch(error => { console.log(error) })
 
@@ -94,10 +94,13 @@ module.exports.signinUser = async (req, res) => {
     await User.findOne({ username: req.body.username })
         .exec((err, user) => {
             if (err) {
-                console.warn(err);
+                console.log(err);
             }
             else if (!user) {
                 console.log('Пользователь не найден');
+            }
+            if (!user.password) {
+                console.log("Нет пароля")
             }
             if (bcrypt.compareSync(req.body.password, user.password)) {
                 let token = jwt.sign(
@@ -111,7 +114,7 @@ module.exports.signinUser = async (req, res) => {
                 res.json({
                     token: `${token}`,
                     auth: true,
-                    user: user
+                    user: user.username
                 })
             } else {
                 console.log('Неверный пароль');

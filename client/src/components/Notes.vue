@@ -1,6 +1,6 @@
 <template>
   <div id="block">
-    <div v-if="reg === false">
+    <div v-if="reg === true">
       <div class="loading" v-if="submitStatus === 'PENDING'">
         <div class="progress">
           <div class="indeterminate"></div>
@@ -14,7 +14,7 @@
       </div>
       <div v-if="filteredNotes(notes).length">
         <div v-for="(note,idx) in filteredNotes(notes)" :key="idx" class="notes">
-          <div class="note" v-if="note.author == user">
+          <div class="note">
             <div class="card">
               <button id="delete_btn" @click="delete_note(note._id)">X</button>
               <h4 id="author">{{note.title}}</h4>
@@ -56,8 +56,7 @@ export default {
   name: "Notes",
   data() {
     return {
-      reg: Config.register,
-      user: Config.author,
+      reg: JSON.parse(sessionStorage.getItem('auth')),
       submitStatus: null,
       progress: 0,
       search: "",
@@ -102,8 +101,8 @@ export default {
     },
     async getNotes(){
        this.submitStatus = "PENDING";
-      this.$http.get(
-        `http://localhost:4000/api/todos/${this.$route.params.name}/${this.$route.params.id}`,
+      await this.$http.get(
+        `http://localhost:4000/api/todos/${JSON.stringify(sessionStorage.getItem("user"))}/${JSON.stringify(sessionStorage.getItem("token"))}`,
       )
       .then(response => (this.notes = response.data))
       .catch(error => (this.errors = error));

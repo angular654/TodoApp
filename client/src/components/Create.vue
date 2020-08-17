@@ -1,6 +1,6 @@
 <template>
   <div id="block">
-    <div v-if="reg === true">
+    <div v-if="reg === false">
       <h2>Страница создания заметок недоступна</h2>
     </div>
     <div v-else>
@@ -101,8 +101,8 @@ export default {
         content: "",
         time: null,
       },
-      creator: Config.author,
-      reg: Config.register,
+      creator: sessionStorage.getItem('user'),
+      reg: JSON.parse(sessionStorage.getItem('auth')),
       submitStatus: null,
     };
   },
@@ -133,7 +133,6 @@ export default {
         });
         this.submitStatus = "OK";
         this.note = {};
-        this.$router.push(Config.route);
       }
     },
     onFileChange(e) {
