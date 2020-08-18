@@ -7,6 +7,7 @@ const passValidator = require('password-validator')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const schema = new passValidator()
+const host = "http://localhost:4000/" 
 module.exports.getNotes = (res, req) => {
     jwt.verify(res.params.id, 'secret', async (err) => {
         if (err) {
@@ -40,9 +41,6 @@ module.exports.completeTodo = async (req, res) => {
     todo.completed = !!req.body.completed
     if (todo.completed === true) {
         todo.process = 100
-    }
-    if (todo.process === 100) {
-        todo.completed = true
     }
     await todo.save()
     res.json({ state: 'saved' })
@@ -109,7 +107,7 @@ module.exports.signinUser = async (req, res) => {
                     },
                     'secret',
                     {
-                        expiresIn: "2d" // expires in 24 hours
+                        expiresIn: "2d"
                     });
                 res.json({
                     token: `${token}`,
@@ -128,20 +126,19 @@ module.exports.uploadFile = async (req, res) => {
         size: myFile.size,
         author: req.body.author,
         createdAt: Date.now(),
-        url: "http://localhost:4000/" + myFile.name
+        url: host + myFile.name
     })
 
     if (!req.files) {
-        return res.status(500).send({ msg: "file is not found" })
+        res.status(500).send({ msg: "file is not found" })
     }
     myFile.mv(`./files/${myFile.name}`, async function (err) {
         if (err) {
             console.log(err)
-            return res.status(500).send({ msg: "Error occured" });
+            res.status(500).send({ msg: "File upload error" });
         }
         console.log(`Файл ${myFile.name} загружен`)
         await file.save()
-        return res.send({ name: myFile.name, path: `/${myFile.name}` });
     });
 }
 module.exports.getFiles = async (req, res) => {
@@ -160,5 +157,4 @@ module.exports.deleteFile = async (req, res) => {
         console.log(`Файл ${req.body.name} удален`);
     });
     await file.remove()
-    res.json({ state: 'success deleted' })
 }

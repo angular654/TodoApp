@@ -16,12 +16,13 @@
         <div v-for="(file,idx) in filteredFiles(allFiles)" :key="idx">
           <div class="note">
             <div class="card">
+              <button @click="delete_file(file._id,file.name)" id="delete">X</button>
+              <br>
               <img src="@/assets/file.png" width="50" height="50" />
               <div class="card-title">{{file.name}}</div>
               <a :href="file.url" target="_blank" download>Открыть</a>
             </div>
             <input hidden type="text" :value="id = file._id" name="id" />
-            <button @click="delete_file(file._id,file.name)">X</button>
           </div>
         </div>
       </div>
@@ -106,5 +107,10 @@ a {
 }
 #icon_prefix {
   width: auto;
+}
+#delete {
+  background-color: rgb(13, 16, 231);
+  color: #ffffff;
+  cursor: pointer;
 }
 </style> 

@@ -59,7 +59,6 @@
         <p class="error" v-if="submitStatus === 'ERROR'">Форма заполнена неверно</p>
         <p class="loading" v-if="submitStatus === 'PENDING'">Загрузка...</p>
       </form>
-      <br />
       <form @submit.prevent="onUploadFile">
         <div class="file-field input-field">
           <div class="btn blue darken-4">
@@ -147,8 +146,7 @@ export default {
       await this.$http
         .post(Config.getBaseUrl() + "upload", formData)
         .then((res) => {
-          console.log(res);
-          this.$router.push('files' + Config.route)
+          this.$router.push('files')
         })
         .catch((err) => {
           console.log(err);

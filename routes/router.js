@@ -11,6 +11,7 @@ router.post('/auth', controller.authUser)
 router.post('/signin', controller.signinUser)
 router.post('/signout', controller.signoutUser) 
 router.post('/upload', controller.uploadFile)
-router.post('/delete', controller.deleteTodo)
 router.post('/deletefile', controller.deleteFile)
+//DELETE
+router.delete('/delete', controller.deleteTodo)
 module.exports = router

@@ -21,9 +21,9 @@
               <h6 id="author">Автор: {{note.author}}</h6>
               <div class="card-content">{{note.content}}</div>
               <span id="time">{{note.completeTime}} мин</span>
-              <br/>
+              <br />
               <span id="process">{{note.process}}%</span>
-              <br/>
+              <br />
               <meter id="bar" min="0" low="50" max="100" optimum="80" v-bind:value="note.process"></meter>
               <br />
               <input type="range" v-model="note.process" name="id" />
@@ -57,28 +57,28 @@ export default {
   name: "Notes",
   data() {
     return {
-      reg: JSON.parse(sessionStorage.getItem('auth')),
+      reg: JSON.parse(sessionStorage.getItem("auth")),
       submitStatus: null,
       progress: 0,
-      search: ""
+      search: "",
     };
   },
-   computed: mapGetters(["allNotes"]),
+  computed: mapGetters(["allNotes"]),
   async mounted() {
-     this.submitStatus = "PENDING";
-     await this.$store.dispatch("fetchNotes");
-     this.submitStatus = "OK";
+    this.submitStatus = "PENDING";
+    await this.$store.dispatch("fetchNotes");
+    this.submitStatus = "OK";
   },
   methods: {
     delete_note(id) {
       this.$http({
         url: Config.getBaseUrl() + "delete",
-        method: "post",
+        method: "delete",
         data: {
-          id: id
-        }
+          id: id,
+        },
       });
-      location.reload()
+      location.reload();
     },
     async comlete_note(id, progress) {
       this.$http({
@@ -86,22 +86,19 @@ export default {
         method: "post",
         data: {
           id: id,
-          process: progress
-        }
+          process: progress,
+        },
       });
     },
     filteredNotes(todos) {
       const s = this.search.toLowerCase();
-      return todos.filter(n => {
-        return Object.values(n).some(m =>
-          m
-            .toString()
-            .toLowerCase()
-            .includes(s)
+      return todos.filter((n) => {
+        return Object.values(n).some((m) =>
+          m.toString().toLowerCase().includes(s)
         );
       });
     },
-  }
+  },
 };
 </script>
 
