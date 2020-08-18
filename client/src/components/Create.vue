@@ -102,6 +102,7 @@ export default {
       },
       creator: sessionStorage.getItem('user'),
       reg: JSON.parse(sessionStorage.getItem('auth')),
+      token: sessionStorage.getItem('token'),
       submitStatus: null,
     };
   },
@@ -120,7 +121,7 @@ export default {
       } else {
         this.submitStatus = "PENDING";
         await this.$http({
-          url: Config.getBaseUrl() + "create",
+          url: Config.getBaseUrl() + "create" + "/" + this.token,
           method: "post",
           data: {
             title: this.note.title,
@@ -144,7 +145,7 @@ export default {
       formData.append("file", this.selectedFile); // appending file
       formData.append("author", this.creator);
       await this.$http
-        .post(Config.getBaseUrl() + "upload", formData)
+        .post(Config.getBaseUrl() + "upload" + "/" + this.token, formData)
         .then((res) => {
           this.$router.push('files')
         })

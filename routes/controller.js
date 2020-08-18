@@ -7,7 +7,7 @@ const passValidator = require('password-validator')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const schema = new passValidator()
-const host = "http://localhost:4000/" 
+const host = "http://localhost:4000/"
 module.exports.getNotes = (res, req) => {
     jwt.verify(res.params.id, 'secret', async (err) => {
         if (err) {
@@ -27,13 +27,19 @@ module.exports.createTodo = async (req, res) => {
         completeTime: req.body.time,
         createdAt: Date.now()
     })
-    try {
-        await todo.save()
-        res.json({ state: 'success' })
-    }
-    catch (e) {
-        console.log(`Ошибка при отправке Todo: ${e}`)
-    }
+    jwt.verify(req.params.id, 'secret', async (err) => {
+        if (err) {
+            console.log(err)
+        } else {
+            try {
+                await todo.save()
+                res.json({ state: 'success' })
+            }
+            catch (e) {
+                console.log(`Ошибка при отправке Todo: ${e}`)
+            }
+        }
+    }).catch(error => { console.log(error) })
 }
 module.exports.completeTodo = async (req, res) => {
     const todo = await Todo.findById(req.body.id)
@@ -128,18 +134,24 @@ module.exports.uploadFile = async (req, res) => {
         createdAt: Date.now(),
         url: host + myFile.name
     })
-
-    if (!req.files) {
-        res.status(500).send({ msg: "file is not found" })
-    }
-    myFile.mv(`./files/${myFile.name}`, async function (err) {
+    jwt.verify(req.params.id, 'secret', async (err) => {
         if (err) {
             console.log(err)
-            res.status(500).send({ msg: "File upload error" });
+        } else {
+            if (!req.files) {
+                res.status(500).send({ msg: "file is not found" })
+            }
+            myFile.mv(`./files/${myFile.name}`, async function (err) {
+                if (err) {
+                    console.log(err)
+                    res.status(500).send({ msg: "File upload error" });
+                }
+                console.log(`Файл ${myFile.name} загружен`)
+                await file.save()
+            });
         }
-        console.log(`Файл ${myFile.name} загружен`)
-        await file.save()
-    });
+    }).catch(error => { console.log(error) })
+
 }
 module.exports.getFiles = async (req, res) => {
     jwt.verify(req.params.id, 'secret', async (err) => {
