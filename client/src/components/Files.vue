@@ -50,6 +50,7 @@ export default {
       id: "",
       filename: "",
       search: "",
+      token: sessionStorage.getItem('token'),
     };
   },
   computed: mapGetters(["allFiles"]),
@@ -61,7 +62,7 @@ export default {
   methods: {
     async delete_file(id, filename) {
       this.$http({
-        url: Config.getBaseUrl() + "deletefile",
+        url: Config.getBaseUrl() + "deletefile" + "/" + this.token,
         method: "post",
         data: {
           name: filename,

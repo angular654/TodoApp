@@ -52,7 +52,13 @@ module.exports.completeTodo = async (req, res) => {
     res.json({ state: 'saved' })
 }
 module.exports.deleteTodo = async (req, res) => {
-    await Todo.deleteOne({ _id: req.body.id })
+    await jwt.verify(req.params.id, 'secret', async (err) => {
+        if (err) {
+            console.log(err)
+        } else {
+            await Todo.deleteOne({ _id: req.body.id })
+        }
+    }).catch(error => { console.log(error) })
 }
 module.exports.authUser = async (req, res) => {
     let password = req.body.password
@@ -163,10 +169,16 @@ module.exports.getFiles = async (req, res) => {
     }).catch(error => { console.log(error) })
 }
 module.exports.deleteFile = async (req, res) => {
-    const file = await File.findById(req.body.id)
-    fs.unlink(`./files/${req.body.name}`, (err) => {
-        if (err) throw err;
-        console.log(`Файл ${req.body.name} удален`);
-    });
-    await file.remove()
+    await jwt.verify(req.params.id, 'secret', async (err) => {
+        if (err) {
+            console.log(err)
+        } else {
+            const file = await File.findById(req.body.id)
+            fs.unlink(`./files/${req.body.name}`, (err) => {
+                if (err) throw err;
+                console.log(`Файл ${req.body.name} удален`);
+            });
+            await file.remove()
+        }
+    }).catch(error => { console.log(error) })
 }

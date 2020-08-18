@@ -61,6 +61,7 @@ export default {
       submitStatus: null,
       progress: 0,
       search: "",
+      token: sessionStorage.getItem('token'),
     };
   },
   computed: mapGetters(["allNotes"]),
@@ -72,7 +73,7 @@ export default {
   methods: {
     delete_note(id) {
       this.$http({
-        url: Config.getBaseUrl() + "delete",
+        url: Config.getBaseUrl() + "delete" + "/" + this.token,
         method: "delete",
         data: {
           id: id,
