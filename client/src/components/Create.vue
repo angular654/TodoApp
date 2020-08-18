@@ -1,6 +1,6 @@
 <template>
   <div id="block">
-    <div v-if="reg === false">
+    <div v-if="reg !==  true">
       <h2>Страница создания заметок недоступна</h2>
     </div>
     <div v-else>
