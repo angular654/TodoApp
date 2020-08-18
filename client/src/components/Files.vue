@@ -17,7 +17,7 @@
           <div class="note">
             <div class="card">
               <button @click="delete_file(file._id,file.name)" id="delete">X</button>
-              <br>
+              <br />
               <img src="@/assets/file.png" width="50" height="50" />
               <div class="card-title">{{file.name}}</div>
               <a :href="file.url" target="_blank" download>Открыть</a>
@@ -44,19 +44,19 @@ export default {
   name: "FileStorage",
   data() {
     return {
-      user: sessionStorage.getItem('user'),
-      reg: JSON.parse(sessionStorage.getItem('auth')),
+      user: sessionStorage.getItem("user"),
+      reg: JSON.parse(sessionStorage.getItem("auth")),
       submitStatus: null,
       id: "",
       filename: "",
       search: "",
-      token: sessionStorage.getItem('token'),
+      token: sessionStorage.getItem("token"),
     };
   },
   computed: mapGetters(["allFiles"]),
   async mounted() {
     this.submitStatus = "PENDING";
-    await this.$store.dispatch("fetchFiles"); 
+    await this.$store.dispatch("fetchFiles");
     this.submitStatus = "OK";
   },
   methods: {
@@ -66,23 +66,20 @@ export default {
         method: "post",
         data: {
           name: filename,
-          id: id
-        }
+          id: id,
+        },
       });
-      location.reload()
+      location.reload();
     },
     filteredFiles(files) {
       const s = this.search.toLowerCase();
-      return files.filter(n => {
-        return Object.values(n).some(m =>
-          m
-            .toString()
-            .toLowerCase()
-            .includes(s)
+      return files.filter((n) => {
+        return Object.values(n).some((m) =>
+          m.toString().toLowerCase().includes(s)
         );
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

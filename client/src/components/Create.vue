@@ -63,13 +63,7 @@
         <div class="file-field input-field">
           <div class="btn blue darken-4">
             <span>File</span>
-            <input
-              type="file"
-              name="file"
-              ref="file"
-              @change="onFileChange"
-              required
-            />
+            <input type="file" name="file" ref="file" @change="onFileChange" required />
           </div>
           <div class="file-path-wrapper">
             <input class="file-path validate" type="text" />
@@ -100,9 +94,9 @@ export default {
         content: "",
         time: null,
       },
-      creator: sessionStorage.getItem('user'),
-      reg: JSON.parse(sessionStorage.getItem('auth')),
-      token: sessionStorage.getItem('token'),
+      creator: sessionStorage.getItem("user"),
+      reg: JSON.parse(sessionStorage.getItem("auth")),
+      token: sessionStorage.getItem("token"),
       submitStatus: null,
     };
   },
@@ -133,7 +127,7 @@ export default {
         });
         this.submitStatus = "OK";
         this.note = {};
-        this.$router.push('/')
+        this.$router.push("/");
       }
     },
     onFileChange(e) {
@@ -147,7 +141,7 @@ export default {
       await this.$http
         .post(Config.getBaseUrl() + "upload" + "/" + this.token, formData)
         .then((res) => {
-          this.$router.push('files')
+          this.$router.push("files");
         })
         .catch((err) => {
           console.log(err);

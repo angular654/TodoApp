@@ -23,9 +23,9 @@
       </form>
     </div>
     <div v-else>
-       <h2>Вы уже вошли в ToDoApp</h2>
+      <h2>Вы уже вошли в ToDoApp</h2>
     </div>
-    </div>
+  </div>
 </template>
 
 <script>
@@ -40,8 +40,8 @@ export default {
       email: "",
       msg: [],
       submitStatus: null,
-      reg: JSON.parse(sessionStorage.getItem('auth')),
-      token: ""
+      reg: JSON.parse(sessionStorage.getItem("auth")),
+      token: "",
     };
   },
   watch: {
@@ -93,18 +93,22 @@ export default {
     },
     async submit() {
       this.submitStatus = "PENDING";
-        await this.$http.post(Config.getBaseUrl() + "auth",{
-            username: this.name,
-            password: this.password,
-            email: this.email,
-        }).then((response) => {
-          sessionStorage.setItem('token', response.data.token)
-          sessionStorage.setItem('user', this.name)
-          sessionStorage.setItem('route', `/${this.name}/${response.data.token}`)
-          sessionStorage.setItem('auth', response.data.auth)
-          this.$router.push(`/`)
-        }
-      );
+      await this.$http
+        .post(Config.getBaseUrl() + "auth", {
+          username: this.name,
+          password: this.password,
+          email: this.email,
+        })
+        .then((response) => {
+          sessionStorage.setItem("token", response.data.token);
+          sessionStorage.setItem("user", this.name);
+          sessionStorage.setItem(
+            "route",
+            `/${this.name}/${response.data.token}`
+          );
+          sessionStorage.setItem("auth", response.data.auth);
+          this.$router.push(`/`);
+        });
       this.submitStatus = "OK";
       this.reg = true;
     },

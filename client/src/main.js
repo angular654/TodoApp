@@ -17,11 +17,11 @@ new Vue({
   el: '#app',
   router,
   store,
-  components: { App},
+  components: { App },
   template: '<App/>',
 })
-Vue.filter('formatDate', function(value) {
+Vue.filter('formatDate', function (value) {
   if (value) {
-      return moment(String(value)).format('MM/DD/YYYY hh:mm a')
+    return moment(String(value)).format('MM/DD/YYYY hh:mm a')
   }
 });

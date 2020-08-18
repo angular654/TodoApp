@@ -5,9 +5,9 @@ import files from './modules/files'
 
 Vue.use(Vuex)
 
- export default new Vuex.Store({
-    modules: {
-       notes,
-       files
-    }
+export default new Vuex.Store({
+   modules: {
+      notes,
+      files
+   }
 })

@@ -61,7 +61,7 @@ export default {
       submitStatus: null,
       progress: 0,
       search: "",
-      token: sessionStorage.getItem('token'),
+      token: sessionStorage.getItem("token"),
     };
   },
   computed: mapGetters(["allNotes"]),

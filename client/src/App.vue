@@ -43,14 +43,17 @@
     <main>
       <router-view></router-view>
     </main>
-     <footer class="blue darken-4">
-          <hr>
-          <div class="footer-copyright">
-            <div class="white-text">
-              © 2020 Copyright Text <a href="https://github.com/angular654"><img src="@/assets/githublogo.png" width="23" height="23"></a>
-            </div>
-          </div>
-        </footer>
+    <footer class="blue darken-4">
+      <hr />
+      <div class="footer-copyright">
+        <div class="white-text">
+          © 2020 Copyright Text
+          <a href="https://github.com/angular654">
+            <img src="@/assets/githublogo.png" width="23" height="23" />
+          </a>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -58,9 +61,9 @@
 import M from "materialize-css";
 export default {
   name: "App",
- mounted() {
-     M.AutoInit();
-  }
+  mounted() {
+    M.AutoInit();
+  },
 };
 </script>
 
@@ -70,11 +73,12 @@ export default {
 }
 input {
   width: auto;
-} 
+}
 footer {
   color: blue;
   position: fixed; /* Фиксированное положение */
-    left: 0; bottom: 0; 
+  left: 0;
+  bottom: 0;
   width: 100%;
 }
 img {
@@ -84,8 +88,8 @@ main {
   overflow: auto;
 }
 @media screen and (max-width: 800px) {
-    #title {
-      padding-left: 0rem;
-    }
-   }
+  #title {
+    padding-left: 0rem;
+  }
+}
 </style>

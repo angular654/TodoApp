@@ -86,7 +86,7 @@ export default {
           );
           sessionStorage.setItem("auth", response.data.auth);
         });
-        this.$router.push('/')
+      this.$router.push("/");
       this.submitStatus = "OK";
       console.log("Вы вошли в TodoApp!");
     },

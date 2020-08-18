@@ -9,9 +9,9 @@ router.post('/create/:id', controller.createTodo)
 router.post('/complete', controller.completeTodo)
 router.post('/auth', controller.authUser)
 router.post('/signin', controller.signinUser)
-router.post('/signout', controller.signoutUser) 
+router.post('/signout', controller.signoutUser)
 router.post('/upload/:id', controller.uploadFile)
 router.post('/deletefile/:id', controller.deleteFile)
-//DELETE
+// DELETE
 router.delete('/delete/:id', controller.deleteTodo)
 module.exports = router
