@@ -6,10 +6,12 @@ const fs = require('fs')
 const passValidator = require('password-validator')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const dotenv = require("dotenv");
+dotenv.config();
 const schema = new passValidator()
 const host = "http://localhost:4000/"
 module.exports.getNotes = (res, req) => {
-    jwt.verify(res.params.id, 'secret', async (err) => {
+    jwt.verify(res.params.id, process.env.TOKEN_SECRET, async (err) => {
         if (err) {
             console.log(err)
             req.send('Error 403')
@@ -28,7 +30,7 @@ module.exports.createTodo = async (req, res) => {
         completeTime: req.body.time,
         createdAt: Date.now()
     })
-    jwt.verify(req.params.id, 'secret', async (err) => {
+    jwt.verify(req.params.id, process.env.TOKEN_SECRET, async (err) => {
         if (err) {
             console.log(err)
         } else {
@@ -53,7 +55,7 @@ module.exports.completeTodo = async (req, res) => {
     res.json({ state: 'saved' })
 }
 module.exports.deleteTodo = async (req, res) => {
-    await jwt.verify(req.params.id, 'secret', async (err) => {
+    await jwt.verify(req.params.id, process.env.TOKEN_SECRET, async (err) => {
         if (err) {
             console.log(err)
         } else {
@@ -76,7 +78,7 @@ module.exports.authUser = async (req, res) => {
                 {
                     id: user.id
                 },
-                'secret',
+                process.env.TOKEN_SECRET,
                 {
                     expiresIn: "2d" // expires in 24 hours
                 });
@@ -118,7 +120,7 @@ module.exports.signinUser = async (req, res) => {
                     {
                         id: user.id
                     },
-                    'secret',
+                    process.env.TOKEN_SECRET,
                     {
                         expiresIn: "2d"
                     });
@@ -141,7 +143,7 @@ module.exports.uploadFile = async (req, res) => {
         createdAt: Date.now(),
         url: host + myFile.name
     })
-    jwt.verify(req.params.id, 'secret', async (err) => {
+    jwt.verify(req.params.id, process.env.TOKEN_SECRET, async (err) => {
         if (err) {
             console.log(err)
         } else {
@@ -161,7 +163,7 @@ module.exports.uploadFile = async (req, res) => {
 
 }
 module.exports.getFiles = async (req, res) => {
-    jwt.verify(req.params.id, 'secret', async (err) => {
+    jwt.verify(req.params.id, process.env.TOKEN_SECRET, async (err) => {
         if (err) {
             console.log(err)
         } else {
@@ -170,7 +172,7 @@ module.exports.getFiles = async (req, res) => {
     }).catch(error => { console.log(error) })
 }
 module.exports.deleteFile = async (req, res) => {
-    await jwt.verify(req.params.id, 'secret', async (err) => {
+    await jwt.verify(req.params.id, process.env.TOKEN_SECRET, async (err) => {
         if (err) {
             console.log(err)
         } else {
