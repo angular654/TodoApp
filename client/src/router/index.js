@@ -1,17 +1,17 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Notes from '@/components/Notes'
-import Auth from '@/components/Auth'
+const Notes = () => import('@/components/Notes')
+const Auth = () => import('@/components/Auth')
 import PageNotFound from '@/components/PageNotFound'
-import Create from '@/components/Create'
-import Signin from '@/components/Signin'
-import Files from '@/components/Files'
+const Create = () => import('@/components/Create')
+const Signin = () => import('@/components/Signin')
+const Files = () => import('@/components/Files')
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-     path: '/', component: Notes 
+     path: '/', component: Notes
     },
     {
       path: '/auth',
