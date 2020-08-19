@@ -12,6 +12,7 @@ module.exports.getNotes = (res, req) => {
     jwt.verify(res.params.id, 'secret', async (err) => {
         if (err) {
             console.log(err)
+            req.send('Error 403')
         } else {
             req.send(await Todo.find({ author: res.params.name }).lean())
         }
