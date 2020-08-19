@@ -59,7 +59,6 @@ export default {
     return {
       reg: JSON.parse(sessionStorage.getItem("auth")),
       submitStatus: null,
-      progress: 0,
       search: "",
       token: sessionStorage.getItem("token"),
     };
