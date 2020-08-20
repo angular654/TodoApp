@@ -1,30 +1,25 @@
 import Notes from '@/components/Notes'
 import { shallowMount } from '@vue/test-utils'
 import { expect } from 'chai'
+const wrapper = shallowMount(Notes)
+
 describe('Notes.vue',() => {
+  it ('should render correctly', () => {})
   it("search should be ''", () => {
-    const wrapper = shallowMount(Notes)
-    expect(wrapper.vm.search)
+    expect(wrapper.vm.$data.search)
       .to.equal("")
   })
   it("reg should be null", () => {
-    const wrapper = shallowMount(Notes)
-    expect(wrapper.vm.reg)
+    expect(wrapper.vm.$data.reg)
       .to.equal(null)
   })
   it("submitStatus should be null", () => {
-    const wrapper = shallowMount(Notes)
     expect(wrapper.vm.$data.submitStatus)
       .to.equal('PENDING')
   })
-  it("mocknote should be filtred", () => {
-    const wrapper = shallowMount(Notes)
-    expect(wrapper.vm.filteredNotes(mocknote))
-      .to.equal(mocknote)
-  })
   it("token should be null", () => {
-    const wrapper = shallowMount(Notes)
-    expect(wrapper.vm.token)
+    expect(wrapper.vm.$data.token)
       .to.equal(null)
   })
+
 })
