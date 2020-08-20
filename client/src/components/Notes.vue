@@ -78,7 +78,7 @@ export default {
           id: id,
         },
       });
-      location.reload();
+      //location.reload();
     },
     async comlete_note(id, progress) {
       this.$http({
