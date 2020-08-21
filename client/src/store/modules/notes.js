@@ -3,7 +3,7 @@ export default {
     actions: {
         async fetchNotes(ctx) {
             await axios
-                .get(`http://localhost:4000/api/todos/notes/${sessionStorage.getItem("token")}`)
+                .get(`http://localhost:4000/api/notes/${sessionStorage.getItem("token")}`)
                 .then((response) => (this.notes = response.data))
                 .catch((error) => (this.errors = error));
             ctx.commit('ubdateNotes', this.notes)

@@ -12,7 +12,7 @@ app.use(fileUpload());
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use('/api/todos', require('./routes/router'))
+app.use('/api', require('./routes/router'))
 async function start() {
     try {
         await mongoose.connect(process.env.MONGODB_URL, {
