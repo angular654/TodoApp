@@ -78,7 +78,7 @@ export default {
           id: id,
         },
       });
-      //location.reload();
+      this.$store.dispatch("fetchNotes");
     },
     async comlete_note(id, progress) {
       this.$http({

@@ -176,12 +176,11 @@ module.exports.deleteFile = async (req, res) => {
         if (err) {
             console.log(err)
         } else {
-            const file = await File.findById(req.body.id)
+            await File.deleteOne({ _id: req.body.id })
             fs.unlink(`./files/${req.body.name}`, (err) => {
-                if (err) throw err;
+                if (err) console.log(`Ошибка при удалении файла: ${err}`);
                 console.log(`Файл ${req.body.name} удален`);
             });
-            await file.remove()
         }
     }).catch(error => { console.log(error) })
 }

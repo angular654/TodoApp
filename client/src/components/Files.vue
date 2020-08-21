@@ -60,16 +60,16 @@ export default {
     this.submitStatus = "OK";
   },
   methods: {
-    async delete_file(id, filename) {
+   delete_file(id, filename) {
       this.$http({
         url: Config.getBaseUrl() + "deletefile" + "/" + this.token,
-        method: "post",
+        method: "delete",
         data: {
           name: filename,
           id: id,
         },
       });
-      location.reload();
+     this.$store.dispatch("fetchFiles");
     },
     filteredFiles(files) {
       const s = this.search.toLowerCase();
