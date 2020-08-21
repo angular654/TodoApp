@@ -6,8 +6,8 @@ const fs = require('fs')
 const passValidator = require('password-validator')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const dotenv = require("dotenv");
-dotenv.config();
+const dotenv = require("dotenv")
+dotenv.config()
 const schema = new passValidator()
 const host = "http://localhost:4000/"
 module.exports.getNotes = (res, req) => {
