@@ -1,9 +1,10 @@
 const { Router } = require('express')
-const router = Router()
+const router = Router({mergeParams: true});
 const controller = require('./controller')
 // GET
-router.get('/notes/:name/:id', controller.getNotes)
-router.get('/files/:name/:id', controller.getFiles)
+router.get('/verify', controller.verify)
+router.get('/notes/:id', controller.getNotes)
+router.get('/files/:id', controller.getFiles)
 // POST
 router.post('/create/:id', controller.createTodo)
 router.post('/complete', controller.completeTodo)

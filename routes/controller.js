@@ -10,13 +10,27 @@ const dotenv = require("dotenv")
 dotenv.config()
 const schema = new passValidator()
 const host = "http://localhost:4000/"
+
+module.exports.verify = (res,req,next) => {
+    jwt.verify(req.params.id, process.env.TOKEN_SECRET, async (err) => {
+        if (err) {
+            res.status(403).send('Нет доступа')
+        } else {
+            res.status(200).send('OK')
+            next()
+        }
+    }).catch(error => { console.log(error) })
+
+}
 module.exports.getNotes = (res, req) => {
     jwt.verify(res.params.id, process.env.TOKEN_SECRET, async (err) => {
         if (err) {
             console.log(err)
             req.send('Error 403')
         } else {
-            req.send(await Todo.find({ author: res.params.name }).lean())
+            let decode = jwt.decode(res.params.id).id
+            let user = await User.findById(decode).lean()
+            req.send(await Todo.find({ author: user.username }).lean())
         }
     }).catch(error => { console.log(error) })
 
@@ -167,7 +181,9 @@ module.exports.getFiles = async (req, res) => {
         if (err) {
             console.log(err)
         } else {
-            res.send(await File.find({ author: req.params.name }).lean())
+            let decode = jwt.decode(req.params.id).id
+            let user = await User.findById(decode).lean()
+            res.send(await File.find({ author: user.username }).lean())
         }
     }).catch(error => { console.log(error) })
 }
