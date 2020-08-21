@@ -10,18 +10,6 @@ const dotenv = require("dotenv")
 dotenv.config()
 const schema = new passValidator()
 const host = "http://localhost:4000/"
-
-module.exports.verify = (res,req,next) => {
-    jwt.verify(req.params.id, process.env.TOKEN_SECRET, async (err) => {
-        if (err) {
-            res.status(403).send('Нет доступа')
-        } else {
-            res.status(200).send('OK')
-            next()
-        }
-    }).catch(error => { console.log(error) })
-
-}
 module.exports.getNotes = (res, req) => {
     jwt.verify(res.params.id, process.env.TOKEN_SECRET, async (err) => {
         if (err) {
