@@ -141,7 +141,7 @@ export default {
       await this.$http
         .post(Config.getBaseUrl() + "upload" + "/" + this.token, formData)
         .then((res) => {
-          this.$router.push("files");
+          console.log(res)
         })
         .catch((err) => {
           console.log(err);

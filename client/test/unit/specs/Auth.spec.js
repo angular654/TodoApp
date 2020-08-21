@@ -2,11 +2,7 @@ import Auth from '@/components/Auth'
 import { shallowMount } from '@vue/test-utils'
 import { expect } from 'chai'
 describe('Auth.vue', () => {
-  const wrapper = shallowMount(Auth, {
-    mocks: {
-      $http: (msg) => msg
-    }
-  })
+  const wrapper = shallowMount(Auth)
   it('should render correctly', () => { })
   it("name should be ''", () => {
     expect(wrapper.vm.name)
