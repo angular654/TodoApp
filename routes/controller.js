@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken')
 const dotenv = require("dotenv")
 dotenv.config()
 const schema = new passValidator()
-const host = "http://localhost:4000/"
+const host = process.env.PORT || "http://localhost:4000"
 module.exports.getNotes = async (res, req) => {
     let decode = jwt.decode(res.params.id).id
     let user = await User.findById(decode).lean()
@@ -123,7 +123,7 @@ module.exports.uploadFile = async (req, res) => {
         size: myFile.size,
         author: req.body.author,
         createdAt: Date.now(),
-        url: host + myFile.name
+        url: host + "/" + myFile.name
     })
     if (!req.files) {
         res.status(500).send({ msg: "file is not found" })
