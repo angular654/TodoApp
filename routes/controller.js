@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken')
 const dotenv = require("dotenv")
 dotenv.config()
 const schema = new passValidator()
-const host = process.env.PORT || "https://serene-bastion-26724.herokuapp.com/"
+const host = process.env.PORT || "https://serene-bastion-26724.herokuapp.com"
 module.exports.getNotes = async (res, req) => {
     let decode = jwt.decode(res.params.id).id
     let user = await User.findById(decode).lean()
