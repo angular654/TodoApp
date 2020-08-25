@@ -63,7 +63,7 @@ export default {
   name: "App",
   mounted() {
     M.AutoInit();
-  },
+  }
 };
 </script>
 

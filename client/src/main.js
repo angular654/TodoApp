@@ -18,7 +18,7 @@ new Vue({
   router,
   store,
   components: { App },
-  template: '<App/>',
+  template: '<App/>'
 })
 Vue.filter('formatDate', function (value) {
   if (value) {

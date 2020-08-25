@@ -4,6 +4,7 @@
       <h2>Страница создания заметок недоступна</h2>
     </div>
     <div v-else>
+      <div class="card"><i class=" small material-icons">assignment_ind</i><span class="card-title">{{creator}}</span></div>
       <form @submit.prevent="submit">
         <h2>Создать заметку</h2>
         <div class="input-field">
