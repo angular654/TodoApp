@@ -7,7 +7,7 @@ export default {
                 .then((response) => (this.notes = response.data))
                 .catch((error) => (this.errors = error));
             ctx.commit('ubdateNotes', this.notes)
-        }
+        },
     },
     mutations: {
         ubdateNotes(state, notes) {

@@ -33,14 +33,7 @@ module.exports.createTodo = async (req, res) => {
     }
 }
 module.exports.completeTodo = async (req, res) => {
-    const todo = await Todo.findById(req.body.id)
-    todo.process = req.body.process
-    todo.completed = !!req.body.completed
-    if (todo.completed === true) {
-        todo.process = 100
-    }
-    await todo.save()
-    res.json({ state: 'saved' })
+    await Todo.findByIdAndUpdate({ _id : req.body.id}, { process : req.body.process})
 }
 module.exports.deleteTodo = async (req, res) => {
     await Todo.deleteOne({ _id: req.body.id })

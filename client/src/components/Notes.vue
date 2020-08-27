@@ -16,8 +16,8 @@
       <div v-if="filteredNotes(allNotes).length">
         <div v-for="(note,idx) in filteredNotes(allNotes)" :key="idx" class="notes">
           <div class="note">
-            <div class="card">
-              <button id="delete_btn" @click="delete_note(note._id)">X</button>
+            <button id="delete_btn" v-on:click="delete_note(note._id)">X</button>
+            <div class="card" v-if="note.process != 100">
               <h4 id="author">{{note.title}}</h4>
               <h6 id="author">Автор: {{note.author}}</h6>
               <div class="card-content">{{note.content}}</div>
@@ -25,13 +25,24 @@
               <br />
               <span id="process">{{note.process}}%</span>
               <br />
-              <meter id="bar" min="0" low="50" max="100" optimum="80" v-bind:value="note.process"></meter>
+              <meter id="bar" min="0" low="50" max="100" optimum="80"></meter>
               <br />
-              <input type="range" v-model="note.process" name="id" />
-              <button
+              <input type="range" v-model="progress" name="id" />
+              <input hidden type="text" v-bind:value="note._id" name="id" />
+              <a
                 class="btn blue darken-4"
-                @click="comlete_note(note._id,note.process)"
-              >Сохранить</button>
+                v-on:click="comlete_note(note._id,progress)"
+              >Сохранить</a>
+              <br />
+              <b>{{note.createdAt | formatDate}}</b>
+            </div>
+            <div class="card" id="completed" v-else>
+              <i class="large material-icons">check_circle</i>
+              <h4 id="author">{{note.title}}</h4>
+              <h6 id="author">Автор: {{note.author}}</h6>
+              <div class="card-content">{{note.content}}</div>
+              <span id="time">{{note.completeTime}} мин</span>
+              <br />
               <input hidden type="text" v-bind:value="note._id" name="id" />
               <br />
               <b>{{note.createdAt | formatDate}}</b>
@@ -62,13 +73,14 @@ export default {
       submitStatus: null,
       search: "",
       token: sessionStorage.getItem("token"),
-      username: sessionStorage.getItem("user")
+      username: sessionStorage.getItem("user"),
+      progress: 0
     };
   },
   computed: mapGetters(["allNotes"]),
   async mounted() {
     this.submitStatus = "PENDING";
-    await this.$store.dispatch("fetchNotes");
+    this.$store.dispatch("fetchNotes");
     this.submitStatus = "OK";
   },
   methods: {
@@ -82,7 +94,7 @@ export default {
       });
       this.$store.dispatch("fetchNotes");
     },
-    async comlete_note(id, progress) {
+    comlete_note(id, progress) {
       this.$http({
         url: Config.getBaseUrl() + "complete",
         method: "post",
@@ -91,6 +103,7 @@ export default {
           process: progress,
         },
       });
+      this.$store.dispatch("fetchNotes");
     },
     filteredNotes(todos) {
       const s = this.search.toLowerCase();
@@ -159,5 +172,9 @@ h1 {
 }
 #icon_prefix {
   width: auto;
+}
+#completed {
+  background: linear-gradient(#64e675, #044113);
+  color: white
 }
 </style>
