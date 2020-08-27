@@ -25,7 +25,7 @@
               <br />
               <span id="process">{{note.process}}%</span>
               <br />
-              <meter id="bar" min="0" low="50" max="100" optimum="80"></meter>
+              <meter id="bar" min="0" low="50" max="100" optimum="80" v-bind:value="note.process"></meter>
               <br />
               <input type="range" v-model="progress" name="id" />
               <input hidden type="text" v-bind:value="note._id" name="id" />
