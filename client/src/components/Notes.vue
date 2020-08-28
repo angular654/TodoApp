@@ -31,7 +31,7 @@
               <input hidden type="text" v-bind:value="note._id" name="id" />
               <a
                 class="btn blue darken-4"
-                v-on:click="comlete_note(note._id,progress)"
+                v-on:click="comlete_note(note._id,note._id = progress)"
               >Сохранить</a>
               <br />
               <b>{{note.createdAt | formatDate}}</b>
@@ -73,8 +73,7 @@ export default {
       submitStatus: null,
       search: "",
       token: sessionStorage.getItem("token"),
-      username: sessionStorage.getItem("user"),
-      progress: 0
+      username: sessionStorage.getItem("user")
     };
   },
   computed: mapGetters(["allNotes"]),
