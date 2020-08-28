@@ -17,7 +17,7 @@
         <div v-for="(note,idx) in filteredNotes(allNotes)" :key="idx" class="notes">
           <div class="note">
             <button id="delete_btn" v-on:click="delete_note(note._id)">X</button>
-            <div class="card" v-if="note.process != 100">
+            <div class="card" v-if="note.process !== 100">
               <h4 id="author">{{note.title}}</h4>
               <h6 id="author">Автор: {{note.author}}</h6>
               <div class="card-content">{{note.content}}</div>
@@ -27,11 +27,11 @@
               <br />
               <meter id="bar" min="0" low="50" max="100" optimum="80" v-bind:value="note.process"></meter>
               <br />
-              <input type="range" v-model="progress" name="id" />
+              <input type="range" v-model="note.process" name="id" />
               <input hidden type="text" v-bind:value="note._id" name="id" />
               <a
                 class="btn blue darken-4"
-                v-on:click="comlete_note(note._id,note._id = progress)"
+                v-on:click="comlete_note(note._id,note.process)"
               >Сохранить</a>
               <br />
               <b>{{note.createdAt | formatDate}}</b>
