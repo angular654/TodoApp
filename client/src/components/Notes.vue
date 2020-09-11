@@ -16,7 +16,7 @@
       <div v-if="filteredNotes(allNotes).length">
         <div v-for="(note,idx) in filteredNotes(allNotes)" :key="idx" class="notes">
           <div class="note">
-            <button id="delete_btn" v-on:click="delete_note(note._id)">X</button>
+            <a class="btn-floating btn-small waves-effect waves-light blue darken-4" v-on:click="delete_note(note._id)"><i class="material-icons">delete</i></a>
             <div class="card" v-if="note.process !== 100">
               <h4 id="author">{{note.title}}</h4>
               <h6 id="author">Автор: {{note.author}}</h6>
@@ -121,34 +121,11 @@ export default {
 h1 {
   font-size: 2rem;
 }
-#block {
-  padding-left: 40px;
-  padding-right: 40px;
-}
-.error {
-  color: rgb(199, 15, 15);
-  font-weight: bold;
-}
-.ok {
-  font-weight: bold;
-  color: rgb(63, 63, 173);
-}
-.loading {
-  font-weight: bold;
-  color: rgb(87, 179, 148);
-}
-#bar {
-  height: 2rem;
-  width: 10rem;
-}
 .note {
   padding-left: 1rem;
 }
 #author {
   padding-left: 1rem;
-}
-#btn {
-  width: 3rem;
 }
 #time {
   color: rgb(133, 128, 128);
@@ -156,14 +133,6 @@ h1 {
 }
 #process {
   padding-left: 0.5rem;
-}
-#delete_btn {
-  color: white;
-  background-color: blue;
-}
-#Count {
-  padding-right: 50%;
-  padding-left: 50%;
 }
 .notes {
   float: left;
@@ -175,5 +144,9 @@ h1 {
 #completed {
   background: linear-gradient(#64e675, #044113);
   color: white
+}
+b {
+  font-size: 0.9rem;
+  margin-left: 0.4rem;
 }
 </style>
