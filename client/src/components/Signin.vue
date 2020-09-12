@@ -110,10 +110,6 @@ export default {
 h2 {
   font-size: 2rem;
 }
-#block {
-  padding-left: 40px;
-  padding-right: 40px;
-}
 span {
   color: rgb(199, 15, 15);
   font-weight: bold;

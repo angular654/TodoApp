@@ -168,10 +168,6 @@ export default {
 h2 {
   font-size: 2rem;
 }
-#block {
-  padding-left: 40px;
-  padding-right: 40px;
-}
 .ok {
   font-weight: bold;
   color: rgb(78, 78, 214);

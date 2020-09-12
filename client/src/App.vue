@@ -92,4 +92,8 @@ main {
     padding-left: 0rem;
   }
 }
+#block {
+  padding-left: 40px;
+  padding-right: 40px;
+}
 </style>
