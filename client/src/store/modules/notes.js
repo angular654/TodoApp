@@ -18,7 +18,7 @@ export default {
         },
     },
     state: {
-        notes: []
+        notes: [],
     },
     getters: {
         allNotes(state) {

@@ -15,7 +15,12 @@
       <div v-if="filteredNotes(allNotes).length">
         <div v-for="(note,idx) in filteredNotes(allNotes)" :key="idx" class="notes">
           <div class="note">
-            <a class="btn-floating btn-small waves-effect waves-light blue darken-4" v-on:click="delete_note(note._id)"><i class="material-icons">delete</i></a>
+            <a
+              class="btn-floating btn-small waves-effect waves-light blue darken-4"
+              v-on:click="delete_note(note._id)"
+            >
+              <i class="material-icons">delete</i>
+            </a>
             <div class="card" v-if="note.process !== 100">
               <h4 id="author">{{note.title}}</h4>
               <h6 id="author">Автор: {{note.author}}</h6>
@@ -72,7 +77,7 @@ export default {
       submitStatus: null,
       search: "",
       token: sessionStorage.getItem("token"),
-      username: sessionStorage.getItem("user")
+      username: sessionStorage.getItem("user"),
     };
   },
   computed: mapGetters(["allNotes"]),
@@ -104,7 +109,7 @@ export default {
       this.$store.dispatch("fetchNotes");
     },
     filteredNotes(todos) {
-      const s = this.search.toLowerCase();
+      const s = this.search.trim(' ').toLowerCase();
       return todos.filter((n) => {
         return Object.values(n).some((m) =>
           m.toString().toLowerCase().includes(s)
@@ -142,7 +147,7 @@ h1 {
 }
 #completed {
   background: linear-gradient(#64e675, #044113);
-  color: white
+  color: white;
 }
 b {
   font-size: 0.9rem;
