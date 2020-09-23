@@ -6,7 +6,6 @@
           <div class="indeterminate"></div>
         </div>
       </div>
-      <div class="card"><i class=" small material-icons">assignment_ind</i><span class="card-title">{{username}}</span></div>
       <h1>Планы({{filteredNotes(allNotes).length}})</h1>
       <div class="input-field col s6">
         <i class="material-icons prefix" id="icon">search</i>

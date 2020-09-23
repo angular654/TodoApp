@@ -4,7 +4,6 @@
       <h2>Страница создания заметок недоступна</h2>
     </div>
     <div v-else>
-      <div class="card"><i class=" small material-icons">assignment_ind</i><span class="card-title">{{creator}}</span></div>
       <form @submit.prevent="submit">
         <h2>Создать заметку</h2>
         <div class="input-field">
@@ -60,6 +59,7 @@
         <p class="error" v-if="submitStatus === 'ERROR'">Форма заполнена неверно</p>
         <p class="loading" v-if="submitStatus === 'PENDING'">Загрузка...</p>
       </form>
+      <h2>Загрузить файл</h2>
       <form @submit.prevent="onUploadFile">
         <div class="file-field input-field">
           <div class="btn blue darken-4">
