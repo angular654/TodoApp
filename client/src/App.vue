@@ -41,6 +41,7 @@
       </div>
     </nav>
     <main>
+      <a class="waves-effect waves-light" v-on:click="back()" id="back"><i class=" medium material-icons">arrow_back</i></a>
       <router-view></router-view>
     </main>
     <footer class="blue darken-4">
@@ -61,8 +62,14 @@
 import M from "materialize-css";
 export default {
   name: "App",
+  myhistory: [],
   mounted() {
     M.AutoInit();
+  },
+  methods : {
+    back() {
+      window.history.length > 1 ? this.$router.back(): this.$router.push("/") 
+    }
   }
 };
 </script>
@@ -95,5 +102,8 @@ main {
 #block {
   padding-left: 40px;
   padding-right: 40px;
+}
+#back {
+  color: #0D47A1;
 }
 </style>

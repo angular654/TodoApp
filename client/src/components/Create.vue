@@ -27,7 +27,7 @@
             class="materialize-textarea"
             required
           ></textarea>
-          <button @click="speechWriter()">Сказать</button>
+          <a v-on:click="speechWriter()"><i class="small material-icons">keyboard_voice</i></a>
         </div>
         <div
           class="error"
