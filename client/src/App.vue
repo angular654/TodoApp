@@ -68,7 +68,7 @@ export default {
   },
   methods : {
     back() {
-      window.history.length > 1 ? this.$router.back(): this.$router.push("/") 
+      window.history.length > 2 ? this.$router.go(-1): false 
     }
   }
 };
