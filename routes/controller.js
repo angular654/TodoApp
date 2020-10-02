@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken')
 const dotenv = require("dotenv")
 dotenv.config()
 const schema = new passValidator()
-const host = "http://localhost:4000" || "https://serene-bastion-26724.herokuapp.com"
+const host =  "http://localhost:4000/" // "https://serene-bastion-26724.herokuapp.com"
 module.exports.getNotes = async (res, req) => {
     let decode = jwt.decode(res.params.id).id
     let user = await User.findById(decode).lean()
@@ -113,7 +113,7 @@ module.exports.signinUser = async (req, res) => {
             }
         })
 }
-module.exports.uploadFile = async (req, res) => {
+module.exports.uploadFile = (req, res) => {
     const myFile = req.files.file;
     const file = new File({
         name: myFile.name,
@@ -139,10 +139,10 @@ module.exports.getFiles = async (req, res) => {
     let user = await User.findById(decode).lean()
     res.send(await File.find({ author: user.username }).lean())
 }
-module.exports.deleteFile = async (req, res) => {
-    await File.deleteOne({ _id: req.body.id })
-    fs.unlink(`./files/${req.body.name}`, (err) => {
+module.exports.deleteFile = (req, res) => {
+   fs.unlink(`./files/${req.body.name}`, async (err) => {
         if (err) console.log(`Ошибка при удалении файла: ${err}`);
+        await File.deleteOne({ _id: req.body.id })
         console.log(`Файл ${req.body.name} удален`);
     });
 }
