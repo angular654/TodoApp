@@ -6,6 +6,7 @@ import PageNotFound from '@/components/PageNotFound'
 const Create = () => import('@/components/Create')
 const Signin = () => import('@/components/Signin')
 const Files = () => import('@/components/Files')
+const Info = () => import('@/components/Info')
 Vue.use(Router)
 
 export default new Router({
@@ -32,6 +33,11 @@ export default new Router({
       path: '/files',
       name: 'FileStorage',
       component: Files
+    },
+    {
+      path: '/info',
+      name: 'Info',
+      component: Info
     },
     { path: "*", component: PageNotFound }
   ]

@@ -2,7 +2,7 @@
   <div id="App">
     <nav class="blue darken-4">
       <div class="nav-wrapper">
-        <router-link to="/" class="brand-logo" id="title">ToDoApp</router-link>
+        <router-link to="/" class="brand-logo" id="title"><router-link to="/info"><i class="material-icons">info_outline</i></router-link>ToDoApp</router-link>
         <a href="#" data-target="mobile-demo" class="sidenav-trigger">
           <i class="material-icons">menu</i>
         </a>
