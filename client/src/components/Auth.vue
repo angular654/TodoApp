@@ -1,5 +1,5 @@
 <template>
-  <div class="row" id="block">
+  <div class="container" id="block">
     <div v-if="reg !== true">
       <form @submit.prevent="submit">
         <h2 id="file-text">Регистрация</h2>

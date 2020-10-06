@@ -1,5 +1,5 @@
 <template>
-  <div class="row" id="block">
+  <div class="container" id="block">
     <div v-if="reg === true">
       <form @submit.prevent="logout">
         <h2>Вы уже вошли в ToDoApp</h2>
