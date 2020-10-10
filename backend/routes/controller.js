@@ -37,7 +37,7 @@ module.exports.completeTodo = async (req, res) => {
     if (req.body.process === 100){
         completed = true
     }
-    await Todo.findByIdAndUpdate(req.body.id, { process : req.body.process , completed : true})
+    await Todo.findByIdAndUpdate(req.body.id, { process : req.body.process , completed : completed})
 }
 module.exports.deleteTodo = async (req, res) => {
     await Todo.deleteOne({ _id: req.body.id })

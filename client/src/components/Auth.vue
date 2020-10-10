@@ -1,5 +1,5 @@
 <template>
-  <div class="container" id="block">
+  <div id="block">
     <div v-if="reg !== true">
       <form @submit.prevent="submit">
         <h2 id="file-text">Регистрация</h2>
@@ -94,7 +94,7 @@ export default {
     async submit() {
       this.submitStatus = "PENDING";
       await this.$http
-        .post(Config.getBaseUrl() + "auth", {
+        .post(Config.auth_api + "reg", {
           username: this.name,
           password: this.password,
           email: this.email,
