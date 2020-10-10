@@ -1,5 +1,5 @@
 <template>
-  <div class="container" id="block">
+  <div  id="block">
     <div v-if="reg === true">
       <form @submit.prevent="logout">
         <h2>Вы уже вошли в ToDoApp</h2>
@@ -73,7 +73,7 @@ export default {
     async submit() {
       this.submitStatus = "PENDING";
       await this.$http
-        .post(Config.getBaseUrl() + "signin", {
+        .post(Config.auth_api + "signin", {
           username: this.name,
           password: this.password,
         })
@@ -81,8 +81,8 @@ export default {
           sessionStorage.setItem("token", response.data.token);
           sessionStorage.setItem("user", response.data.user);
           sessionStorage.setItem(
-            "route",
-            `${this.name}/${response.data.token}`
+            "user_id",
+            `${response.data.user_id}`
           );
           sessionStorage.setItem("auth", response.data.auth);
         });
@@ -92,7 +92,7 @@ export default {
     },
     async logout() {
       await this.$http({
-        url: Config.getBaseUrl() + "signout",
+        url: Config.auth_api + "signout",
         method: "post",
         data: {
           username: this.name,

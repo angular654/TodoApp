@@ -61,7 +61,7 @@ export default {
   methods: {
    delete_file(id, filename) {
       this.$http({
-        url: Config.getBaseUrl() + this.token + "/deletefile",
+        url: Config.files_api + this.token + "/delete",
         method: "delete",
         data: {
           name: filename,

@@ -89,7 +89,7 @@ export default {
   methods: {
     delete_note(id) {
       this.$http({
-        url: Config.getBaseUrl() + this.token + "/delete",
+        url: Config.todos_api + this.token + "/delete",
         method: "delete",
         data: {
           id: id,
@@ -99,7 +99,7 @@ export default {
     },
     comlete_note(id, progress) {
       this.$http({
-        url: Config.getBaseUrl() + "complete",
+        url: Config.todos_api + this.token + "/complete",
         method: "post",
         data: {
           id: id,

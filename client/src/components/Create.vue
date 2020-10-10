@@ -116,13 +116,14 @@ export default {
       } else {
         this.submitStatus = "PENDING";
         await this.$http({
-          url: Config.getBaseUrl() + this.token + "/create",
+          url: Config.todos_api + this.token + "/create",
           method: "post",
           data: {
             title: this.note.title,
             content: this.note.content,
             author: this.creator,
             time: this.note.time,
+            author_id: sessionStorage.getItem("user_id"),
             createdAt: Date.now(),
           },
         });
@@ -139,8 +140,9 @@ export default {
       const formData = new FormData();
       formData.append("file", this.selectedFile); // appending file
       formData.append("author", this.creator);
+      formData.append("author_id", sessionStorage.getItem("user_id"))
       await this.$http
-        .post(Config.getBaseUrl() + this.token + "/" + "upload", formData)
+        .post(Config.files_api + this.token + "/" + "upload", formData)
         .then((res) => {
           console.log(res)
         })
