@@ -26,23 +26,24 @@ app.use('/files/:id/', (req, res, next) => {
 })
 app.post('/files/:id/upload', async (req,res) => {
     const myFile = req.files.file;
+    const filename =  `${Date.now()}-` + req.files.file.name;
     const file = new File({
-        name: myFile.name,
+        name: filename,
         size: myFile.size,
         author: req.body.author,
         author_id: req.body.author_id,
         createdAt: Date.now(),
-        url: host + "/" + myFile.name
+        url: host + "/" + filename
     })
     if (!req.files) {
         res.status(500).send({ msg: "file is not found" })
     }
-    myFile.mv(`./uploads/${myFile.name}`, async function (err) {
+    myFile.mv(`./uploads/${filename}`, async  (err) => {
         if (err) {
             console.log(err)
             res.status(500).send({ msg: "File upload error" });
         }
-        console.log(`Файл ${myFile.name} загружен`)
+        console.log(`Файл ${filename} загружен`)
         await file.save()
     });
 })
@@ -50,10 +51,10 @@ app.get('/files/:id/get', async (req,res) => {
     let decode = jwt.decode(req.params.id).id
     res.send(await File.find({ author_id: decode}).lean())
 })
-app.delete('/files/:id/delete', async (req,res) => {
-    fs.unlink(`./files/${req.body.name}`, async (err) => {
+app.delete('/files/:id/delete', (req,res) => {
+    fs.unlink(`./uploads/${req.body.name}`, async (err) => {
         if (err) console.log(`Ошибка при удалении файла: ${err}`);
-        await File.deleteOne({ _id: req.body.id })
+        await File.deleteOne({ _id: req.body.id });
         console.log(`Файл ${req.body.name} удален`);
     });
 })
