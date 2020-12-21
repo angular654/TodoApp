@@ -8,10 +8,10 @@
         </a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
           <li>
-            <router-link to="/signin">Sign In</router-link>
+            <router-link to="/signin">Вход<i class="large material-icons">person_outline</i></router-link>
           </li>
           <li>
-            <router-link to="/auth">Sign Up</router-link>
+            <router-link to="/auth">Регистрация<i class="large material-icons">person_add</i></router-link>
           </li>
           <li>
             <router-link to="/create">
@@ -19,7 +19,7 @@
             </router-link>
           </li>
           <li>
-            <router-link to="/files">Files</router-link>
+            <router-link to="/files">Файлы <i class="large material-icons">insert_drive_file</i></router-link>
           </li>
         </ul>
         <ul class="sidenav" id="mobile-demo">
@@ -48,7 +48,7 @@
       <hr />
       <div class="footer-copyright">
         <div class="white-text">
-          © 2020 Copyright Text
+          © 2020 by Vladimir Ivahnenko
           <a href="https://github.com/angular654">
             <img src="@/assets/githublogo.png" width="23" height="23" />
           </a>
@@ -105,5 +105,10 @@ main {
 }
 #back {
   color: #0D47A1;
+}
+.nav-wrapper {
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
 }
 </style>
