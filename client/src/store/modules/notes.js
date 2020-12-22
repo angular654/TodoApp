@@ -4,7 +4,7 @@ export default {
         async fetchNotes(ctx) {
             if (JSON.parse(sessionStorage.getItem("auth")) === true) {
                 await axios
-                    .get(`http://localhost:6060/todos/${sessionStorage.getItem("token")}/get`,{
+                    .get(`http://localhost:49060/todos/${sessionStorage.getItem("token")}/get`,{
                         author_id: sessionStorage.getItem("user_id")
                     })
                     .then((response) => (this.notes = response.data))

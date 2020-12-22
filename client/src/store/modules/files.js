@@ -4,7 +4,7 @@ export default {
         async fetchFiles(ctx) {
             if (JSON.parse(sessionStorage.getItem("auth")) === true) {
                 await axios
-                    .get(`http://localhost:5050/files/${sessionStorage.getItem("token")}/get`,{
+                    .get(`http://localhost:49050/files/${sessionStorage.getItem("token")}/get`,{
                         author_id: sessionStorage.getItem("user_id")
                     })
                     .then((response) => (this.files = response.data))

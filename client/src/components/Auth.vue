@@ -102,10 +102,6 @@ export default {
         .then((response) => {
           sessionStorage.setItem("token", response.data.token);
           sessionStorage.setItem("user", this.name);
-          sessionStorage.setItem(
-            "route",
-            `/${this.name}/${response.data.token}`
-          );
           sessionStorage.setItem("auth", response.data.auth);
           this.$router.push(`/`);
         });
