@@ -52,6 +52,7 @@
           <a href="https://github.com/angular654">
             <img src="@/assets/githublogo.png" width="23" height="23" />
           </a>
+          <a class="waves-effect waves-light" v-on:click="scrollToTop()" id="toMenu"><i class=" small material-icons">arrow_drop_up</i></a>
         </div>
       </div>
     </footer>
@@ -69,7 +70,10 @@ export default {
   methods : {
     back() {
       window.history.length > 2 ? this.$router.go(-1): false 
-    }
+    },
+     scrollToTop() {
+                window.scrollTo(0,0);
+     }
   }
 };
 </script>
@@ -110,5 +114,9 @@ main {
   position: fixed; /* Set the navbar to fixed position */
   top: 0; /* Position the navbar at the top of the page */
   width: 100%; /* Full width */
+}
+#toMenu {
+  padding-left: 25%;
+  color: aliceblue;
 }
 </style>

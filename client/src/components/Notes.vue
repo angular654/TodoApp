@@ -180,4 +180,11 @@ b {
   position: absolute;
   padding-left: 40%;
 }
+@media screen and (max-width: 370px ) {
+    #add-btn{
+    position: fixed;
+    padding-left: 65%;
+    padding-top: 40%;
+  }
+   }
 </style>
