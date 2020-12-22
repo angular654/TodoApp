@@ -24,10 +24,10 @@ app.post('/auth/signin', async (req, res) => {
             else if (!user) {
                 console.log('Пользователь не найден');
             }
-            if (!user.password) {
+            else if (!user.password) {
                 console.log("Нет пароля")
             }
-            if (bcrypt.compareSync(req.body.password, user.password)) {
+            else if (bcrypt.compareSync(req.body.password, user.password)) {
                 let token = jwt.sign(
                     {
                         id: user.id
