@@ -15,12 +15,12 @@
       <div v-if="filteredFiles(allFiles).length">
         <div v-for="(file,idx) in filteredFiles(allFiles)" :key="idx">
           <div class="note">
-            <a class="btn btn-small waves-effect waves-light blue darken-4" v-on:click="delete_file(file._id,file.name)"><i class="material-icons">delete</i></a>
+            <a class="btn btn-small waves-effect waves-light blue darken-4" v-on:click="delete_file(idx,file.name,file._id)"><i class="material-icons">delete</i></a>
             <div class="card">
               <img src="@/assets/file.png" width="50" height="50" />
               <div class="card-title">{{file.name}}</div>
               <a :href="file.url" target="_blank" download>Открыть</a>
-            </div>
+            </div> 
             <input hidden type="text" :value="id = file._id" name="id" />
           </div>
         </div>
@@ -59,16 +59,17 @@ export default {
     this.submitStatus = "OK";
   },
   methods: {
-   delete_file(id, filename) {
+   delete_file(id, filename,_id) {
+     this.$store.commit('REMOVE_FILE',this.$store.dispatch("fetchNotes"),id)
       this.$http({
         url: Config.files_api + this.token + "/delete",
         method: "delete",
         data: {
           name: filename,
-          id: id,
+          id: _id,
         },
       });
-     this.$store.dispatch("fetchFiles");
+     this.$store.commit('REMOVE_FILE',this.$store.dispatch("fetchNotes"),id)
     },
     filteredFiles(files) {
       const s = this.search.toLowerCase();

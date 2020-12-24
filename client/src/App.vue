@@ -44,6 +44,8 @@
       <a class="waves-effect waves-light" v-on:click="back()" id="back"><i class=" medium material-icons">arrow_back</i></a>
       <router-view></router-view>
     </main>
+    <br>
+    <br>
     <footer class="blue darken-4">
       <hr />
       <div class="footer-copyright">

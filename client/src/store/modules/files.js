@@ -4,7 +4,7 @@ export default {
         async fetchFiles(ctx) {
             if (JSON.parse(sessionStorage.getItem("auth")) === true) {
                 await axios
-                    .get(`http://localhost:49050/files/${sessionStorage.getItem("token")}/get`,{
+                    .get(`https://safe-thicket-79673.herokuapp.com/files/${sessionStorage.getItem("token")}/get`,{
                         author_id: sessionStorage.getItem("user_id")
                     })
                     .then((response) => (this.files = response.data))
@@ -17,7 +17,10 @@ export default {
     mutations: {
         ubdateFiles(state, files) {
             state.files = files
-        }
+        },
+        REMOVE_FILE (state, id) {
+            state.files.splice(id,1)
+          },
     },
     state: {
         files: []

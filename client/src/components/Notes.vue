@@ -29,7 +29,7 @@
           <div class="note">
             <a
               class="btn-floating btn-small waves-effect waves-light blue darken-4"
-              v-on:click="delete_note(note._id)"
+              v-on:click="delete_note(idx, note._id)"
             >
               <i class="material-icons">delete</i>
             </a>
@@ -107,26 +107,25 @@ export default {
     this.submitStatus = "OK";
   },
   methods: {
-    delete_note(id) {
+    delete_note(id,_id) {
+      this.$store.commit('REMOVE_NOTE',this.$store.dispatch("fetchNotes"),id)
       this.$http({
-        url: Config.todos_api + this.token + "/delete",
+        url: Config.todos_api + this.token + '/delete/'+ _id,
         method: "delete",
-        data: {
-          id: id,
-        },
       });
-      this.$store.dispatch("fetchNotes");
+      this.$store.commit('REMOVE_NOTE',this.$store.dispatch("fetchNotes"),id)
     },
     comlete_note(id, progress) {
+      this.$store.commit('UPDATE_NOTE',this.$store.dispatch("fetchNotes"),progress, id)
       this.$http({
         url: Config.todos_api + this.token + "/complete",
         method: "post",
-        data: {
+        data: { 
           id: id,
           process: progress,
         },
       });
-      this.$store.dispatch("fetchNotes");
+       this.$store.commit('UPDATE_NOTE',this.$store.dispatch("fetchNotes"),progress, id)
     },
     filteredNotes(todos) {
       const s = this.search.trim(" ").toLowerCase();

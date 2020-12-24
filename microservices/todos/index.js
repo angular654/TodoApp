@@ -1,56 +1,64 @@
-const express = require('express');
+const Koa = require('koa');
+const app = new Koa();
+const cors = require('@koa/cors');
 const mongoose = require('mongoose');
-const cors = require('cors');
 const Todo = require('./model/Todo');
-const bodyParser = require('body-parser');
 const dotenv = require("dotenv");
 const jwt = require('jsonwebtoken');
+const Router = require('@koa/router');
+const koaBody = require('koa-body');
+app.use(koaBody());
 dotenv.config();
+const router = new Router({
+    prefix:'/'
+});
+app.use(cors())
 const PORT = process.env.PORT || 6060;
-const app = express();
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use('/todos/:id/', (req, res, next) => {
+router.use('/todos/:id/',(ctx,next) => {
     try {
-        jwt.verify(req.params.id, process.env.TOKEN_SECRET);
+        jwt.verify(ctx.params.id, process.env.TOKEN_SECRET);
         next();
     } catch (err) {
         console.log(err)
     }
 })
-app.post('/todos/:id/create', async (req,res) => {
+
+router.post('todos/:id/create', async (ctx) => {
     const todo = new Todo({
-        title: req.body.title,
-        content: req.body.content,
-        author: req.body.author,
-        author_id: req.body.author_id,
-        completeTime: req.body.time,
+        title: ctx.request.body.title,
+        content: ctx.request.body.content,
+        author: ctx.request.body.author,
+        author_id: ctx.request.body.author_id,
+        completeTime: ctx.request.body.time,
         createdAt: Date.now()
     })
     try {
         await todo.save()
-        res.json({ state: 'success' })
+        ctx.body = { state: 'success' }
     }
     catch (e) {
         console.log(`Ошибка при отправке Todo: ${e}`)
     }
 })
-app.get('/todos/:id/get', async (req,res) => {
-    let decode = jwt.decode(req.params.id).id
-    res.send(await Todo.find({ author_id: decode }).lean())
+router.get('todos/:id/get', async (ctx) => {
+    let decode = jwt.decode(ctx.params.id).id
+    let todos = await Todo.find({ author_id: decode }).lean()
+    ctx.body = todos
 })
-app.delete('/todos/:id/delete', async (req,res) => {
-    await Todo.deleteOne({ _id: req.body.id })
-})
-app.post('/todos/:id/complete', async (req,res) => {
+router.delete('todos/:id/delete/:todo', async (ctx) => {
+    ctx.body = await Todo.deleteOne({ _id : ctx.params.todo})
+    })
+router.post('todos/:id/complete', async (ctx) => {
     let completed = false 
-    if (req.body.process === 100){
+    if (ctx.request.body.process === 100){
         completed = true
     }
-    await Todo.findByIdAndUpdate(req.body.id, { process : req.body.process , completed : completed})
+    await Todo.findByIdAndUpdate(ctx.request.body.id, { process : ctx.request.body.process , completed : completed})
+    ctx.body = { status:"completed!"}
 })
+app.use(router.routes()).use(router.allowedMethods());
 async function start() {
+    console.log(router.stack.map(i => i.path));
     try {
         await mongoose.connect(process.env.MONGODB_URL, {
             useUnifiedTopology: true,

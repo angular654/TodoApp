@@ -4,7 +4,7 @@ export default {
         async fetchNotes(ctx) {
             if (JSON.parse(sessionStorage.getItem("auth")) === true) {
                 await axios
-                    .get(`http://localhost:49060/todos/${sessionStorage.getItem("token")}/get`,{
+                    .get(`https://todoapp-notes.herokuapp.com/todos/${sessionStorage.getItem("token")}/get`,{
                         author_id: sessionStorage.getItem("user_id")
                     })
                     .then((response) => (this.notes = response.data))
@@ -18,6 +18,15 @@ export default {
         ubdateNotes(state, notes) {
             state.notes = notes
         },
+        REMOVE_NOTE (state, id) {
+           state.notes.splice(id,1);
+          },
+        UPDATE_NOTE (state, process,id) {
+                state.notes.find(item => item.id === id).process = process;
+        },
+        CREATE_NOTE(state, newPost) {
+            state.notes.unshift(newPost)
+        }
     },
     state: {
         notes: [],

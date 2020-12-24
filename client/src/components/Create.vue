@@ -1,11 +1,11 @@
 <template>
   <div id="block">
     <div v-if="reg !==  true">
-      <h2>Страница создания заметок недоступна</h2>
+      <h3>Страница создания заметок недоступна</h3>
     </div>
     <div v-else>
       <form @submit.prevent="submit">
-        <h2>Создать заметку</h2>
+        <h5>Создать заметку</h5>
         <div class="input-field">
           <input
             type="text"
@@ -59,7 +59,6 @@
         <p class="error" v-if="submitStatus === 'ERROR'">Форма заполнена неверно</p>
         <p class="loading" v-if="submitStatus === 'PENDING'">Загрузка...</p>
       </form>
-      <h2>Загрузить файл</h2>
       <form @submit.prevent="onUploadFile">
         <div class="file-field input-field">
           <div class="btn blue darken-4">
@@ -111,6 +110,7 @@ export default {
   methods: {
     async submit() {
       this.$v.note.$touch();
+      this.$store.commit('CREATE_NOTE',this.$store.dispatch("fetchNotes"),this.$v.note)
       if (this.$v.$invalid) {
         this.submitStatus = "ERROR";
       } else {
