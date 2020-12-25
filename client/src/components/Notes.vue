@@ -113,7 +113,7 @@ export default {
         url: Config.todos_api + this.token + '/delete/'+ _id,
         method: "delete",
       });
-      this.$store.commit('REMOVE_NOTE',this.$store.dispatch("fetchNotes"),id)
+      this.$store.dispatch("fetchNotes")
     },
     comlete_note(id, progress) {
       this.$store.commit('UPDATE_NOTE',this.$store.dispatch("fetchNotes"),progress, id)
@@ -125,7 +125,7 @@ export default {
           process: progress,
         },
       });
-       this.$store.commit('UPDATE_NOTE',this.$store.dispatch("fetchNotes"),progress, id)
+      this.$store.dispatch("fetchNotes")
     },
     filteredNotes(todos) {
       const s = this.search.trim(" ").toLowerCase();
