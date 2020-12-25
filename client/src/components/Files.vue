@@ -69,7 +69,6 @@ export default {
           id: _id,
         },
       });
-     this.$store.commit('REMOVE_FILE',this.$store.dispatch("fetchNotes"),id)
     },
     filteredFiles(files) {
       const s = this.search.toLowerCase();
@@ -92,10 +91,6 @@ h1 {
   padding-left: 40px;
   padding-right: 40px;
   align-items: center;
-}
-.card {
-  height: 60%;
-  width: 60%;
 }
 a {
   padding-left: 0.4rem;

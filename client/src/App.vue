@@ -41,7 +41,6 @@
       </div>
     </nav>
     <main>
-      <a class="waves-effect waves-light" v-on:click="back()" id="back"><i class=" medium material-icons">arrow_back</i></a>
       <router-view></router-view>
     </main>
     <br>
@@ -50,11 +49,8 @@
       <hr />
       <div class="footer-copyright">
         <div class="white-text">
+          <a class="waves-effect waves-blue" v-on:click="scrollToTop()" id="toMenu"><i class=" small material-icons">arrow_drop_up</i></a>
           © 2020 by Vladimir Ivahnenko
-          <a href="https://github.com/angular654">
-            <img src="@/assets/githublogo.png" width="23" height="23" />
-          </a>
-          <a class="waves-effect waves-light" v-on:click="scrollToTop()" id="toMenu"><i class=" small material-icons">arrow_drop_up</i></a>
         </div>
       </div>
     </footer>
@@ -119,6 +115,6 @@ main {
 }
 #toMenu {
   padding-left: 25%;
-  color: aliceblue;
+  color: rgb(255, 255, 255);
 }
 </style>

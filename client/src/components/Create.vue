@@ -71,6 +71,8 @@
         </div>
         <button type="submit" class="btn blue darken-4">Загрузить</button>
       </form>
+      <p class="ok" v-if="fileSubmitStatus === 'OK'">{{file_response.data}}</p>
+      <p class="ok" v-if="fileSubmitStatus === 'ERROR'">{{file_response.data}}</p>
     </div>
   </div>
 </template>
@@ -92,12 +94,14 @@ export default {
       note: {
         title: "",
         content: "",
-        time: null,
+        time: null
       },
       creator: sessionStorage.getItem("user"),
       reg: JSON.parse(sessionStorage.getItem("auth")),
       token: sessionStorage.getItem("token"),
       submitStatus: null,
+      file_response: "",
+      fileSubmitStatus:null
     };
   },
   validations: {
@@ -136,18 +140,20 @@ export default {
       const selectedFile = e.target.files[0]; // accessing file
       this.selectedFile = selectedFile;
     },
-    async onUploadFile() {
+    onUploadFile() {
       const formData = new FormData();
       formData.append("file", this.selectedFile); // appending file
       formData.append("author", this.creator);
       formData.append("author_id", sessionStorage.getItem("user_id"))
-      await this.$http
+      this.$http
         .post(Config.files_api + this.token + "/" + "upload", formData)
         .then((res) => {
-          console.log(res)
+          this.fileSubmitStatus = "OK"
+          this.file_response = res
         })
         .catch((err) => {
-          console.log(err);
+         this.submitStatus = "ERROR";
+         this.file_response = err
         });
     },
     speechWriter() {
