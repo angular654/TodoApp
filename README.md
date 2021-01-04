@@ -1,6 +1,10 @@
 ## Development
 ### Backend
 > microservices🤘
+```
+npm i
+npm start
+```
 ## Build Setup
 ### Client
 ``` bash
