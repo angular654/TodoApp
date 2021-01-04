@@ -16,9 +16,11 @@
         <div v-for="(file,idx) in filteredFiles(allFiles)" :key="idx">
           <div class="note">
             <a class="btn btn-small waves-effect waves-light blue darken-4" v-on:click="delete_file(idx,file.name,file._id)"><i class="material-icons">delete</i></a>
-            <div class="card">
+            <div class="card ">
               <img src="@/assets/file.png" width="50" height="50" />
               <div class="card-title">{{file.name}}</div>
+              <b>{{ file.createdAt | formatDate }}</b>
+              <br>
               <a :href="file.url" target="_blank" download>Открыть</a>
             </div> 
             <input hidden type="text" :value="id = file._id" name="id" />
@@ -96,7 +98,7 @@ h1 {
 a {
   padding-left: 0.4rem;
 }
-.card-title {
+.card-title,b {
   padding-left: 1.3rem;
 }
 #icon_prefix {
