@@ -1,9 +1,5 @@
-## Backend
-
-npm install
-
-npm start
-> ## New feature 
+## Development
+### Backend
 > microservices🤘
 ## Build Setup
 ### Client
