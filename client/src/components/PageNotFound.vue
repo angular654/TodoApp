@@ -1,7 +1,7 @@
 <template>
   <div class="notfound">
     <h1 id="sm">:(</h1>
-    <h2 id="err">404 Erorr</h2>
+    <h2 id="err">404 Error</h2>
     <h2 id="text">Страница не найдена</h2>
   </div>
 </template>
