@@ -103,7 +103,7 @@ export default {
   computed: mapGetters(["allNotes"]),
   async mounted() {
     this.submitStatus = "PENDING";
-    this.$store.dispatch("fetchNotes");
+    await this.$store.dispatch("fetchNotes");
     this.submitStatus = "OK";
   },
   methods: {

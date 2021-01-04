@@ -69,10 +69,16 @@
             <input class="file-path validate" type="text" />
           </div>
         </div>
-        <button type="submit" class="btn blue darken-4">Загрузить</button>
+        <button type="submit" class="btn blue darken-4" :disabled="fileSubmitStatus === 'PENDING'">Загрузить</button>
       </form>
+      <div v-if="fileSubmitStatus === 'PENDING'">
+        <div class="progress">
+        <div class="determinate" id="file-progress" :style="{ width: uploadPercentage + '%' }"></div>
+        </div>
+        {{uploadPercentage}}/100
+      </div>
       <p class="ok" v-if="fileSubmitStatus === 'OK'">{{file_response.data}}</p>
-      <p class="ok" v-if="fileSubmitStatus === 'ERROR'">{{file_response.data}}</p>
+      <p class="error" v-if="fileSubmitStatus === 'ERROR'">{{file_response.data}}</p>
     </div>
   </div>
 </template>
@@ -91,6 +97,7 @@ export default {
   data() {
     return {
       selectedFile: "",
+      uploadPercentage: 0,
       note: {
         title: "",
         content: "",
@@ -145,8 +152,18 @@ export default {
       formData.append("file", this.selectedFile); // appending file
       formData.append("author", this.creator);
       formData.append("author_id", sessionStorage.getItem("user_id"))
+      this.fileSubmitStatus = "PENDING"
       this.$http
-        .post(Config.files_api + this.token + "/" + "upload", formData)
+        .post(Config.files_api + this.token + "/" + "upload", formData,
+        {
+      headers: {
+          'Content-Type': 'multipart/form-data'
+      },
+      onUploadProgress: function( progressEvent ) {
+        this.uploadPercentage = parseInt( Math.round( ( progressEvent.loaded / progressEvent.total ) * 100 ))
+      }.bind(this)
+    }
+        )
         .then((res) => {
           this.fileSubmitStatus = "OK"
           this.file_response = res

@@ -6,7 +6,7 @@
           <div class="indeterminate"></div>
         </div>
       </div>
-      <h1>Место для хранения файлов({{filteredFiles(allFiles).length}})</h1>
+      <h1>Файлы({{filteredFiles(allFiles).length}})</h1>
       <div class="input-field col s6">
         <i class="medium material-icons prefix">search</i>
         <input v-model="search" id="icon_prefix" type="text" class="validate" />
@@ -69,6 +69,7 @@ export default {
           id: _id,
         },
       });
+      this.$store.dispatch("fetchFiles");
     },
     filteredFiles(files) {
       const s = this.search.toLowerCase();
