@@ -45,13 +45,13 @@ export default {
   name: "FileStorage",
   data() {
     return {
-      user: sessionStorage.getItem("user"),
-      reg: JSON.parse(sessionStorage.getItem("auth")),
+      user: localStorage.getItem("user"),
+      reg: JSON.parse(localStorage.getItem("auth")),
       submitStatus: null,
       id: "",
       filename: "",
       search: "",
-      token: sessionStorage.getItem("token"),
+      token: localStorage.getItem("token"),
     };
   },
   computed: mapGetters(["allFiles"]),

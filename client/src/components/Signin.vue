@@ -36,7 +36,7 @@ export default {
       password: "",
       msg: [],
       submitStatus: null,
-      reg: JSON.parse(sessionStorage.getItem("auth")),
+      reg: JSON.parse(localStorage.getItem("auth")),
     };
   },
   watch: {
@@ -78,13 +78,13 @@ export default {
           password: this.password,
         })
         .then((response) => {
-          sessionStorage.setItem("token", response.data.token);
-          sessionStorage.setItem("user", response.data.user);
-          sessionStorage.setItem(
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("user", response.data.user);
+          localStorage.setItem(
             "user_id",
             `${response.data.user_id}`
           );
-          sessionStorage.setItem("auth", response.data.auth);
+          localStorage.setItem("auth", response.data.auth);
         });
       this.$router.push("/");
       this.submitStatus = "OK";
@@ -99,8 +99,8 @@ export default {
         },
       });
       this.reg = false;
-      sessionStorage.clear();
-      sessionStorage.setItem("auth", false);
+      localStorage.clear();
+      localStorage.setItem("auth", false);
       console.log("Вы вышли из TodoApp!");
     },
   },

@@ -103,9 +103,9 @@ export default {
         content: "",
         time: null
       },
-      creator: sessionStorage.getItem("user"),
-      reg: JSON.parse(sessionStorage.getItem("auth")),
-      token: sessionStorage.getItem("token"),
+      creator: localStorage.getItem("user"),
+      reg: JSON.parse(localStorage.getItem("auth")),
+      token: localStorage.getItem("token"),
       submitStatus: null,
       file_response: "",
       fileSubmitStatus:null
@@ -134,7 +134,7 @@ export default {
             content: this.note.content,
             author: this.creator,
             time: this.note.time,
-            author_id: sessionStorage.getItem("user_id"),
+            author_id: localStorage.getItem("user_id"),
             createdAt: Date.now(),
           },
         });
@@ -151,7 +151,7 @@ export default {
       const formData = new FormData();
       formData.append("file", this.selectedFile); // appending file
       formData.append("author", this.creator);
-      formData.append("author_id", sessionStorage.getItem("user_id"))
+      formData.append("author_id", localStorage.getItem("user_id"))
       this.fileSubmitStatus = "PENDING"
       this.$http
         .post(Config.files_api + this.token + "/" + "upload", formData,
