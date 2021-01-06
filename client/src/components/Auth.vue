@@ -40,7 +40,7 @@ export default {
       email: "",
       msg: [],
       submitStatus: null,
-      reg: JSON.parse(sessionStorage.getItem("auth")),
+      reg: JSON.parse(localStorage.getItem("auth")),
       token: "",
     };
   },
@@ -100,9 +100,9 @@ export default {
           email: this.email,
         })
         .then((response) => {
-          sessionStorage.setItem("token", response.data.token);
-          sessionStorage.setItem("user", this.name);
-          sessionStorage.setItem("auth", response.data.auth);
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("user", this.name);
+          localStorage.setItem("auth", response.data.auth);
           this.$router.push(`/`);
         });
       this.submitStatus = "OK";

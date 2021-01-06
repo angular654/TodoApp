@@ -2,10 +2,10 @@ import axios from "axios";
 export default {
     actions: {
         async fetchNotes(ctx) {
-            if (JSON.parse(sessionStorage.getItem("auth")) === true) {
+            if (JSON.parse(localStorage.getItem("auth")) === true) {
                 await axios
-                    .get(`https://todoapp-notes.herokuapp.com/todos/${sessionStorage.getItem("token")}/get`,{
-                        author_id: sessionStorage.getItem("user_id")
+                    .get(`https://todoapp-notes.herokuapp.com/todos/${localStorage.getItem("token")}/get`,{
+                        author_id: localStorage.getItem("user_id")
                     })
                     .then((response) => (this.notes = response.data))
                     .catch((error) => (this.errors = error));

@@ -93,11 +93,11 @@ export default {
   name: "Notes",
   data() {
     return {
-      reg: JSON.parse(sessionStorage.getItem("auth")),
+      reg: JSON.parse(localStorage.getItem("auth")),
       submitStatus: null,
       search: "",
-      token: sessionStorage.getItem("token"),
-      username: sessionStorage.getItem("user"),
+      token: localStorage.getItem("token"),
+      username: localStorage.getItem("user"),
     };
   },
   computed: mapGetters(["allNotes"]),
