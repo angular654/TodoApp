@@ -5,10 +5,7 @@ const bodyParser = require('body-parser');
 const dotenv = require("dotenv")
 const User = require('./model/User')
 const jwt = require('jsonwebtoken')
-const emailValidator = require('email-validator')
-const passValidator = require('password-validator')
 const bcrypt = require('bcrypt')
-const schema = new passValidator()
 dotenv.config()
 const PORT = process.env.PORT || 4040
 const app = express()
@@ -22,10 +19,7 @@ app.post('/auth/signin', async (req, res) => {
                 console.log(err);
             }
             else if (!user) {
-                console.log('Пользователь не найден');
-            }
-            else if (!user.password) {
-                console.log("Нет пароля")
+                res.json({status:'Пользователь не найден'});
             }
             else if (bcrypt.compareSync(req.body.password, user.password)) {
                 let token = jwt.sign(
@@ -43,20 +37,21 @@ app.post('/auth/signin', async (req, res) => {
                     user_id: user._id,
                 })
             } else {
-                console.log('Неверный пароль');
+                res.json({status:'Ошибка при входе'});
             }
         })
 })
 app.post('/auth/reg', async (req, res) => {
-    let password = req.body.password
-    let username = req.body.username
-    let email = req.body.email
+    const email_re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const password = req.body.password
+    const username = req.body.username
+    const email = req.body.email
     const user = new User({
         username: username,
         password: bcrypt.hashSync(req.body.password, 15),
         email: email
     })
-    if (schema.validate(password) === emailValidator.validate(email) && username.length > 3) {
+    if (password.length > 10 === email_re.test(email) && username.length > 3) {
         try {
             let token = jwt.sign(
                 {
@@ -64,7 +59,7 @@ app.post('/auth/reg', async (req, res) => {
                 },
                 process.env.TOKEN_SECRET,
                 {
-                    expiresIn: "2d" // expires in 24 hours
+                    expiresIn: "2d"
                 });
             await user.save()
             res.json({
@@ -74,8 +69,10 @@ app.post('/auth/reg', async (req, res) => {
             })
         }
         catch (e) {
-            console.log(e)
+            res.json({status:'Ошибка при регистрации'});
         }
+    } else {
+        res.json({status:'Неверные данные'});
     }
 })
 app.post('/auth/signout', async (req, res) => {
