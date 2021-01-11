@@ -7,10 +7,11 @@
           <img src="../assets/timemanagement.jpg">
         </div>
         <div class="card-content">
-           <h4>Удобный сайт для планирования своего времени</h4>
+           <h5>Удобный сайт для планирования своего времени</h5>
         </div>
         <div class="card-action">
-          <a href="https://github.com/angular654" style="color:blue">Github</a>
+          <a href="https://github.com/angular654/TodoApp" style="color:blue">Github</a>
+          <a href="mailto:v.ivahnenko04@gmail.com" style="color:blue">Связаться со мной</a>
         </div>
       </div>
     </div>

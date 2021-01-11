@@ -1,10 +1,11 @@
 import axios from "axios";
+import Config from "../../Api-config"
 export default {
     actions: {
-        async fetchNotes(ctx) {
+         async fetchNotes(ctx) {
             if (JSON.parse(localStorage.getItem("auth")) === true) {
                 await axios
-                    .get(`https://todoapp-notes.herokuapp.com/todos/${localStorage.getItem("token")}/get`,{
+                    .get(`${Config.todos_api}${localStorage.getItem("token")}/get`,{
                         author_id: localStorage.getItem("user_id")
                     })
                     .then((response) => (this.notes = response.data))
@@ -21,7 +22,7 @@ export default {
         REMOVE_NOTE (state, id) {
            state.notes.splice(id,1);
           },
-        UPDATE_NOTE (state, process,id) {
+        UPDATE_NOTE(state, process,id) {
                 state.notes.find(item => item.id === id).process = process;
         },
         CREATE_NOTE(state, newPost) {

@@ -1,10 +1,11 @@
 import axios from "axios"
+import Config from "../../Api-config"
 export default {
     actions: {
         async fetchFiles(ctx) {
             if (JSON.parse(localStorage.getItem("auth")) === true) {
                 await axios
-                    .get(`https://safe-thicket-79673.herokuapp.com/files/${localStorage.getItem("token")}/get`,{
+                    .get(`${Config.files_api}${localStorage.getItem("token")}/get`,{
                         author_id: localStorage.getItem("user_id")
                     })
                     .then((response) => (this.files = response.data))
