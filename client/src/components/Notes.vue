@@ -177,13 +177,16 @@ b {
 }
 #add-btn{
   position: absolute;
-  padding-left: 40%;
+  width: 56px;
+  height: 56px;
+  left: 50%;
+  right: 50%;
 }
-@media screen and (max-width: 370px ) {
+@media screen and (max-width: 414px ) {
     #add-btn{
     position: fixed;
-    padding-left: 65%;
-    padding-top: 40%;
+    left: 65%;
+    top: 40%;
   }
    }
 </style>
