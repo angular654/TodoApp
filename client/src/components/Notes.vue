@@ -28,7 +28,7 @@
         >
           <div class="note">
             <a
-              class="btn-floating btn-small waves-effect waves-light blue darken-4"
+              class="delete-btn"
               v-on:click="delete_note(idx, note._id)"
             >
               <i class="material-icons">delete</i>

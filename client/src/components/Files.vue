@@ -15,7 +15,7 @@
       <div v-if="filteredFiles(allFiles).length">
         <div v-for="(file,idx) in filteredFiles(allFiles)" :key="idx">
           <div class="note">
-            <a class="btn btn-small waves-effect waves-light blue darken-4" v-on:click="delete_file(idx,file.name,file._id)"><i class="material-icons">delete</i></a>
+            <a  v-on:click="delete_file(idx,file.name,file._id)"><i class="material-icons">delete</i></a>
             <div class="card ">
               <img src="@/assets/file.png" width="50" height="50" />
               <div class="card-title">{{file.name}}</div>
