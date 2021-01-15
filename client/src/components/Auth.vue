@@ -5,21 +5,22 @@
         <h2 id="file-text">Регистрация</h2>
         <label for="name">Name</label>
         <input type="text" v-model="name" required />
-        <span v-if="msg.name">{{msg.name}}</span>
+        <span v-if="msg.name" class="error">{{msg.name}}</span>
         <br />
         <label for="email">Email</label>
         <input type="text" v-model="email" required />
         <br />
-        <span v-if="msg.email">{{msg.email}}</span>
+        <span v-if="msg.email" class="error">{{msg.email}}</span>
         <br />
         <label for="password">Password:</label>
         <input type="password" v-model="password" required />
         <br />
-        <span v-if="msg.password">{{msg.password}}</span>
+        <span v-if="msg.password" class="error">{{msg.password}}</span>
         <br />
         <button class="btn blue darken-4" type="submit" name="action">Зарегистрироваться</button>
         <p class="ok" v-if="submitStatus === 'OK'">Готово!</p>
         <p class="loading" v-if="submitStatus === 'PENDING'">Регистрация...</p>
+        <p class="error" v-if="submitStatus === 'ERROR'">{{errors}}</p>
       </form>
     </div>
     <div v-else>
@@ -37,6 +38,7 @@ export default {
     return {
       name: "",
       password: "",
+      errors:"",
       email: "",
       msg: [],
       submitStatus: null,
@@ -100,13 +102,19 @@ export default {
           email: this.email,
         })
         .then((response) => {
-          localStorage.setItem("token", response.data.token);
-          localStorage.setItem("user", this.name);
-          localStorage.setItem("auth", response.data.auth);
-          this.$router.push(`/`);
+          if (response.data.token) {
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("user", this.name);
+            localStorage.setItem("auth", response.data.auth);
+            this.$router.push(`/`);
+            this.submitStatus = "OK";
+            this.reg = true;
+          }
+          else {
+            this.errors = response.data.status
+            this.submitStatus = "ERROR";
+          }
         });
-      this.submitStatus = "OK";
-      this.reg = true;
     },
   },
 };
@@ -118,8 +126,8 @@ h2,
 h1 {
   font-size: 2rem;
 }
-span {
-  color: rgb(199, 15, 15);
+.error {
+  color: rgb(165, 23, 23);
   font-weight: bold;
 }
 .ok {

@@ -1,9 +1,11 @@
 <template>
-  <div  id="block">
+  <div id="block">
     <div v-if="reg === true">
       <form @submit.prevent="logout">
         <h2>Вы уже вошли в ToDoApp</h2>
-        <button class="btn blue darken-4" type="submit" name="action">Выйти</button>
+        <button class="btn blue darken-4" type="submit" name="action">
+          Выйти
+        </button>
         <p class="ok" v-if="submitStatus === 'OK'">Готово!</p>
       </form>
     </div>
@@ -12,16 +14,19 @@
       <form @submit.prevent="submit">
         <label for="name">Name</label>
         <input type="text" v-model="name" required />
-        <span v-if="msg.name">{{msg.name}}</span>
+        <span v-if="msg.name">{{ msg.name }}</span>
         <br />
         <label for="password">Password:</label>
         <input type="password" v-model="password" required />
         <br />
-        <span v-if="msg.password">{{msg.password}}</span>
+        <span v-if="msg.password">{{ msg.password }}</span>
         <br />
-        <button class="btn blue darken-4" type="submit" name="action">Войти</button>
+        <button class="btn blue darken-4" type="submit" name="action">
+          Войти
+        </button>
         <p class="ok" v-if="submitStatus === 'OK'">Готово!</p>
         <p class="loading" v-if="submitStatus === 'PENDING'">Вход...</p>
+        <p class="error" v-if="submitStatus === 'ERROR'">{{ errors }}</p>
       </form>
     </div>
   </div>
@@ -33,6 +38,7 @@ export default {
   data() {
     return {
       name: "",
+      errors: "",
       password: "",
       msg: [],
       submitStatus: null,
@@ -78,17 +84,18 @@ export default {
           password: this.password,
         })
         .then((response) => {
-          localStorage.setItem("token", response.data.token);
-          localStorage.setItem("user", response.data.user);
-          localStorage.setItem(
-            "user_id",
-            `${response.data.user_id}`
-          );
-          localStorage.setItem("auth", response.data.auth);
+          if (response.data.token) {
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("user", response.data.user);
+            localStorage.setItem("user_id", `${response.data.user_id}`);
+            localStorage.setItem("auth", response.data.auth);
+            this.$router.push("/");
+            this.submitStatus = "OK";
+          } else {
+            this.submitStatus = "ERROR";
+            this.errors = response.data.status;
+          }
         });
-      this.$router.push("/");
-      this.submitStatus = "OK";
-      console.log("Вы вошли в TodoApp!");
     },
     async logout() {
       await this.$http({
@@ -101,7 +108,6 @@ export default {
       this.reg = false;
       localStorage.clear();
       localStorage.setItem("auth", false);
-      console.log("Вы вышли из TodoApp!");
     },
   },
 };
@@ -111,6 +117,10 @@ h2 {
   font-size: 2rem;
 }
 span {
+  color: rgb(199, 15, 15);
+  font-weight: bold;
+}
+.error {
   color: rgb(199, 15, 15);
   font-weight: bold;
 }
